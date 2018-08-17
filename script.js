@@ -37,10 +37,36 @@ const pentagram = {
     }
 }
 
-
 window.onload =  function () {
     let canvas = document.getElementById('score_canvas');
     let ctx = canvas.getContext("2d");
+
+    let note = document.getElementById('note');
+    let noteX = 0;
+    let noteY = 80;
+    let noteProgress = 0;
+
+    function updateNoteProgress(){
+        noteProgress += 0.5;
+
+        if (noteProgress >= 100){
+            noteProgress = 0;
+        }
+    }
+
+    function timer(){
+        let cr = canvas.getBoundingClientRect();
+        noteY = cr.top;
+
+        noteX = parseInt(cr.left + cr.width + margin.left - noteProgress * cr.width / 100);
+
+        updateNoteProgress();
+
+        note.style.left = `${noteX}px`;
+        note.style.top = `${noteY}px`;
+    }
+
+    setInterval(timer, 30);
 
     pentagram.draw(ctx);
 };

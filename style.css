@@ -1,8 +1,15 @@
 #score_canvas{
     border: 1px solid #343434;
-    border-radius: 5px;
+    border-radius: 10px;
+    background-color: #fffbd6;
 }
 
 #central_board{
     text-align: center;
+}
+
+#note {
+    font-size: 90px;
+    border: 1px solid #f06d6d;
+    position: absolute;
 }
