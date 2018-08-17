@@ -1,27 +1,35 @@
-
-const left_margin = 100;
-const margin = 20;
-
 const canvas = {
   width: 720,
   height: 180
 };
 
+const margin = {
+    default: 30,
+    left: 100
+};
+
 const pentagram = {
-    margin: {
-        default: 20,
-        left: 100
+    lineNumber: 5,
+
+    drawLine: function (ctx, height) {
+        let left_score_start = margin.left;
+        let right_score_end = canvas.width - margin.default;
+
+        ctx.moveTo(left_score_start, height);
+        ctx.lineTo(right_score_end, height);
+        ctx.stroke();
     },
 
     draw: function (ctx) {
-        let y = canvas.height / 2;
+        let emptySpace =  2 * margin.default + 2 * pentagram.lineNumber;
+        let availableSpace = canvas.height - emptySpace;
+        let lineDistance = availableSpace / pentagram.lineNumber;
+        let topLineY = emptySpace / 2 + lineDistance / 2;
 
-        let left_score_start = left_margin;
-        let right_score_end = canvas.width - margin;
-
-        ctx.moveTo(left_score_start, y);
-        ctx.lineTo(right_score_end, y);
-        ctx.stroke();
+        for (i = 0; i < pentagram.lineNumber; i ++){
+            let y = topLineY + i * lineDistance;
+            pentagram.drawLine(ctx, y);
+        }
     }
 }
 
