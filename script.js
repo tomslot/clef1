@@ -47,7 +47,7 @@ window.onload =  function () {
     let noteProgress = 0;
 
     function updateNoteProgress(){
-        noteProgress += 0.5;
+        noteProgress += 0.4;
 
         if (noteProgress >= 100){
             noteProgress = 0;

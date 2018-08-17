@@ -1,7 +1,11 @@
+body{
+    background-color: #eeeeee;
+}
+
 #score_canvas{
     border: 1px solid #343434;
     border-radius: 10px;
-    background-color: #fffbd6;
+    background-color: white;
 }
 
 #central_board{
@@ -10,6 +14,6 @@
 
 #note {
     font-size: 90px;
-    border: 1px solid #f06d6d;
+    /* border: 1px solid #4668d8; */
     position: absolute;
 }
