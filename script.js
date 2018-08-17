@@ -59,11 +59,14 @@ window.onload =  function () {
         noteY = cr.top;
 
         noteX = parseInt(cr.left + cr.width + margin.left - noteProgress * cr.width / 100);
+        let redAmount = parseInt(Math.pow(noteProgress/100, 2) * 255);
+        let noteColor = `rgb(${redAmount}, 0, 0)`;
 
         updateNoteProgress();
 
         note.style.left = `${noteX}px`;
         note.style.top = `${noteY}px`;
+        note.style.color = noteColor;
     }
 
     setInterval(timer, 30);
