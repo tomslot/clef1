@@ -30,6 +30,10 @@ const pentagram = {
             let y = topLineY + i * lineDistance;
             pentagram.drawLine(ctx, y);
         }
+
+        let clefFontSize = canvas.height / 2;
+        ctx.font = `${clefFontSize}px Arial`;
+        ctx.fillText('\u{1D11E}', margin.default, canvas.height / 2 + clefFontSize / 2);
     }
 }
 
