@@ -39,12 +39,26 @@ const noteBase = {
         }
 
         return r;
-    } 
-};
+    }, 
 
-const canvas = {
-  width: 720,
-  height: 180
+    calculateTonicDistanceFromMidG(noteValue){
+        const midG = 67;
+        let from = Math.min(midG, noteValue);
+        let to = Math.max(midG, noteValue);
+        let distance = 0;
+
+        for (let i = from; i < to; i ++){
+            if (!this.isAccidental(i)){
+                distance ++;
+            }
+        }
+
+        if (noteValue < midG){
+            return -1 * distance;
+        }
+
+        return distance;
+    },
 };
 
 const margin = {
@@ -54,30 +68,39 @@ const margin = {
 
 const pentagram = {
     lineNumber: 5,
+    width: 720,
+    height: 180,
+    lineDistance: 0,
+    topLineY: 0,
+    leftScoreStart: 0,
+    rightScoreEnd: 0,
+
+    resize(){
+        let emptySpace =  2 * margin.default + 2 * this.lineNumber;
+        let availableSpace = this.height - emptySpace;
+        this.lineDistance = availableSpace / this.lineNumber;
+        this.topLineY = emptySpace / 2 + this.lineDistance / 2;
+        this.leftScoreStart = margin.left;
+        this.rightScoreEnd = this.width - margin.default;
+    },
 
     drawLine(ctx, height) {
-        let left_score_start = margin.left;
-        let right_score_end = canvas.width - margin.default;
-
-        ctx.moveTo(left_score_start, height);
-        ctx.lineTo(right_score_end, height);
+        ctx.moveTo(this.leftScoreStart, height);
+        ctx.lineTo(this.rightScoreEnd, height);
         ctx.stroke();
     },
 
     draw(ctx) {
-        let emptySpace =  2 * margin.default + 2 * this.lineNumber;
-        let availableSpace = canvas.height - emptySpace;
-        let lineDistance = availableSpace / this.lineNumber;
-        let topLineY = emptySpace / 2 + lineDistance / 2;
-
+        this.resize();
+        
         for (let i = 0; i < this.lineNumber; i ++){
-            let y = topLineY + i * lineDistance;
+            let y = this.topLineY + i * this.lineDistance;
             this.drawLine(ctx, y);
         }
 
-        let clefFontSize = canvas.height / 2;
+        let clefFontSize = this.height / 2;
         ctx.font = `${clefFontSize}px Arial`;
-        ctx.fillText('\u{1D11E}', margin.default, canvas.height / 2 + clefFontSize / 2);
+        ctx.fillText('\u{1D11E}', margin.default, this.height / 2 + clefFontSize / 2);
     }
 }
 
@@ -89,7 +112,11 @@ const noteControl = {
         this.noteProgress = 0;
         this.noteValue = noteBase.generateRandNote();
         let nextNoteElement = document.getElementById('next_note');
-        nextNoteElement.innerText = noteBase.noteToSymbol(this.noteValue);
+        let noteSymbol = noteBase.noteToSymbol(this.noteValue);
+        nextNoteElement.innerText = noteSymbol;
+
+        let distance = noteBase.calculateTonicDistanceFromMidG(this.noteValue);
+        console.log(`noteValue: ${this.noteValue}, ${noteSymbol}, distance=${distance}`);
     },
 
     updateProgress(){
@@ -100,10 +127,11 @@ const noteControl = {
         }
     },
 
-    updatePosition(canvas, noteElem){
-        let cr = canvas.getBoundingClientRect();
-        let midGPos = cr.top;
-        let noteY = midGPos;
+    updatePosition(canvasElem, noteElem){
+        let cr = canvasElem.getBoundingClientRect();
+        let midGPos = cr.top + 16;
+        let distanceFromMG = noteBase.calculateTonicDistanceFromMidG(this.noteValue);
+        let noteY = midGPos - distanceFromMG * pentagram.lineDistance / 2;
         let noteX = parseInt(cr.left + cr.width + margin.left - this.noteProgress * cr.width / 100);
         let redAmount = parseInt(Math.pow(this.noteProgress/100, 2) * 255);
         let noteColor = `rgb(${redAmount}, 0, 0)`;
@@ -116,15 +144,15 @@ const noteControl = {
 };
 
 window.onload =  function () {
-    let canvas = document.getElementById('score_canvas');
-    let ctx = canvas.getContext("2d");
+    let canvasElem = document.getElementById('score_canvas');
+    let ctx = canvasElem.getContext("2d");
     pentagram.draw(ctx);
 
-    let note = document.getElementById('note');
+    let noteElem = document.getElementById('note');
 
     function timer(){
         noteControl.updateProgress();
-        noteControl.updatePosition(canvas, note);
+        noteControl.updatePosition(canvasElem, noteElem);
     }
 
     noteControl.resetNote();
