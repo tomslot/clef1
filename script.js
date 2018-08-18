@@ -127,6 +127,12 @@ const noteControl = {
         }
     },
 
+    shoot(note){
+        if (noteBase.normalize(note) === noteBase.normalize(this.noteValue)){
+            this.resetNote();
+        }
+    },
+
     updatePosition(canvasElem, noteElem){
         let cr = canvasElem.getBoundingClientRect();
         let midGPos = cr.top + 16;
@@ -140,6 +146,43 @@ const noteControl = {
         style.left = `${noteX}px`;
         style.top = `${noteY}px`;
         style.color = noteColor;
+    }
+};
+
+const midiController = {
+    start(){
+        if (navigator.requestMIDIAccess) {
+            navigator.requestMIDIAccess({
+                sysex: false
+            }).then(this.onMIDISuccess, this.onMIDIFailure);
+        } else {
+            console.log("No MIDI support in the browser.");
+        }
+    },
+
+    onMIDIFailure(error) {
+        console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + error);
+    }, 
+
+    onMIDIMessage(message) {
+        let data = message.data;
+
+        if ((data[0] & 0xF0) === 0x90){
+            let note = data[1];
+            console.log(`note ${note}, ${noteBase.noteToSymbol(note)}, data[0]=${data[0]}`);
+            noteControl.shoot(note);
+        }
+    },
+
+    onMIDISuccess(midiAccess) {
+        let midi = midiAccess; 
+        let inputs = midi.inputs.values();
+        
+        for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
+            let deviceName = input.value.name;
+            console.log(`Midi device: ${deviceName}`)
+            input.value.onmidimessage = midiController.onMIDIMessage;
+        }
     }
 };
 
@@ -157,4 +200,6 @@ window.onload =  function () {
 
     noteControl.resetNote();
     setInterval(timer, 30);    
+
+    midiController.start();
 };
