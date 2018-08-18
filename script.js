@@ -1,3 +1,5 @@
+"use strict";
+
 const noteBase = {
     solphageMap: {
         0: 'C',
@@ -63,12 +65,12 @@ const pentagram = {
     },
 
     draw(ctx) {
-        let emptySpace =  2 * margin.default + 2 * pentagram.lineNumber;
+        let emptySpace =  2 * margin.default + 2 * this.lineNumber;
         let availableSpace = canvas.height - emptySpace;
-        let lineDistance = availableSpace / pentagram.lineNumber;
+        let lineDistance = availableSpace / this.lineNumber;
         let topLineY = emptySpace / 2 + lineDistance / 2;
 
-        for (let i = 0; i < pentagram.lineNumber; i ++){
+        for (let i = 0; i < this.lineNumber; i ++){
             let y = topLineY + i * lineDistance;
             this.drawLine(ctx, y);
         }
@@ -79,48 +81,52 @@ const pentagram = {
     }
 }
 
+const noteControl = {
+    noteProgress: 0,
+    noteValue: 60,
+    
+    resetNote(){
+        this.noteProgress = 0;
+        this.noteValue = noteBase.generateRandNote();
+        let nextNoteElement = document.getElementById('next_note');
+        nextNoteElement.innerText = noteBase.noteToSymbol(this.noteValue);
+    },
+
+    updateProgress(){
+        this.noteProgress += 0.4;
+
+        if (this.noteProgress >= 100){
+            this.resetNote();
+        }
+    },
+
+    updatePosition(canvas, noteElem){
+        let cr = canvas.getBoundingClientRect();
+        let midGPos = cr.top;
+        let noteY = midGPos;
+        let noteX = parseInt(cr.left + cr.width + margin.left - this.noteProgress * cr.width / 100);
+        let redAmount = parseInt(Math.pow(this.noteProgress/100, 2) * 255);
+        let noteColor = `rgb(${redAmount}, 0, 0)`;
+
+        let style = noteElem.style;
+        style.left = `${noteX}px`;
+        style.top = `${noteY}px`;
+        style.color = noteColor;
+    }
+};
+
 window.onload =  function () {
     let canvas = document.getElementById('score_canvas');
     let ctx = canvas.getContext("2d");
+    pentagram.draw(ctx);
 
     let note = document.getElementById('note');
-    let noteX = 0;
-    let noteY = 80;
-    let noteProgress = 0;
-    let noteValue;
-
-    function resetNote(){
-        noteProgress = 0;
-        let nextNoteElement = document.getElementById('next_note');
-        noteValue = noteBase.generateRandNote();
-        nextNoteElement.innerText = noteBase.noteToSymbol(noteValue);
-    }
-
-    function updateNoteProgress(){
-        noteProgress += 0.4;
-
-        if (noteProgress >= 100){
-            resetNote();
-        }
-    }
 
     function timer(){
-        let cr = canvas.getBoundingClientRect();
-        noteY = cr.top;
-
-        noteX = parseInt(cr.left + cr.width + margin.left - noteProgress * cr.width / 100);
-        let redAmount = parseInt(Math.pow(noteProgress/100, 2) * 255);
-        let noteColor = `rgb(${redAmount}, 0, 0)`;
-
-        updateNoteProgress();
-
-        note.style.left = `${noteX}px`;
-        note.style.top = `${noteY}px`;
-        note.style.color = noteColor;
+        noteControl.updateProgress();
+        noteControl.updatePosition(canvas, note);
     }
 
-    resetNote();
-    setInterval(timer, 30);
-
-    pentagram.draw(ctx);
+    noteControl.resetNote();
+    setInterval(timer, 30);    
 };
