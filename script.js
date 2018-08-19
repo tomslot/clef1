@@ -118,6 +118,10 @@ const noteControl = {
         style.left = `${noteX}px`;
         style.top = `${noteY}px`;
         style.color = noteColor;
+
+        let showHint = game.noteProgress > 75;
+        let nextNoteElement = document.getElementById('nextNoteHint');
+        nextNoteElement.style.display = showHint ?  'block' : 'none';
     }
 };
 
@@ -132,7 +136,7 @@ const game = {
         this.noteValue = noteBase.generateRandNote();
         let nextNoteElement = document.getElementById('nextNote');
         let noteSymbol = noteBase.noteToSymbol(this.noteValue);
-        nextNoteElement.setAttribute('value', noteSymbol);
+        nextNoteElement.innerText =  noteSymbol;
 
         let distance = noteBase.calculateTonicDistanceFromMidG(this.noteValue);
         console.log(`noteValue: ${this.noteValue}, ${noteSymbol}, distance=${distance}`);
