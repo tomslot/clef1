@@ -16,44 +16,44 @@ const noteBase = {
         11: 'B'
     },
 
-    accidentals: [1, 3, 6, 8, 10], 
+    accidentals: [1, 3, 6, 8, 10],
 
-    normalize(noteVal){
+    normalize(noteVal) {
         return noteVal % 12;
     },
 
-    isAccidental(noteVal){
+    isAccidental(noteVal) {
         let normalized = this.normalize(noteVal);
         return this.accidentals.includes(normalized);
     },
 
-    noteToSymbol(noteVal){
+    noteToSymbol(noteVal) {
         return this.solphageMap[this.normalize(noteVal)];
     },
 
-    generateRandNote(){
+    generateRandNote() {
         let r = parseInt(60 + Math.random() * 20);
 
-        if (this.isAccidental(r)){
+        if (this.isAccidental(r)) {
             return this.generateRandNote();
         }
 
         return r;
-    }, 
+    },
 
-    calculateTonicDistanceFromMidG(noteValue){
+    calculateTonicDistanceFromMidG(noteValue) {
         const midG = 67;
         let from = Math.min(midG, noteValue);
         let to = Math.max(midG, noteValue);
         let distance = 0;
 
-        for (let i = from; i < to; i ++){
-            if (!this.isAccidental(i)){
-                distance ++;
+        for (let i = from; i < to; i++) {
+            if (!this.isAccidental(i)) {
+                distance++;
             }
         }
 
-        if (noteValue < midG){
+        if (noteValue < midG) {
             return -1 * distance;
         }
 
@@ -75,8 +75,8 @@ const pentagram = {
     leftScoreStart: 0,
     rightScoreEnd: 0,
 
-    resize(){
-        let emptySpace =  2 * margin.default + 2 * this.lineNumber;
+    resize() {
+        let emptySpace = 2 * margin.default + 2 * this.lineNumber;
         let availableSpace = this.height - emptySpace;
         this.lineDistance = availableSpace / this.lineNumber;
         this.topLineY = emptySpace / 2 + this.lineDistance / 2;
@@ -92,8 +92,8 @@ const pentagram = {
 
     draw(ctx) {
         this.resize();
-        
-        for (let i = 0; i < this.lineNumber; i ++){
+
+        for (let i = 0; i < this.lineNumber; i++) {
             let y = this.topLineY + i * this.lineDistance;
             this.drawLine(ctx, y);
         }
@@ -105,41 +105,13 @@ const pentagram = {
 }
 
 const noteControl = {
-    noteProgress: 0,
-    noteValue: 60,
-    
-    resetNote(){
-        this.noteProgress = 0;
-        this.noteValue = noteBase.generateRandNote();
-        let nextNoteElement = document.getElementById('next_note');
-        let noteSymbol = noteBase.noteToSymbol(this.noteValue);
-        nextNoteElement.innerText = noteSymbol;
-
-        let distance = noteBase.calculateTonicDistanceFromMidG(this.noteValue);
-        console.log(`noteValue: ${this.noteValue}, ${noteSymbol}, distance=${distance}`);
-    },
-
-    updateProgress(){
-        this.noteProgress += 0.4;
-
-        if (this.noteProgress >= 100){
-            this.resetNote();
-        }
-    },
-
-    shoot(note){
-        if (noteBase.normalize(note) === noteBase.normalize(this.noteValue)){
-            this.resetNote();
-        }
-    },
-
-    updatePosition(canvasElem, noteElem){
+    updatePosition(canvasElem, noteElem) {
         let cr = canvasElem.getBoundingClientRect();
         let midGPos = cr.top + 16;
-        let distanceFromMG = noteBase.calculateTonicDistanceFromMidG(this.noteValue);
+        let distanceFromMG = noteBase.calculateTonicDistanceFromMidG(game.noteValue);
         let noteY = midGPos - distanceFromMG * pentagram.lineDistance / 2;
-        let noteX = parseInt(cr.left + cr.width + margin.left - this.noteProgress * cr.width / 100);
-        let redAmount = parseInt(Math.pow(this.noteProgress/100, 2) * 255);
+        let noteX = parseInt(cr.left + cr.width + margin.left - game.noteProgress * cr.width / 100);
+        let redAmount = parseInt(Math.pow(game.noteProgress / 100, 2) * 255);
         let noteColor = `rgb(${redAmount}, 0, 0)`;
 
         let style = noteElem.style;
@@ -149,8 +121,56 @@ const noteControl = {
     }
 };
 
+const game = {
+    noteProgress: 0,
+    noteValue: 60,
+    hitCount: 0,
+    missCount: 0,
+
+    resetNote() {
+        this.noteProgress = 0;
+        this.noteValue = noteBase.generateRandNote();
+        let nextNoteElement = document.getElementById('nextNote');
+        let noteSymbol = noteBase.noteToSymbol(this.noteValue);
+        nextNoteElement.setAttribute('value', noteSymbol);
+
+        let distance = noteBase.calculateTonicDistanceFromMidG(this.noteValue);
+        console.log(`noteValue: ${this.noteValue}, ${noteSymbol}, distance=${distance}`);
+    },
+
+    hit() {
+        this.resetNote();
+        this.hitCount++;
+        let missesLabel = document.getElementById('hitCount');
+        missesLabel.setAttribute('value', this.hitCount);
+    },
+
+    miss() {
+        this.missCount++;
+        let missesLabel = document.getElementById('missCount');
+        missesLabel.setAttribute('value', this.missCount);
+    },
+
+    shoot(note) {
+        if (noteBase.normalize(note) === noteBase.normalize(this.noteValue)) {
+            this.hit();
+        } else {
+            this.miss();
+        }
+    },
+
+    updateProgress() {
+        this.noteProgress += 0.4;
+
+        if (this.noteProgress >= 100) {
+            this.miss();
+            this.resetNote();
+        }
+    }
+}
+
 const midiController = {
-    start(){
+    start() {
         if (navigator.requestMIDIAccess) {
             navigator.requestMIDIAccess({
                 sysex: false
@@ -162,22 +182,22 @@ const midiController = {
 
     onMIDIFailure(error) {
         console.log("No access to MIDI devices or your browser doesn't support WebMIDI API. Please use WebMIDIAPIShim " + error);
-    }, 
+    },
 
     onMIDIMessage(message) {
         let data = message.data;
 
-        if ((data[0] & 0xF0) === 0x90){
+        if ((data[0] & 0xF0) === 0x90) {
             let note = data[1];
             console.log(`note ${note}, ${noteBase.noteToSymbol(note)}, data[0]=${data[0]}`);
-            noteControl.shoot(note);
+            game.shoot(note);
         }
     },
 
     onMIDISuccess(midiAccess) {
-        let midi = midiAccess; 
+        let midi = midiAccess;
         let inputs = midi.inputs.values();
-        
+
         for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
             let deviceName = input.value.name;
             console.log(`Midi device: ${deviceName}`)
@@ -186,20 +206,20 @@ const midiController = {
     }
 };
 
-window.onload =  function () {
+window.onload = function () {
     let canvasElem = document.getElementById('score_canvas');
     let ctx = canvasElem.getContext("2d");
     pentagram.draw(ctx);
 
     let noteElem = document.getElementById('note');
 
-    function timer(){
-        noteControl.updateProgress();
+    function timer() {
+        game.updateProgress();
         noteControl.updatePosition(canvasElem, noteElem);
     }
 
-    noteControl.resetNote();
-    setInterval(timer, 30);    
+    game.resetNote();
+    setInterval(timer, 30);
 
     midiController.start();
 };
