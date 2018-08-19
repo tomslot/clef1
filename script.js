@@ -201,12 +201,18 @@ const midiController = {
     onMIDISuccess(midiAccess) {
         let midi = midiAccess;
         let inputs = midi.inputs.values();
+        let deviceName = '';
 
         for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
-            let deviceName = input.value.name;
-            console.log(`Midi device: ${deviceName}`)
+            deviceName += input.value.name;
             input.value.onmidimessage = midiController.onMIDIMessage;
         }
+
+        if (deviceName.length === 0){
+            deviceName = 'none';
+        }
+
+        document.getElementById('connectedDevice').setAttribute('value', deviceName);
     }
 };
 
