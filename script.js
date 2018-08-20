@@ -216,6 +216,10 @@ const midiController = {
     }
 };
 
+function key(code){
+    game.shoot(code);
+}
+
 window.onload = function () {
     let canvasElem = document.getElementById('score_canvas');
     let ctx = canvasElem.getContext("2d");
