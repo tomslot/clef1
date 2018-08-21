@@ -1,5 +1,7 @@
 "use strict";
 
+let canvasElem = document.getElementById('score_canvas');
+
 const noteBase = {
     solphageMap: {
         0: 'C',
@@ -61,12 +63,9 @@ const noteBase = {
     },
 };
 
-const margin = {
-    default: 30,
-    left: 120
-};
-
 const pentagram = {
+    margin: 30,
+    clefSpace: 120,
     lineNumber: 5,
     width: 720,
     height: 180,
@@ -76,12 +75,12 @@ const pentagram = {
     rightScoreEnd: 0,
 
     resize() {
-        let emptySpace = 2 * margin.default + 2 * this.lineNumber;
+        let emptySpace = 2 * this.margin + 2 * this.lineNumber;
         let availableSpace = this.height - emptySpace;
         this.lineDistance = availableSpace / this.lineNumber;
         this.topLineY = emptySpace / 2 + this.lineDistance / 2;
-        this.leftScoreStart = margin.left;
-        this.rightScoreEnd = this.width - margin.default;
+        this.leftScoreStart = this.clefSpace;
+        this.rightScoreEnd = this.width - this.margin;
     },
 
     drawLine(ctx, height) {
@@ -92,6 +91,7 @@ const pentagram = {
 
     draw(ctx) {
         this.resize();
+        ctx.clearRect(0, 0, this.width, this.height);
 
         for (let i = 0; i < this.lineNumber; i++) {
             let y = this.topLineY + i * this.lineDistance;
@@ -99,31 +99,36 @@ const pentagram = {
         }
 
         let clefFontSize = this.height / 2;
-        ctx.font = `${clefFontSize}px Helvetica`;
-        ctx.fillText('\u{1D11E}', margin.default, this.height / 2 + clefFontSize / 2);
+        ctx.font = `${clefFontSize}px Arial`;
+        ctx.fillText('\u{1D11E}', this.margin, this.height / 2 + clefFontSize / 2);
+
+        let noteX = this.rightScoreEnd - game.noteProgress * (this.rightScoreEnd - this.leftScoreStart);
+        let distanceFromMG = noteBase.calculateTonicDistanceFromMidG(game.noteValue);
+        let midGPos = this.topLineY + 3 * this.lineDistance;
+        let noteY = midGPos - distanceFromMG * this.lineDistance / 2;
+
+        let redAmount = parseInt(Math.pow(game.noteProgress, 2) * 255);
+        let noteColor = `rgb(${redAmount}, 0, 0)`;
+
+        ctx.save();
+        ctx.fillStyle = noteColor;
+        ctx.strokeStyle = noteColor;
+        ctx.save();
+        let yScale = 0.75;
+        ctx.scale(1, yScale);
+        ctx.beginPath();
+        ctx.arc(noteX, noteY / yScale, 8, 0, Math.PI * 2, false);
+        ctx.fill();
+        ctx.closePath();
+        ctx.restore();
+
+        ctx.moveTo(noteX + 8, noteY);
+        ctx.lineTo(noteX + 8, noteY - 40);
+        ctx.stroke();
+        ctx.restore();
     }
 }
 
-const noteControl = {
-    updatePosition(canvasElem, noteElem) {
-        let cr = canvasElem.getBoundingClientRect();
-        let midGPos = cr.top + 16;
-        let distanceFromMG = noteBase.calculateTonicDistanceFromMidG(game.noteValue);
-        let noteY = midGPos - distanceFromMG * pentagram.lineDistance / 2;
-        let noteX = parseInt(cr.left + cr.width + margin.left - game.noteProgress * cr.width / 100);
-        let redAmount = parseInt(Math.pow(game.noteProgress / 100, 2) * 255);
-        let noteColor = `rgb(${redAmount}, 0, 0)`;
-
-        let style = noteElem.style;
-        style.left = `${noteX}px`;
-        style.top = `${noteY}px`;
-        style.color = noteColor;
-
-        let showHint = game.noteProgress > 75;
-        let nextNoteElement = document.getElementById('nextNoteHint');
-        nextNoteElement.style.display = showHint ?  'block' : 'none';
-    }
-};
 
 const game = {
     noteProgress: 0,
@@ -136,7 +141,7 @@ const game = {
         this.noteValue = noteBase.generateRandNote();
         let nextNoteElement = document.getElementById('nextNote');
         let noteSymbol = noteBase.noteToSymbol(this.noteValue);
-        nextNoteElement.innerText =  noteSymbol;
+        nextNoteElement.innerText = noteSymbol;
 
         let distance = noteBase.calculateTonicDistanceFromMidG(this.noteValue);
         console.log(`noteValue: ${this.noteValue}, ${noteSymbol}, distance=${distance}`);
@@ -164,9 +169,9 @@ const game = {
     },
 
     updateProgress() {
-        this.noteProgress += 0.2;
+        this.noteProgress += 0.002;
 
-        if (this.noteProgress >= 100) {
+        if (this.noteProgress >= 1) {
             this.miss();
             this.resetNote();
         }
@@ -208,7 +213,7 @@ const midiController = {
             input.value.onmidimessage = midiController.onMIDIMessage;
         }
 
-        if (deviceName.length === 0){
+        if (deviceName.length === 0) {
             deviceName = 'none';
         }
 
@@ -216,20 +221,21 @@ const midiController = {
     }
 };
 
-function key(code){
+function key(code) {
     game.shoot(code);
 }
 
 window.onload = function () {
-    let canvasElem = document.getElementById('score_canvas');
-    let ctx = canvasElem.getContext("2d");
-    pentagram.draw(ctx);
-
     let noteElem = document.getElementById('note');
+    let nextNoteElement = document.getElementById('nextNoteHint');
 
-    function animate(timestamp){
+    function animate(timestamp) {
+        let ctx = canvasElem.getContext("2d");
+        pentagram.draw(ctx);
         game.updateProgress();
-        noteControl.updatePosition(canvasElem, noteElem);
+        let showHint = game.noteProgress > 0.75;
+        nextNoteElement.style.display = showHint ? 'block' : 'none';
+
         window.requestAnimationFrame(animate);
     }
 
