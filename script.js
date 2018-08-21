@@ -34,7 +34,7 @@ const noteBase = {
     },
 
     generateRandNote() {
-        let r = parseInt(60 + Math.random() * 20);
+        let r = parseInt(60 + Math.random() * 22);
 
         if (this.isAccidental(r)) {
             return this.generateRandNote();
@@ -106,11 +106,21 @@ const pentagram = {
         ctx.beginPath();
         ctx.arc(noteX, noteY / yScale, 8, 0, Math.PI * 2, false);
         ctx.fill();
+        ctx.stroke();
         ctx.closePath();
         ctx.restore();
 
         ctx.moveTo(noteX + 8, noteY);
-        ctx.lineTo(noteX + 8, noteY - 40);
+
+        let dir = game.distanceFromMG > 6 ? -1 : 1; 
+
+        ctx.lineTo(noteX + 8, noteY - 50 * dir);
+        
+        if (game.distanceFromMG === -4 || game.distanceFromMG === 8){
+            ctx.moveTo(noteX -  20, noteY);
+            ctx.lineTo(noteX + 20, noteY);
+        }
+
         ctx.stroke();
         ctx.restore();
     },
