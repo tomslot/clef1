@@ -89,23 +89,10 @@ const pentagram = {
         ctx.stroke();
     },
 
-    draw(ctx) {
-        this.resize();
-        ctx.clearRect(0, 0, this.width, this.height);
-
-        for (let i = 0; i < this.lineNumber; i++) {
-            let y = this.topLineY + i * this.lineDistance;
-            this.drawLine(ctx, y);
-        }
-
-        let clefFontSize = this.height / 2;
-        ctx.font = `${clefFontSize}px Arial`;
-        ctx.fillText('\u{1D11E}', this.margin, this.height / 2 + clefFontSize / 2);
-
+    drawNote(ctx){
         let noteX = this.rightScoreEnd - game.noteProgress * (this.rightScoreEnd - this.leftScoreStart);
-        let distanceFromMG = noteBase.calculateTonicDistanceFromMidG(game.noteValue);
         let midGPos = this.topLineY + 3 * this.lineDistance;
-        let noteY = midGPos - distanceFromMG * this.lineDistance / 2;
+        let noteY = midGPos - game.distanceFromMG * this.lineDistance / 2;
 
         let redAmount = parseInt(Math.pow(game.noteProgress, 2) * 255);
         let noteColor = `rgb(${redAmount}, 0, 0)`;
@@ -126,15 +113,31 @@ const pentagram = {
         ctx.lineTo(noteX + 8, noteY - 40);
         ctx.stroke();
         ctx.restore();
+    },
+
+    draw(ctx) {
+        this.resize();
+        ctx.clearRect(0, 0, this.width, this.height);
+
+        for (let i = 0; i < this.lineNumber; i++) {
+            let y = this.topLineY + i * this.lineDistance;
+            this.drawLine(ctx, y);
+        }
+
+        let clefFontSize = this.height / 2;
+        ctx.font = `${clefFontSize}px Arial`;
+        ctx.fillText('\u{1D11E}', this.margin, this.height / 2 + clefFontSize / 2);
+
+        this.drawNote(ctx);
     }
 }
-
 
 const game = {
     noteProgress: 0,
     noteValue: 60,
     hitCount: 0,
     missCount: 0,
+    distanceFromMG: 0,
 
     resetNote() {
         this.noteProgress = 0;
@@ -142,9 +145,8 @@ const game = {
         let nextNoteElement = document.getElementById('nextNote');
         let noteSymbol = noteBase.noteToSymbol(this.noteValue);
         nextNoteElement.innerText = noteSymbol;
-
-        let distance = noteBase.calculateTonicDistanceFromMidG(this.noteValue);
-        console.log(`noteValue: ${this.noteValue}, ${noteSymbol}, distance=${distance}`);
+        this.distanceFromMG = noteBase.calculateTonicDistanceFromMidG(game.noteValue);
+        console.log(`noteValue: ${this.noteValue}, ${noteSymbol}, distance=${this.distanceFromMG}`);
     },
 
     hit() {
