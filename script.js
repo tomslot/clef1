@@ -99,7 +99,7 @@ const pentagram = {
         }
 
         let clefFontSize = this.height / 2;
-        ctx.font = `${clefFontSize}px Arial`;
+        ctx.font = `${clefFontSize}px Helvetica`;
         ctx.fillText('\u{1D11E}', margin.default, this.height / 2 + clefFontSize / 2);
     }
 }
@@ -164,7 +164,7 @@ const game = {
     },
 
     updateProgress() {
-        this.noteProgress += 0.4;
+        this.noteProgress += 0.2;
 
         if (this.noteProgress >= 100) {
             this.miss();
@@ -227,13 +227,14 @@ window.onload = function () {
 
     let noteElem = document.getElementById('note');
 
-    function timer() {
+    function animate(timestamp){
         game.updateProgress();
         noteControl.updatePosition(canvasElem, noteElem);
+        window.requestAnimationFrame(animate);
     }
 
     game.resetNote();
-    setInterval(timer, 30);
+    window.requestAnimationFrame(animate);
 
     midiController.start();
 };
