@@ -84,9 +84,11 @@ const pentagram = {
     },
 
     drawLine(ctx, height) {
+        ctx.beginPath();
         ctx.moveTo(this.leftScoreStart, height);
         ctx.lineTo(this.rightScoreEnd, height);
         ctx.stroke();
+        ctx.closePath();
     },
 
     drawNote(ctx){
@@ -98,30 +100,39 @@ const pentagram = {
         let noteColor = `rgb(${redAmount}, 0, 0)`;
 
         ctx.save();
-        ctx.fillStyle = noteColor;
-        ctx.strokeStyle = noteColor;
-        ctx.save();
-        let yScale = 0.75;
-        ctx.scale(1, yScale);
-        ctx.beginPath();
-        ctx.arc(noteX, noteY / yScale, 8, 0, Math.PI * 2, false);
-        ctx.fill();
-        ctx.stroke();
-        ctx.closePath();
-        ctx.restore();
-
-        ctx.moveTo(noteX + 8, noteY);
-
-        let dir = game.distanceFromMG > 6 ? -1 : 1; 
-
-        ctx.lineTo(noteX + 8, noteY - 50 * dir);
+            ctx.shadowBlur= 5;
+            ctx.shadowOffsetX = 3;
+            ctx.shadowOffsetY = 3;
+            ctx.shadowColor = '#A0A0A0';
+            ctx.fillStyle = noteColor;
+            ctx.strokeStyle = noteColor;
+            ctx.save();
+                let yScale = 0.75;
+                ctx.scale(1, yScale);
+                ctx.beginPath();
+                ctx.arc(noteX, noteY / yScale, 9, 0, Math.PI * 2, false);
+                ctx.fill();
+                ctx.stroke();
+                ctx.closePath();
+            ctx.restore();
+            ctx.save();
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(noteX + 8, noteY);
+                let dir = game.distanceFromMG > 6 ? -1 : 1; 
+                ctx.lineTo(noteX + 7, noteY - 55 * dir);
+                ctx.closePath();
+                ctx.stroke();
+            ctx.restore();
+            ctx.beginPath();
         
-        if (game.distanceFromMG === -4 || game.distanceFromMG === 8){
-            ctx.moveTo(noteX -  20, noteY);
-            ctx.lineTo(noteX + 20, noteY);
-        }
+            if (game.distanceFromMG === -4 || game.distanceFromMG === 8){
+                ctx.moveTo(noteX -  20, noteY);
+                ctx.lineTo(noteX + 20, noteY);
+            }
 
-        ctx.stroke();
+            ctx.stroke();
+            ctx.closePath();
         ctx.restore();
     },
 
@@ -129,16 +140,20 @@ const pentagram = {
         this.resize();
         ctx.clearRect(0, 0, this.width, this.height);
 
-        for (let i = 0; i < this.lineNumber; i++) {
-            let y = this.topLineY + i * this.lineDistance;
-            this.drawLine(ctx, y);
-        }
+        ctx.strokeStyle = '#222';
 
         let clefFontSize = this.height / 2;
         ctx.font = `${clefFontSize}px Arial`;
         ctx.fillText('\u{1D11E}', this.margin, this.height / 2 + clefFontSize / 2);
+        
+        for (let i = 0; i < this.lineNumber; i++) {
+            let y = this.topLineY + i * this.lineDistance;
+            this.drawLine(ctx, y);
+        }
+        ctx.closePath();
 
         this.drawNote(ctx);
+        ctx.closePath();
     }
 }
 

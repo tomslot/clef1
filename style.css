@@ -248,7 +248,7 @@
 
 #score_canvas{
     border: 1px solid #343434;
-    background-color: white;
+    background: linear-gradient(-30deg,#f5f5f5,#fff); ;
     width: 720px;
     height: 180px;
 } 
