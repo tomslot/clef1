@@ -181,6 +181,7 @@ const game = {
     hitCount: 0,
     missCount: 0,
     distanceFromMG: 0,
+    points: 0,
 
     resetNote() {
         this.noteProgress = 0;
@@ -194,14 +195,23 @@ const game = {
     },
 
     hit() {
-        this.resetNote();
         this.hitCount++;
+        this.points += 1 + parseInt((1 - this.noteProgress) * 10);
+
         let missesLabel = document.getElementById('hitCount');
         missesLabel.setAttribute('value', this.hitCount);
+
+        this.resetNote();
     },
 
     miss() {
         this.missCount++;
+        this.points -= 5;
+        
+        if (this.points < 0){
+            this.points = 0;
+        }
+
         let missesLabel = document.getElementById('missCount');
         missesLabel.setAttribute('value', this.missCount);
     },
@@ -212,6 +222,9 @@ const game = {
         } else {
             this.miss();
         }
+
+        let pointsLabel = document.getElementById('points');
+        pointsLabel.setAttribute('value', this.points);
     },
 
     updateProgress() {
