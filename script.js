@@ -136,15 +136,33 @@ const pentagram = {
         ctx.restore();
     },
 
+    drawClef(ctx){
+        let clefFontSize = this.height / 2;
+        ctx.font = `${clefFontSize}px Arial`;
+        ctx.fillText('\u{1D11E}', this.margin, this.height / 2 + clefFontSize / 2);
+    },
+
+    drawNextNoteHint(ctx){
+        let hint = game.getNextNote();
+        ctx.save();
+            ctx.font = `bold 24px Arial`;
+
+            const SHOW_HINT_AT = 0.5;
+            let opacity = game.noteProgress >  SHOW_HINT_AT ? Math.pow((game.noteProgress - SHOW_HINT_AT) / SHOW_HINT_AT, 2) : 0;
+            ctx.globalAlpha = opacity; 
+            ctx.textAlign = "center";
+            ctx.fillText(hint, this.width / 2, this.height - 10);
+        ctx.restore();
+    },
+
     draw(ctx) {
         this.resize();
         ctx.clearRect(0, 0, this.width, this.height);
 
-        ctx.strokeStyle = '#222';
-
-        let clefFontSize = this.height / 2;
-        ctx.font = `${clefFontSize}px Arial`;
-        ctx.fillText('\u{1D11E}', this.margin, this.height / 2 + clefFontSize / 2);
+        ctx.strokeStyle = '#505050';
+        ctx.fillStyle = '#505050';
+        this.drawClef(ctx);
+        this.drawNextNoteHint(ctx);
         
         for (let i = 0; i < this.lineNumber; i++) {
             let y = this.topLineY + i * this.lineDistance;
@@ -167,11 +185,12 @@ const game = {
     resetNote() {
         this.noteProgress = 0;
         this.noteValue = noteBase.generateRandNote();
-        let nextNoteElement = document.getElementById('nextNote');
-        let noteSymbol = noteBase.noteToSymbol(this.noteValue);
-        nextNoteElement.innerText = noteSymbol;
         this.distanceFromMG = noteBase.calculateTonicDistanceFromMidG(game.noteValue);
-        console.log(`noteValue: ${this.noteValue}, ${noteSymbol}, distance=${this.distanceFromMG}`);
+        console.log(`noteValue: ${this.noteValue}, ${this.getNextNote()}, distance=${this.distanceFromMG}`);
+    },
+
+    getNextNote(){
+        return noteBase.noteToSymbol(this.noteValue);
     },
 
     hit() {
@@ -253,16 +272,11 @@ function key(code) {
 }
 
 window.onload = function () {
-    let noteElem = document.getElementById('note');
-    let nextNoteElement = document.getElementById('nextNoteHint');
 
     function animate(timestamp) {
         let ctx = canvasElem.getContext("2d");
         pentagram.draw(ctx);
         game.updateProgress();
-        let showHint = game.noteProgress > 0.75;
-        nextNoteElement.style.display = showHint ? 'block' : 'none';
-
         window.requestAnimationFrame(animate);
     }
 
