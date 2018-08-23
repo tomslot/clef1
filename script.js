@@ -195,6 +195,7 @@ const pentagram = {
 const game = {
     noteProgress: 0,
     noteValue: 60,
+    previousNoteValue: 0,
     hitCount: 0,
     missCount: 0,
     distanceFromMG: 0,
@@ -203,7 +204,14 @@ const game = {
 
     resetNote() {
         this.noteProgress = 0;
-        this.noteValue = noteBase.generateRandNote();
+
+        do {
+            var newNote = noteBase.generateRandNote();
+        }
+        while (newNote === this.previousNoteValue);
+
+        this.previousNoteValue = this.noteValue;
+        this.noteValue = newNote;
         this.distanceFromMG = noteBase.calculateTonicDistanceFromMidG(game.noteValue);
         console.log(`noteValue: ${this.noteValue}, ${this.getNextNote()}, distance=${this.distanceFromMG}`);
     },
