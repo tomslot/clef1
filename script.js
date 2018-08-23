@@ -157,6 +157,16 @@ const pentagram = {
         ctx.restore();
     },
 
+    drawPaused(ctx){
+        ctx.save();
+            ctx.font = `bold 36px Arial`;
+            ctx.fillStyle = '#A07070';
+            ctx.textAlign = "center";
+            ctx.textBaseline="bottom"; 
+            ctx.fillText('II', this.width / 2,  this.height - 2);
+        ctx.restore();
+    },
+
     draw(ctx) {
         this.resize();
         ctx.clearRect(0, 0, this.width, this.height);
@@ -172,7 +182,12 @@ const pentagram = {
         }
         ctx.closePath();
 
+        if (game.paused){
+            this.drawPaused(ctx);
+        } else {
         this.drawNote(ctx);
+        }
+
         ctx.closePath();
     }
 }
@@ -184,6 +199,7 @@ const game = {
     missCount: 0,
     distanceFromMG: 0,
     points: 0,
+    paused: true,
 
     resetNote() {
         this.noteProgress = 0;
@@ -227,7 +243,25 @@ const game = {
         pointsLabel.setAttribute('value', this.points);
     },
 
+    togglePaused(){
+        if (this.paused){
+            this.unpause();
+        }
+        else {
+            this.paused = true;
+        }
+    },
+
+    unpause(){
+        this.paused = false;
+        this.resetNote();
+    },
+
     updateProgress() {
+        if (this.paused){
+            return;
+        }
+
         this.noteProgress += 0.002;
 
         if (this.noteProgress >= 1) {
@@ -281,8 +315,13 @@ const midiController = {
 };
 
 function key(code) {
+    if (game.paused){
+        game.unpause();
+    } else {
     game.shoot(code);
 }
+}
+
 
 window.onload = function () {
 
@@ -293,6 +332,12 @@ window.onload = function () {
         window.requestAnimationFrame(animate);
     }
 
+    document.addEventListener('keypress', (event) => {
+        if (event.key === ' '){
+            game.togglePaused();
+        }
+      });
+      
     game.resetNote();
     window.requestAnimationFrame(animate);
 
