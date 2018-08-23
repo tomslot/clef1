@@ -200,9 +200,6 @@ const game = {
         this.hitCount++;
         this.points += 1 + parseInt((1 - this.noteProgress) * 10);
 
-        let missesLabel = document.getElementById('hitCount');
-        missesLabel.setAttribute('value', this.hitCount);
-
         this.resetNote();
     },
 
@@ -213,9 +210,6 @@ const game = {
         if (this.points < 0){
             this.points = 0;
         }
-
-        let missesLabel = document.getElementById('missCount');
-        missesLabel.setAttribute('value', this.missCount);
     },
 
     shoot(note) {
@@ -224,6 +218,10 @@ const game = {
         } else {
             this.miss();
         }
+
+        let hitRate = parseInt(this.hitCount / (this.hitCount + this.missCount) * 100);
+        let missesLabel = document.getElementById('hitRate');
+        missesLabel.setAttribute('value', `${hitRate}%`);
 
         let pointsLabel = document.getElementById('points');
         pointsLabel.setAttribute('value', this.points);
