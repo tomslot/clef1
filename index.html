@@ -7,37 +7,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <title>Score Reading Trainer</title>
+  <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <h1 class="display-4">Score Reading Trainer</h1>
-  <canvas id="score_canvas" width="720" height="180"></canvas>
-
-  <div id="dashboard">
-    <div class="dataBlock">
-      <label for="points">Points:</label>
-      <input type="text" readonly class="form-control-plaintext" id="points" value="0">
-    </div>
-
-    <div class="dataBlock">
-      <label for="hitCount">Hits:</label>
-      <input type="text" readonly class="form-control-plaintext" id="hitCount" value="0">
-    </div>
-
-    <div class="dataBlock">
-      <label for="missCount">Misses:</label>
-      <input type="text" readonly id="missCount" value="0">
-    </div>
-
-    <div class="dataBlock">
-      <label for="connectedDevice" class="col-sm-2 col-form-label">MIDI Device:</label>
-
-      <input type="text" readonly class="form-control-plaintext" id="connectedDevice" value="none">
-    </div>
-  </div>
-  </div>
-
+  <canvas id="score_canvas" width="640" height="180"></canvas>
   <div id="p-wrapper">
     <ul id="piano">
       <li>
@@ -96,6 +71,32 @@
     </ul>
   </div>
   </div>
+
+  <div id="dashboard">
+    <div class="dataBlock">
+      <label for="points">Points:</label>
+      <input type="text" readonly class="form-control-plaintext" id="points" value="0">
+    </div>
+
+    <div class="dataBlock">
+      <label for="hitCount">Hits:</label>
+      <input type="text" readonly class="form-control-plaintext" id="hitCount" value="0">
+    </div>
+
+    <div class="dataBlock">
+      <label for="missCount">Misses:</label>
+      <input type="text" readonly id="missCount" value="0">
+    </div>
+
+    <div class="dataBlock">
+      <label for="connectedDevice" class="col-sm-2 col-form-label">MIDI Device:</label>
+
+      <input type="text" readonly class="form-control-plaintext" id="connectedDevice" value="none">
+    </div>
+  </div>
+  </div>
+
+  <h1 class="display-4">Score Reading Trainer</h1>
 
   <script src="script.js"></script>
   <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

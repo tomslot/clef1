@@ -64,10 +64,10 @@ const noteBase = {
 };
 
 const pentagram = {
-    margin: 30,
+    margin: 25,
     clefSpace: 120,
     lineNumber: 5,
-    width: 720,
+    width: 640,
     height: 180,
     lineDistance: 0,
     topLineY: 0,
@@ -145,13 +145,15 @@ const pentagram = {
     drawNextNoteHint(ctx){
         let hint = game.getNextNote();
         ctx.save();
-            ctx.font = `bold 24px Arial`;
+            ctx.font = `bold 36px Arial`;
 
             const SHOW_HINT_AT = 0.5;
             let opacity = game.noteProgress >  SHOW_HINT_AT ? Math.pow((game.noteProgress - SHOW_HINT_AT) / SHOW_HINT_AT, 2) : 0;
+            ctx.fillStyle = '#909090';
             ctx.globalAlpha = opacity; 
             ctx.textAlign = "center";
-            ctx.fillText(hint, this.width / 2, this.height - 10);
+            ctx.textBaseline="bottom"; 
+            ctx.fillText(hint, this.clefSpace +  (this.width - this.clefSpace)/ 2, this.height - 2);
         ctx.restore();
     },
 
