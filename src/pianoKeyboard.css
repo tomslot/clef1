@@ -20,6 +20,8 @@
   /* Piano Wrapper */ 
   #p-wrapper { 
     position:relative; 
+    background-color: #555;
+    background: linear-gradient(-0deg,#555,rgb(202, 202, 202));
   } 
   
   /* Tuts */ 
