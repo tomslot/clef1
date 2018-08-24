@@ -1,7 +1,9 @@
 "use strict";
 
+import style1 from "./pianoKeyboard.css";
+import style2 from "./style.css";
+
 import {noteBase} from './noteBase.js';
-import style from "./style.css";
 import {game} from './game.js';
 import {midiController} from './midiController.js';
 import {pentagram} from './pentagram.js';

@@ -13,10 +13,10 @@ export const pentagram = {
     rightScoreEnd: 0,
 
     resize() {
-        let emptySpace = 2 * this.margin + 2 * this.lineNumber;
+        let emptySpace = 3 * this.margin + 2 * this.lineNumber;
         let availableSpace = this.height - emptySpace;
         this.lineDistance = availableSpace / this.lineNumber;
-        this.topLineY = emptySpace / 2 + this.lineDistance / 2;
+        this.topLineY = this.margin + this.lineDistance / 2;
         this.leftScoreStart = this.clefSpace;
         this.rightScoreEnd = this.width - this.margin;
     },
@@ -57,7 +57,7 @@ export const pentagram = {
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(noteX + 8, noteY);
-        let dir = game.distanceFromMG > 6 ? -1 : 1;
+        let dir = game.distanceFromMG > 5 ? -1 : 1;
         ctx.lineTo(noteX + 7, noteY - 55 * dir);
         ctx.closePath();
         ctx.stroke();
@@ -77,45 +77,34 @@ export const pentagram = {
     drawClef(ctx) {
         let clefFontSize = this.height / 2;
         ctx.font = `${clefFontSize}px Arial`;
-        ctx.fillText('\u{1D11E}', this.margin, this.height / 2 + clefFontSize / 2);
+        ctx.fillText('\u{1D11E}', this.margin, this.height / 2 + clefFontSize / 2 - this.margin);
+    },
+
+    drawHint(ctx, opacity, hint, color = '#909090'){
+        ctx.save();
+            ctx.font = `bold 36px Arial`;
+            ctx.fillStyle = color;
+            ctx.globalAlpha = opacity;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "bottom"; 
+            ctx.fillText(hint, this.clefSpace + (this.width - this.clefSpace) / 2, this.height - this.margin / 2);
+        ctx.restore();
     },
 
     drawNextNoteHint(ctx) {
         let hint = game.getNextNote();
-        ctx.save();
-        ctx.font = `bold 36px Arial`;
-
         const SHOW_HINT_AT = 0.5;
         let opacity = game.noteProgress > SHOW_HINT_AT ? Math.pow((game.noteProgress - SHOW_HINT_AT) / SHOW_HINT_AT, 2) : 0;
-        ctx.fillStyle = '#909090';
-        ctx.globalAlpha = opacity;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "bottom";
-        ctx.fillText(hint, this.clefSpace + (this.width - this.clefSpace) / 2, this.height - 2);
-        ctx.restore();
+        this.drawHint(ctx, opacity, hint);
     },
 
     drawPaused(ctx) {
-        ctx.save();
-            ctx.font = `bold 36px Arial`;
-            ctx.fillStyle = '#A07070';
-            ctx.textAlign = "center";
-            ctx.textBaseline = "bottom";
-            ctx.fillText('II', this.width / 2, this.height - 2);
-        ctx.restore();
+        this.drawHint(ctx, 1, 'II', '#A07070');
     },
 
     drawShootFallout(ctx){
-        ctx.save();
-            ctx.font = `bold 36px Arial`;
-            //  ctx.fillStyle = '#ffd100';
-            // ctx.fillStyle = '#A07070';
-            ctx.textAlign = "center";
-            ctx.textBaseline = "top";
-            ctx.globalAlpha = game.shootFallout;
-            let lbl = game.proposedValue === -1 ? 'MISS' : noteBase.noteToSymbol(game.proposedValue);
-            ctx.fillText(lbl, this.clefSpace + (this.width - this.clefSpace) / 2 , 2);
-        ctx.restore();
+        let lbl = game.proposedValue === -1 ? 'MISS' : noteBase.noteToSymbol(game.proposedValue);
+        this.drawHint(ctx, game.shootFallout, lbl);
     },
 
     draw(ctx) {
@@ -135,11 +124,11 @@ export const pentagram = {
             this.drawPaused(ctx);
         } else {
             this.drawNote(ctx);
-            this.drawNextNoteHint(ctx);
-        }
-
-        if (game.shootFallout > 0){
-            this.drawShootFallout(ctx);
+            if (game.shootFallout > 0){
+                this.drawShootFallout(ctx);
+            } else {
+               this.drawNextNoteHint(ctx);
+            }
         }
 
         ctx.closePath();
