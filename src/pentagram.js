@@ -29,10 +29,15 @@ export const pentagram = {
         ctx.closePath();
     },
 
+    calcNoteY(note){
+        const midGPos = this.topLineY + 3 * this.lineDistance;
+        const distanceFromMG = noteBase.calculateTonicDistanceFromMidG(note);
+        return midGPos - distanceFromMG * this.lineDistance / 2;
+    },
+
     drawNote(ctx) {
         let noteX = this.rightScoreEnd - game.noteProgress * (this.rightScoreEnd - this.leftScoreStart);
-        let midGPos = this.topLineY + 3 * this.lineDistance;
-        let noteY = midGPos - game.distanceFromMG * this.lineDistance / 2;
+        let noteY = this.calcNoteY(game.noteValue);
 
         let redAmount = parseInt(Math.pow(game.noteProgress, 2) * 255);
         let noteColor = `rgb(${redAmount}, 0, 0)`;
@@ -77,7 +82,7 @@ export const pentagram = {
     drawClef(ctx) {
         let clefFontSize = this.height / 2;
         ctx.font = `${clefFontSize}px Arial`;
-        ctx.fillText('\u{1D11E}', this.margin, this.height / 2 + clefFontSize / 2 - this.margin);
+        ctx.fillText('\u{1D11E}', this.margin, this.height / 2 + clefFontSize / 2 - this.margin );
     },
 
     drawHint(ctx, opacity, hint, color = '#909090'){
@@ -105,6 +110,21 @@ export const pentagram = {
     drawShootFallout(ctx){
         let lbl = game.proposedValue === -1 ? 'MISS' : noteBase.noteToSymbol(game.proposedValue);
         this.drawHint(ctx, game.shootFallout, lbl);
+
+        if (game.proposedValue === -1){
+            return;
+        }
+
+        ctx.save();
+            ctx.strokeStyle = "#f05000";
+            ctx.lineWidth = 4;
+            ctx.globalAlpha = game.shootFallout * 0.6;
+
+            for (let i = 1; i < 3; i ++){
+                const y = this.calcNoteY(game.proposedValue + 12 * i);
+                this.drawLine(ctx, y);
+            }
+        ctx.restore();
     },
 
     draw(ctx) {
