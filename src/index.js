@@ -20,6 +20,8 @@ window.key = function(code) {
 
 window.onload = function () {
     window.game = game;
+    pentagram.gClefImage = new Image();
+    pentagram.gClefImage.src = require("./clefG_180.png");
 
     function animate(timestamp) {
         let ctx = canvasElem.getContext("2d");

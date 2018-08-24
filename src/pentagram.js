@@ -3,7 +3,7 @@ import {noteBase} from './noteBase.js';
 
 export const pentagram = {
     margin: 25,
-    clefSpace: 120,
+    clefSpace: 80,
     lineNumber: 5,
     width: 640,
     height: 180,
@@ -11,6 +11,7 @@ export const pentagram = {
     topLineY: 0,
     leftScoreStart: 0,
     rightScoreEnd: 0,
+    gClefImage: null,
 
     resize() {
         let emptySpace = 3 * this.margin + 2 * this.lineNumber;
@@ -43,6 +44,15 @@ export const pentagram = {
         let noteColor = `rgb(${redAmount}, 0, 0)`;
 
         ctx.save();
+
+        if (game.hitAnimation > 0){
+            const shift = (1 - game.hitAnimation) * 150;
+            ctx.translate(shift, -1 * shift);
+            ctx.translate(noteX, noteY);
+            ctx.rotate((1 - game.hitAnimation) * Math.PI);
+            ctx.translate(-1 * noteX, -1 * noteY);
+        }
+
         ctx.shadowBlur = 5;
         ctx.shadowOffsetX = 3;
         ctx.shadowOffsetY = 3;
@@ -53,7 +63,7 @@ export const pentagram = {
         let yScale = 0.75;
         ctx.scale(1, yScale);
         ctx.beginPath();
-        ctx.arc(noteX, noteY / yScale, 9, 0, Math.PI * 2, false);
+        ctx.arc(noteX, noteY / yScale, 9, 0, Math.PI * 4, false);
         ctx.fill();
         ctx.stroke();
         ctx.closePath();
@@ -62,7 +72,7 @@ export const pentagram = {
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(noteX + 8, noteY);
-        let dir = game.distanceFromMG > 5 ? -1 : 1;
+        let dir = game.distanceFromMG > 4 ? -1 : 1;
         ctx.lineTo(noteX + 7, noteY - 55 * dir);
         ctx.closePath();
         ctx.stroke();
@@ -81,8 +91,7 @@ export const pentagram = {
 
     drawClef(ctx) {
         let clefFontSize = this.height / 2;
-        ctx.font = `${clefFontSize}px Arial`;
-        ctx.fillText('\u{1D11E}', this.margin, this.height / 2 + clefFontSize / 2 - this.margin );
+        ctx.drawImage(this.gClefImage, 0, 10);
     },
 
     drawHint(ctx, opacity, hint, color = '#909090'){
@@ -118,7 +127,7 @@ export const pentagram = {
         ctx.save();
             ctx.strokeStyle = "#f05000";
             ctx.lineWidth = 4;
-            ctx.globalAlpha = game.shootFallout * 0.6;
+            ctx.globalAlpha = game.shootFallout * 0.4;
 
             for (let i = 1; i < 3; i ++){
                 const y = this.calcNoteY(game.proposedValue + 12 * i);

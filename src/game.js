@@ -11,6 +11,7 @@ export const game = {
     paused: true,
     proposedValue: 0,
     missFallout: 0,
+    hitAnimation: 0,
 
     resetNote() {
         this.noteProgress = 0;
@@ -33,8 +34,7 @@ export const game = {
     hit() {
         this.hitCount++;
         this.points += 1 + parseInt((1 - this.noteProgress) * 10);
-
-        this.resetNote();
+        this.hitAnimation = 1;
     },
 
     miss() {
@@ -82,13 +82,21 @@ export const game = {
             return;
         }
 
-        this.noteProgress += 0.002;
+        if (this.hitAnimation > 0){
+            this.hitAnimation -= 0.018;
 
-        if (this.noteProgress >= 1) {
-            this.shootFallout = 1;
-            this.proposedValue = -1;
-            this.miss();
-            this.resetNote();
+            if (this.hitAnimation <= 0){
+                this.resetNote();
+            }
+        } else {
+            this.noteProgress += 0.002;
+
+            if (this.noteProgress >= 1) {
+                this.shootFallout = 1;
+                this.proposedValue = -1;
+                this.miss();
+                this.resetNote();
+            }
         }
 
         this.shootFallout -= 0.02;
