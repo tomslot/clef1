@@ -9,6 +9,8 @@ export const game = {
     distanceFromMG: 0,
     points: 0,
     paused: true,
+    proposedValue: 0,
+    missFallout: 0,
 
     resetNote() {
         this.noteProgress = 0;
@@ -51,6 +53,8 @@ export const game = {
             this.miss();
         }
 
+        this.proposedValue = note;
+        this.shootFallout = 1;
         let hitRate = parseInt(this.hitCount / (this.hitCount + this.missCount) * 100);
         let missesLabel = document.getElementById('hitRate');
         missesLabel.setAttribute('value', `${hitRate}%`);
@@ -81,8 +85,16 @@ export const game = {
         this.noteProgress += 0.002;
 
         if (this.noteProgress >= 1) {
+            this.shootFallout = 1;
+            this.proposedValue = -1;
             this.miss();
             this.resetNote();
+        }
+
+        this.shootFallout -= 0.02;
+
+        if (this.shootFallout < 0){
+            this.shootFallout = 0;
         }
     }
 }

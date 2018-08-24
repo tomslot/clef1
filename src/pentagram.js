@@ -1,4 +1,5 @@
 import {game} from './game.js';
+import {noteBase} from './noteBase.js';
 
 export const pentagram = {
     margin: 25,
@@ -96,22 +97,33 @@ export const pentagram = {
 
     drawPaused(ctx) {
         ctx.save();
-        ctx.font = `bold 36px Arial`;
-        ctx.fillStyle = '#A07070';
-        ctx.textAlign = "center";
-        ctx.textBaseline = "bottom";
-        ctx.fillText('II', this.width / 2, this.height - 2);
+            ctx.font = `bold 36px Arial`;
+            ctx.fillStyle = '#A07070';
+            ctx.textAlign = "center";
+            ctx.textBaseline = "bottom";
+            ctx.fillText('II', this.width / 2, this.height - 2);
+        ctx.restore();
+    },
+
+    drawShootFallout(ctx){
+        ctx.save();
+            ctx.font = `bold 36px Arial`;
+            //  ctx.fillStyle = '#ffd100';
+            // ctx.fillStyle = '#A07070';
+            ctx.textAlign = "center";
+            ctx.textBaseline = "top";
+            ctx.globalAlpha = game.shootFallout;
+            let lbl = game.proposedValue === -1 ? 'MISS' : noteBase.noteToSymbol(game.proposedValue);
+            ctx.fillText(lbl, this.clefSpace + (this.width - this.clefSpace) / 2 , 2);
         ctx.restore();
     },
 
     draw(ctx) {
         this.resize();
         ctx.clearRect(0, 0, this.width, this.height);
-
         ctx.strokeStyle = '#505050';
         ctx.fillStyle = '#505050';
         this.drawClef(ctx);
-        this.drawNextNoteHint(ctx);
 
         for (let i = 0; i < this.lineNumber; i++) {
             let y = this.topLineY + i * this.lineDistance;
@@ -123,6 +135,11 @@ export const pentagram = {
             this.drawPaused(ctx);
         } else {
             this.drawNote(ctx);
+            this.drawNextNoteHint(ctx);
+        }
+
+        if (game.shootFallout > 0){
+            this.drawShootFallout(ctx);
         }
 
         ctx.closePath();
