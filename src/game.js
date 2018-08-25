@@ -4,7 +4,6 @@ import {playNote} from './sound.js';
 export const game = {
     noteProgress: 0,
     noteValue: 60,
-    previousNoteValue: 0,
     hitCount: 0,
     missCount: 0,
     distanceFromMG: 0,
@@ -17,12 +16,12 @@ export const game = {
     resetNote() {
         this.noteProgress = 0;
 
-        do {
-            var newNote = noteBase.generateRandNote();
-        }
-        while (newNote === this.previousNoteValue);
+        let newNote = noteBase.generateRandNote();
 
-        this.previousNoteValue = this.noteValue;
+        while (newNote === this.noteValue){
+            newNote = noteBase.generateRandNote();
+        }
+
         this.noteValue = newNote;
         this.distanceFromMG = noteBase.calculateTonicDistanceFromMidG(game.noteValue);
         console.log(`noteValue: ${this.noteValue}, ${this.getNextNote()}, distance=${this.distanceFromMG}`);

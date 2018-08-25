@@ -119,13 +119,21 @@ export function playNote(midiCode) {
     gainNode.connect(context.destination);
 
     context.resume().then(() => {
-        var oscillator = context.createOscillator();
+        let oscillator = context.createOscillator();
         oscillator.type = "triangle";
-        gainNode.gain.setValueAtTime(0.3, context.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 1.5);
+        gainNode.gain.setValueAtTime(0.0001, context.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.5, context.currentTime + 0.17);
+        gainNode.gain.setValueAtTime(0.5, context.currentTime + 0.2);
+        gainNode.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 2);
         oscillator.connect(gainNode);
         oscillator.frequency.value = noteValues[midiCode];
         oscillator.start(0);
-        oscillator.stop(context.currentTime + 1.5);
-      });
+        oscillator.stop(context.currentTime + 2);
+
+    //     oscillator.type = "sine";
+    //     oscillator.connect(gainNode);
+    //     oscillator.frequency.value = noteValues[midiCode + 12];
+    //     oscillator.start(0);
+    //     oscillator.stop(context.currentTime + 2);
+     });
 }
