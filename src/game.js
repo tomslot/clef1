@@ -1,4 +1,5 @@
 import {noteBase} from './noteBase.js';
+import {playNote} from './sound.js';
 
 export const game = {
     noteProgress: 0,
@@ -47,6 +48,13 @@ export const game = {
     },
 
     shoot(note) {
+        try {
+            playNote(note);
+        }
+        catch(err){
+            alert(`Error playing sound ${err}`);
+        }
+
         if (noteBase.normalize(note) === noteBase.normalize(this.noteValue)) {
             this.hit();
         } else {

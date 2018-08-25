@@ -2,15 +2,14 @@
 
 import style1 from "./pianoKeyboard.css";
 import style2 from "./style.css";
-
-import {noteBase} from './noteBase.js';
-import {game} from './game.js';
-import {midiController} from './midiController.js';
-import {pentagram} from './pentagram.js';
+import { noteBase } from './noteBase.js';
+import { game } from './game.js';
+import { midiController } from './midiController.js';
+import { pentagram } from './pentagram.js';
 
 let canvasElem = document.getElementById('score_canvas');
 
-window.key = function(code) {
+window.key = function (code) {
     if (game.paused) {
         game.unpause();
     } else {
