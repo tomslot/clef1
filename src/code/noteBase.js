@@ -1,4 +1,7 @@
 export const noteBase = {
+    VISIBLE_MIDI_CODE_MIN: 46,
+    VISIBLE_MIDI_CODE_MAX: 73,
+
     solphageMap: {
         0: 'C',
         1: 'C#',
@@ -30,7 +33,7 @@ export const noteBase = {
     },
 
     generateRandNote() {
-        let r = parseInt(60 + Math.random() * 22);
+        let r = parseInt(this.VISIBLE_MIDI_CODE_MIN + 2 +  Math.random() * (this.VISIBLE_MIDI_CODE_MAX - this.VISIBLE_MIDI_CODE_MIN - 4));
 
         if (this.isAccidental(r)) {
             return this.generateRandNote();
@@ -40,7 +43,7 @@ export const noteBase = {
     },
 
     calculateTonicDistanceFromMidG(noteValue) {
-        const midG = 67;
+        const midG = 67 - 12;
         let from = Math.min(midG, noteValue);
         let to = Math.max(midG, noteValue);
         let distance = 0;

@@ -1,4 +1,4 @@
-$keyWidth: 38px;
+$keyWidth: 44px;
 $blackKeyWidth: $keyWidth * 0.6;
 $keyHeight: 140px;
 $blackKeyHeight: $keyHeight * 0.6;
@@ -23,7 +23,7 @@ $keyPressedFactor: 0.96;
   
   /* Tuts */ 
   ul#piano { 
-    width: 7 * $keyWidth;
+    width: 14 * $keyWidth;
     display:block;
     height: $keyHeight;
     margin: auto;

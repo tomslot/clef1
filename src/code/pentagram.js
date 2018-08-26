@@ -124,15 +124,22 @@ export const pentagram = {
             return;
         }
 
-        ctx.save();
-            ctx.strokeStyle = "#f05000";
+        ctx.save();      
             ctx.lineWidth = 4;
             ctx.globalAlpha = game.shootFallout * 0.4;
 
-            for (let i = 1; i < 3; i ++){
-                const y = this.calcNoteY(game.proposedValue + 12 * i);
-                this.drawLine(ctx, y);
+            let note = noteBase.normalize(game.proposedValue);
+
+            while (note <= noteBase.VISIBLE_MIDI_CODE_MAX){
+                if (note >= noteBase.VISIBLE_MIDI_CODE_MIN){
+                    ctx.strokeStyle = (note === game.proposedValue) ? "#f05000": "#fd0";
+                    const y = this.calcNoteY(note);
+                    this.drawLine(ctx, y);
+                }
+
+                note += 12;
             }
+
         ctx.restore();
     },
 
