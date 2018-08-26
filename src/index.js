@@ -1,11 +1,11 @@
 "use strict";
 
-import style1 from "./pianoKeyboard.scss";
-import style2 from "./style.scss";
-import { noteBase } from './noteBase.js';
-import { game } from './game.js';
-import { midiController } from './midiController.js';
-import { pentagram } from './pentagram.js';
+import style1 from "./style/pianoKeyboard.scss";
+import style2 from "./style/style.scss";
+import { noteBase } from './code/noteBase';
+import { game } from './code/game.js';
+import { midiController } from './code/midiController.js';
+import { pentagram } from './code/pentagram.js';
 
 let canvasElem = document.getElementById('score_canvas');
 
@@ -20,7 +20,7 @@ window.key = function (code) {
 window.onload = function () {
     window.game = game;
     pentagram.gClefImage = new Image();
-    pentagram.gClefImage.src = require("./clefG_180.png");
+    pentagram.gClefImage.src = require("./gfx/clefG_180.png");
 
     function animate(timestamp) {
         let ctx = canvasElem.getContext("2d");
