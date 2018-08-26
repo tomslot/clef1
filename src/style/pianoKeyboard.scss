@@ -1,3 +1,9 @@
+$keyWidth: 38px;
+$blackKeyWidth: $keyWidth * 0.6;
+$keyHeight: 140px;
+$blackKeyHeight: $keyHeight * 0.6;
+$keyPressedFactor: 0.96;
+
 * { 
     margin:0px; 
     padding:0px; 
@@ -8,7 +14,6 @@
     outline:none !important; 
   } 
   
-  
   /* Piano Wrapper */ 
   #p-wrapper { 
     position:relative; 
@@ -18,24 +23,24 @@
   
   /* Tuts */ 
   ul#piano { 
-    display:block; 
-    width:280px; 
-    height:210px;
+    width: 7 * $keyWidth;
+    display:block;
+    height: $keyHeight;
     margin: auto;
   } 
   
   ul#piano li { 
+    width: $keyWidth;
     list-style:none; 
     float:left; 
     display:inline; 
     background:#aaa; 
-    width:40px; 
     position:relative; 
   } 
   
   ul#piano li a,ul#piano li div.anchor { 
     display:block; 
-    height:200px; 
+    height:$keyHeight - 5; 
     background:#fff; 
     background:linear-gradient(-30deg,#f5f5f5,#fff); 
     border:1px solid #ccc; 
@@ -47,14 +52,14 @@
     box-shadow:0 2px 2px rgba(0,0,0,0.4); 
     position:relative; 
     top:2px; 
-    height:195px; 
+    height: $keyHeight * $keyPressedFactor; 
   } 
   
   ul#piano li a:active:before,ul#piano li div.anchor:active:before { 
     content:""; 
     width:0px; 
     height:0px; 
-    border-width:195px 3px 0px; 
+    border-width: $keyHeight * $keyPressedFactor 3px 0px; 
     border-style:solid; 
     border-color:transparent transparent transparent rgba(0,0,0,0.1); 
     position:absolute; 
@@ -66,7 +71,7 @@
     content:""; 
     width:0px; 
     height:0px; 
-    border-width:195px 3px 0px; 
+    border-width: $keyHeight * $keyPressedFactor 3px 0px; 
     border-style:solid; 
     border-color:transparent rgba(0,0,0,0.1) transparent transparent; 
     position:absolute; 
@@ -78,14 +83,10 @@
   ul#piano li span { 
     position:absolute; 
     top:0px; 
-    left:-12px; 
-    width:20px; 
-    height:120px; 
+    left:  $blackKeyWidth / -2; 
+    width: $blackKeyWidth; 
+    height: $blackKeyHeight; 
     background:#333; 
-    background:-webkit-linear-gradient(-20deg,#333,#000,#333); 
-    background:-moz-linear-gradient(-20deg,#333,#000,#333); 
-    background:-ms-linear-gradient(-20deg,#333,#000,#333); 
-    background:-o-linear-gradient(-20deg,#333,#000,#333); 
     background:linear-gradient(-20deg,#333,#000,#333); 
     z-index:10; 
     border-width:1px 2px 7px; 
@@ -97,7 +98,7 @@
   
   ul#piano li span:active { 
     border-bottom-width:2px; 
-    height:123px; 
+    height: $blackKeyHeight * $keyPressedFactor;
     box-shadow:inset 0px -1px 1px rgba(255,255,255,0.4),0 1px 0px rgba(0,0,0,0.8),0 2px 2px rgba(0,0,0,0.4),0 -1px 0px #000; 
   } 
   
@@ -129,15 +130,6 @@
     opacity:0; 
     box-shadow:0 2px 7px #000; 
     transition:all 0.2s ease-out 0.2s; 
-  } 
-  
-  ul#piano li li { 
-    width:150px; 
-    height:auto; 
-    display:block; 
-    float:none; 
-  
-    background:transparent; 
   } 
   
   ul#piano li li a,ul#piano li li a:active { 
@@ -178,6 +170,6 @@
   } 
   
   @keyframes taufik{ 
-  from{opacity:0;} 
-  to{opacity:1;} 
+    from{opacity:0;} 
+    to{opacity:1;} 
   }
