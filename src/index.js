@@ -6,6 +6,7 @@ import { noteBase } from './code/noteBase';
 import { game } from './code/game.js';
 import { midiController } from './code/midiController.js';
 import { pentagram } from './code/pentagram.js';
+import {drawKeyboard} from './code/virtualKeyboard.js';
 
 let canvasElem = document.getElementById('score_canvas');
 
@@ -35,6 +36,11 @@ window.onload = function () {
         }
     });
 
+    window.addEventListener('resize', (event) => {
+        drawKeyboard();
+    });
+
+    drawKeyboard();
     game.resetNote();
     window.requestAnimationFrame(animate);
 
