@@ -54,6 +54,10 @@ export const game = {
             alert(`Error playing sound ${err}`);
         }
 
+        if (this.shootFallout > 0){
+            return;
+        }
+
         if (noteBase.normalize(note) === noteBase.normalize(this.noteValue)) {
             this.hit();
         } else {

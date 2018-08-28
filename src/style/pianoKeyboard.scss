@@ -23,7 +23,8 @@ $keyPressedFactor: 0.96;
   
   /* Tuts */ 
   ul#piano { 
-    width: 100%;//14 * $keyWidth;
+    width: 100%;
+    // background: linear-gradient(-30deg,#ffff,rgb(202, 202, 202));
     display:block;
     height: $keyHeight;
     margin: auto;

@@ -10,11 +10,12 @@ export function drawKeyboard(){
     const keyboardElem = document.getElementById('piano');
     keyboardElem.innerHTML = '';
 
-    const keyNumber = parseInt(Math.min(keyboardElem.clientWidth / KEY_WIDTH, 7 * 4));
+    const keyNumber = parseInt(Math.min(window.innerWidth / KEY_WIDTH, 7 * 4));
     keyboardElem.style.maxWidth = `${keyNumber * KEY_WIDTH}px`;
 
     const octaveCount = parseInt(keyNumber / 7);
-    const startNote = (octaveCount / 2 + 2) * 12
+    const startOctave = 5 - parseInt(octaveCount / 2);
+    const startNote = startOctave * 12;
     let midiCode = startNote;
 
     for (let i = 0; i < keyNumber; i ++, midiCode ++){

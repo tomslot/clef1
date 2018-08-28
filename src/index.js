@@ -6,7 +6,7 @@ import { noteBase } from './code/noteBase';
 import { game } from './code/game.js';
 import { midiController } from './code/midiController.js';
 import { pentagram } from './code/pentagram.js';
-import {drawKeyboard} from './code/virtualKeyboard.js';
+import { drawKeyboard } from './code/virtualKeyboard.js';
 
 let canvasElem = document.getElementById('score_canvas');
 
@@ -36,9 +36,22 @@ window.onload = function () {
         }
     });
 
-    window.addEventListener('resize', (event) => {
+    window.addEventListener("resize", resizeThrottler, false);
+
+    var resizeTimeout;
+    function resizeThrottler() {
+        if (!resizeTimeout) {
+            resizeTimeout = setTimeout(() => {
+                resizeTimeout = null;
+                actualResizeHandler();
+            }, 66);
+        }
+    }
+
+    function actualResizeHandler() {
+        console.log('resize()');
         drawKeyboard();
-    });
+    }
 
     drawKeyboard();
     game.resetNote();

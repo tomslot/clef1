@@ -128,7 +128,7 @@ export function playNote(midiCode) {
         gainNode.gain.setValueAtTime(0.5, context.currentTime + 0.2);
         gainNode.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 2);
         oscillator.connect(gainNode);
-        oscillator.frequency.value = noteValues[midiCode];
+        oscillator.frequency.value = noteValues[midiCode + 12];
         oscillator.start(0);
         oscillator.stop(context.currentTime + 2);
 
