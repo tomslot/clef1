@@ -1,3 +1,5 @@
+@import 'common';
+
 @media only screen and (max-width: 720px) {
   #score_canvas{
     width: 100%;
@@ -23,7 +25,8 @@
 body{
   text-align: center;
   font-family: 'Oswald', sans-serif;
-  background-color: #ffffff;
+  background-color: $COLOR1;
+  color: #566B73;
 }
 
 div.dataBlock{
@@ -35,14 +38,12 @@ div.dataBlock{
 #dashboard{
   padding: 15px;
   margin: auto;
-  background: linear-gradient(-30deg,#ffff,rgb(202, 202, 202));
+  background: linear-gradient(-30deg, $COLOR2, $COLOR1);
 }
 
 h1{
-  color: #906060;
-  // background: linear-gradient(180deg,#555,#909090);
+  color: $COLOR3;
   padding: 5px;
-  // text-shadow: 2px 2px black;
 }
 
 %badge{
@@ -53,7 +54,7 @@ h1{
   
   // float: left;
   border-radius: 5px;
-  box-shadow:inset 0 1px 0px #fff,inset 0 -1px 0px #fff,inset 1px 0px 0px #fff,inset -1px 0px 0px #fff,0 2px 3px rgba(0,0,0,0.7); 
+  box-shadow:inset 0 1px 0px $COLOR1,inset 0 -1px 0px $COLOR1,inset 1px 0px 0px $COLOR1,inset -1px 0px 0px $COLOR1,0 2px 3px $COLOR3; 
 }
 
 .beginner{
@@ -65,8 +66,8 @@ h1{
 
 .topic{
   @extend %badge;
-  background-color: #DDD;
-  color: rgb(59, 59, 59);
+  background-color: $COLOR4;
+  color: $COLOR1;
 }
 
 footer {
@@ -74,7 +75,7 @@ footer {
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: black;
-  color: #999;
+  background-color: $COLOR3;
+  color: $COLOR1;
   text-align: center;
 }

@@ -1,6 +1,11 @@
 import {game} from './game.js';
 import {noteBase} from './noteBase.js';
 
+const DEFAULT_COLOR = '#566B73';
+const HINT_COLOR = '#566B73';
+const SHADOW_COLOR = '#566B73';
+const PAUSE_COLOR = '#E11347';
+
 export const pentagram = {
     margin: 25,
     clefSpace: 80,
@@ -56,7 +61,7 @@ export const pentagram = {
         ctx.shadowBlur = 5;
         ctx.shadowOffsetX = 3;
         ctx.shadowOffsetY = 3;
-        ctx.shadowColor = '#A0A0A0';
+        ctx.shadowColor = SHADOW_COLOR;
         ctx.fillStyle = noteColor;
         ctx.strokeStyle = noteColor;
         ctx.save();
@@ -90,13 +95,12 @@ export const pentagram = {
     },
 
     drawClef(ctx) {
-        let clefFontSize = this.height / 2;
         ctx.drawImage(this.gClefImage, 0, 10);
     },
 
-    drawHint(ctx, opacity, hint, color = '#909090'){
+    drawHint(ctx, opacity, hint, color = HINT_COLOR){
         ctx.save();
-            ctx.font = `bold 36px Arial`;
+            ctx.font = `bold 32px Oswald`;
             ctx.fillStyle = color;
             ctx.globalAlpha = opacity;
             ctx.textAlign = "center";
@@ -113,16 +117,16 @@ export const pentagram = {
     },
 
     drawPaused(ctx) {
-        this.drawHint(ctx, 1, 'II', '#A07070');
+        this.drawHint(ctx, 1, 'II', PAUSE_COLOR);
     },
 
     drawShootFallout(ctx){
-        let lbl = game.proposedValue === -1 ? 'MISS' : noteBase.noteToSymbol(game.proposedValue);
-        this.drawHint(ctx, game.shootFallout, lbl);
-
         if (game.proposedValue === -1){
+            this.drawHint(ctx, game.shootFallout, 'MISS', "#E11347");
             return;
         }
+
+        this.drawHint(ctx, game.shootFallout,  noteBase.noteToSymbol(game.proposedValue));
 
         ctx.save();      
             ctx.lineWidth = 4;
@@ -132,7 +136,7 @@ export const pentagram = {
 
             while (note <= noteBase.VISIBLE_MIDI_CODE_MAX){
                 if (note >= noteBase.VISIBLE_MIDI_CODE_MIN){
-                    ctx.strokeStyle = (note === game.proposedValue) ? "#f05000": "#fd0";
+                    ctx.strokeStyle = (note === game.proposedValue) ? "#E11347": "#E4847D";
                     const y = this.calcNoteY(note);
                     this.drawLine(ctx, y);
                 }
@@ -146,8 +150,8 @@ export const pentagram = {
     draw(ctx) {
         this.resize();
         ctx.clearRect(0, 0, this.width, this.height);
-        ctx.strokeStyle = '#505050';
-        ctx.fillStyle = '#505050';
+        ctx.strokeStyle = DEFAULT_COLOR;
+        ctx.fillStyle = DEFAULT_COLOR;
         this.drawClef(ctx);
 
         for (let i = 0; i < this.lineNumber; i++) {
