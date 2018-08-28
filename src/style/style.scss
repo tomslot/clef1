@@ -35,10 +35,13 @@ div.dataBlock{
   white-space: nowrap;
 }
 
+#board{
+  background: linear-gradient(-30deg, $COLOR2, $COLOR1);
+}
+
 #dashboard{
   padding: 15px;
   margin: auto;
-  background: linear-gradient(-30deg, $COLOR2, $COLOR1);
 }
 
 h1{
@@ -49,7 +52,7 @@ h1{
 %badge{
   padding: 3px 10px;
   border: 2px solid white;
-  margin: 12px 6px;
+  margin: 12px 3px;
   display: inline-block;
   
   // float: left;

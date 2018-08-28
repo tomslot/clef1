@@ -12,29 +12,29 @@
 
 <body>
 
-  <div id="p-wrapper">
-    <canvas id="score_canvas" width="640" height="180" onclick="game.togglePaused()"></canvas>
-    <ul id="piano"></ul>
-  </div>
-  </div>
-
-  <div id="dashboard">
-    <div class="dataBlock">
-      <label for="points">Points:</label>
-      <input type="text" readonly class="form-control-plaintext" id="points" value="0">
+  <canvas id="score_canvas" width="640" height="180" onclick="game.togglePaused()"></canvas>
+  <div id="board">
+    <div id="p-wrapper">
+      <ul id="piano"></ul>
     </div>
 
-    <div class="dataBlock">
-      <label for="hitRate">Hitrate:</label>
-      <input type="text" readonly class="form-control-plaintext" id="hitRate" value="0%">
-    </div>
+    <div id="dashboard">
+      <div class="dataBlock">
+        <label for="points">Points:</label>
+        <input type="text" readonly class="form-control-plaintext" id="points" value="0">
+      </div>
 
-    <div class="dataBlock">
-      <label for="connectedDevice" class="col-sm-2 col-form-label">MIDI Device:</label>
+      <div class="dataBlock">
+        <label for="hitRate">Hitrate:</label>
+        <input type="text" readonly class="form-control-plaintext" id="hitRate" value="0%">
+      </div>
 
-      <input type="text" readonly class="form-control-plaintext" id="connectedDevice" value="none">
+      <div class="dataBlock">
+        <label for="connectedDevice" class="col-sm-2 col-form-label">MIDI Device:</label>
+
+        <input type="text" readonly class="form-control-plaintext" id="connectedDevice" value="none">
+      </div>
     </div>
-  </div>
   </div>
 
   <h1 class="display-4">Score Reading Trainer</h1>
