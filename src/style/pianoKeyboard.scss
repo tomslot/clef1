@@ -50,6 +50,10 @@ $keyPressedFactor: 0.96;
     border-radius:0 0 3px 3px; 
   } 
   
+  ul#piano div.active{
+    border:2px solid $COLOR4 !important;
+  }
+
   ul#piano li a:active,ul#piano li div.anchor:active { 
     box-shadow:0 2px 2px $COLOR3; 
     position:relative; 

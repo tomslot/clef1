@@ -3,7 +3,13 @@ import { noteBase } from './noteBase.js';
 const KEY_WIDTH = 44;
 
 function appendKeyFunction(elem, midiCode){
-    elem.setAttribute('onclick', `key(${midiCode})`);
+
+    elem.addEventListener('click', (evt) => {
+        let midiCode = parseInt(evt.currentTarget.getAttribute('data-midi'));
+        game.shoot(midiCode);
+    });
+
+    elem.setAttribute('data-midi', midiCode);
 }
 
 export function drawKeyboard(){
@@ -32,7 +38,6 @@ export function drawKeyboard(){
         }
 
         appendKeyFunction(divElem, midiCode);
-
         keyboardElem.appendChild(keyElem);
     }
 }

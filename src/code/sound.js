@@ -136,23 +136,12 @@ import {noteBase} from './noteBase.js';
 //      });
 // }
 
-let initialized = false;
+console.log('Synth.init()');
+Synth.setSampleRate(22050);
+Synth.setVolume(0.4);
 const piano = Synth.createInstrument('piano');
 
-console.log('SYNTH INIT');
-
-function init(){
-    if (initialized){
-        return;
-    }
-
-    initialized = true;
-    Synth.setSampleRate(22050);
-    Synth.setVolume(0.4);
-}
-
 export function playNote(midiCode) {
-    init();
     const octave = parseInt(midiCode / 12);
     const note = noteBase.noteToSymbol(midiCode);
     piano.play(note, octave, 3);

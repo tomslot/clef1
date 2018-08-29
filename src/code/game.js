@@ -1,5 +1,6 @@
-import {noteBase} from './noteBase.js';
-import {playNote} from './sound.js';
+import { noteBase } from './noteBase.js';
+import { playNote } from './sound.js';
+import { throws } from 'assert';
 
 export const game = {
     noteProgress: 0,
@@ -18,7 +19,7 @@ export const game = {
 
         let newNote = noteBase.generateRandNote();
 
-        while (newNote === this.noteValue){
+        while (newNote === this.noteValue) {
             newNote = noteBase.generateRandNote();
         }
 
@@ -47,14 +48,20 @@ export const game = {
     },
 
     shoot(note) {
+        if (this.paused) {
+            game.unpause();
+            playNote(note);
+            return;
+        }
+
         try {
             playNote(note);
         }
-        catch(err){
+        catch (err) {
             alert(`Error playing sound ${err}`);
         }
 
-        if (this.shootFallout > 0){
+        if (this.shootFallout > 0) {
             return;
         }
 
@@ -93,10 +100,10 @@ export const game = {
             return;
         }
 
-        if (this.hitAnimation > 0){
+        if (this.hitAnimation > 0) {
             this.hitAnimation -= 0.018;
 
-            if (this.hitAnimation <= 0){
+            if (this.hitAnimation <= 0) {
                 this.resetNote();
             }
         } else {
@@ -112,7 +119,7 @@ export const game = {
 
         this.shootFallout -= 0.02;
 
-        if (this.shootFallout < 0){
+        if (this.shootFallout < 0) {
             this.shootFallout = 0;
         }
     }

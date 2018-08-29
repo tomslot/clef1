@@ -1,4 +1,5 @@
-import {game} from './game.js';
+import { noteBase } from './noteBase.js';
+import { game } from './game.js';
 
 export const midiController = {
     start() {
@@ -22,6 +23,15 @@ export const midiController = {
             let note = data[1];
             console.log(`note ${note}, ${noteBase.noteToSymbol(note)}, data[0]=${data[0]}`);
             game.shoot(note);
+            let anchor = document.querySelector(`[data-midi="${note}"]`);
+            
+            if (anchor !== null){
+                anchor.classList.toggle('active');
+
+                window.setTimeout(() => {
+                    anchor.classList.toggle('active');
+                }, 800);
+            }
         }
     },
 
