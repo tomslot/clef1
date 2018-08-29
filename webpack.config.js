@@ -1,4 +1,5 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   module: {
@@ -50,9 +51,8 @@ module.exports = {
       template: "./src/index.html",
       filename: "./index.html"
     }),
-    // new MiniCssExtractPlugin({
-    //   filename: "[name].css",
-    //   chunkFilename: "[id].css"
-    // })
+    new CopyWebpackPlugin([
+      {from:'static',to:'./'} 
+  ]), 
   ]
 };

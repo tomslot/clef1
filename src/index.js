@@ -2,17 +2,19 @@
 
 import style1 from "./style/pianoKeyboard.scss";
 import style2 from "./style/style.scss";
-import { noteBase } from './code/noteBase';
+
 import { game } from './code/game.js';
 import { midiController } from './code/midiController.js';
 import { pentagram } from './code/pentagram.js';
 import { drawKeyboard } from './code/virtualKeyboard.js';
+import {playNote} from './code/sound.js';
 
 let canvasElem = document.getElementById('score_canvas');
 
 window.key = function (code) {
     if (game.paused) {
         game.unpause();
+        playNote(code);
     } else {
         game.shoot(code);
     }
