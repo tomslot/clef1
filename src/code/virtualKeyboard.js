@@ -1,5 +1,4 @@
 import { noteBase } from './noteBase.js';
-
 const KEY_WIDTH = 44;
 
 const SIZE = {
