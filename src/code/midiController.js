@@ -1,5 +1,6 @@
 import { noteBase } from './noteBase.js';
 import { game } from './game.js';
+import { hightlightKey } from './virtualKeyboard.js';
 
 export const midiController = {
     start() {
@@ -26,10 +27,10 @@ export const midiController = {
             let anchor = document.querySelector(`[data-midi="${note}"]`);
             
             if (anchor !== null){
-                anchor.classList.toggle('active');
+                anchor.classList.add('active');
 
                 window.setTimeout(() => {
-                    anchor.classList.toggle('active');
+                    anchor.classList.remove('active');
                 }, 800);
             }
         }

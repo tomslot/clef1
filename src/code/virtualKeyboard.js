@@ -2,7 +2,7 @@ import { noteBase } from './noteBase.js';
 
 const KEY_WIDTH = 44;
 
-function appendKeyFunction(elem, midiCode){
+function appendKeyFunction(elem, midiCode) {
 
     elem.addEventListener('click', (evt) => {
         let midiCode = parseInt(evt.currentTarget.getAttribute('data-midi'));
@@ -12,7 +12,7 @@ function appendKeyFunction(elem, midiCode){
     elem.setAttribute('data-midi', midiCode);
 }
 
-export function drawKeyboard(){
+export function drawKeyboard() {
     const keyboardElem = document.getElementById('piano');
     keyboardElem.innerHTML = '';
 
@@ -24,20 +24,32 @@ export function drawKeyboard(){
     const startNote = startOctave * 12;
     let midiCode = startNote;
 
-    for (let i = 0; i < keyNumber; i ++, midiCode ++){
+    for (let i = 0; i < keyNumber; i++ , midiCode++) {
         let keyElem = document.createElement("li");
         let divElem = document.createElement("div");
         divElem.setAttribute('class', 'anchor');
         keyElem.appendChild(divElem);
 
-        if (noteBase.isAccidental(midiCode)){
+        if (noteBase.isAccidental(midiCode)) {
             let blackKey = document.createElement("span");
             appendKeyFunction(blackKey, midiCode);
             keyElem.appendChild(blackKey);
-            midiCode ++;
+            midiCode++;
         }
 
         appendKeyFunction(divElem, midiCode);
         keyboardElem.appendChild(keyElem);
+    }
+}
+
+export function hightlightKey(note, exact = false) {
+    let anchor = document.querySelector(`[data-midi="${note}"]`);
+
+    if (anchor !== null) {
+        anchor.classList.add('active');
+
+        window.setTimeout(() => {
+            anchor.classList.remove('active');
+        }, 500);
     }
 }

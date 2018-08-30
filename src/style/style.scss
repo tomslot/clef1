@@ -51,7 +51,7 @@ h1{
 
 %badge{
   padding: 3px 10px;
-  border: 2px solid white;
+  border: 1px solid $COLOR1;
   margin: 12px 3px;
   display: inline-block;
   
@@ -60,17 +60,38 @@ h1{
   box-shadow:inset 0 1px 0px $COLOR1,inset 0 -1px 0px $COLOR1,inset 1px 0px 0px $COLOR1,inset -1px 0px 0px $COLOR1,0 2px 3px $COLOR3; 
 }
 
-.beginner{
-  @extend %badge;
-  background-color: #006b00;
-  color: #FFFF;
-  display: block;
-}
-
 .topic{
   @extend %badge;
   background-color: $COLOR4;
   color: $COLOR1;
+}
+
+$HELPME_ROTATION: -10deg;
+
+button#helpme{
+  @extend %badge;
+  transform: rotate($HELPME_ROTATION);
+  background-color: $COLOR4;
+  color: $COLOR1;
+  padding: 8px;
+  transition: 0.25s linear all;
+}
+
+button#helpme:disabled{
+  transform: rotate($HELPME_ROTATION) scale(0.95, 0.95);
+  background-color: $COLOR3;
+  color: $COLOR2;
+}
+
+$HELPME_GROW_FACTOR: 1.05;
+
+button#helpme:hover:enabled{
+  transform: rotate($HELPME_ROTATION) scale($HELPME_GROW_FACTOR, $HELPME_GROW_FACTOR);
+  background-color: lighten($COLOR4, 5%);
+}
+
+button#helpme:active{
+  background-color: darken($COLOR4, 10%);
 }
 
 footer {

@@ -86,11 +86,13 @@ export const game = {
             this.unpause();
         }
         else {
+            document.getElementById('helpme').disabled = true;
             this.paused = true;
         }
     },
 
     unpause() {
+        document.getElementById('helpme').disabled = false;
         this.paused = false;
         this.resetNote();
     },

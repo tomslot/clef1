@@ -25,7 +25,6 @@ $keyPressedFactor: 0.96;
   /* Tuts */ 
   ul#piano { 
     width: 100%;
-    // background: linear-gradient(-30deg,#ffff,rgb(202, 202, 202));
     display:block;
     height: $keyHeight;
     margin: auto;
@@ -48,10 +47,12 @@ $keyPressedFactor: 0.96;
     border:1px solid #ccc; 
     box-shadow:inset 0 1px 0px #fff,inset 0 -1px 0px #fff,inset 1px 0px 0px #fff,inset -1px 0px 0px #fff,0 2px 3px $COLOR3; 
     border-radius:0 0 3px 3px; 
+    transition: 0.3s linear all;
   } 
-  
-  ul#piano div.active{
-    border:2px solid $COLOR4 !important;
+
+  ul#piano li div.active{
+    border:2px solid  $COLOR4;
+    background: linear-gradient(-30deg, $COLOR4, $COLOR1);
   }
 
   ul#piano li a:active,ul#piano li div.anchor:active { 

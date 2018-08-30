@@ -6,11 +6,15 @@ import style2 from "./style/style.scss";
 import { game } from './code/game.js';
 import { midiController } from './code/midiController.js';
 import { pentagram } from './code/pentagram.js';
-import { drawKeyboard } from './code/virtualKeyboard.js';
+import { drawKeyboard, hightlightKey } from './code/virtualKeyboard.js';
 
 let canvasElem = document.getElementById('score_canvas');
 
-window.onload = function () {
+window.help = () => {
+    hightlightKey(game.noteValue);
+};
+
+window.onload = () => {
     window.game = game;
     pentagram.gClefImage = new Image();
     pentagram.gClefImage.src = require("./gfx/clefG_180.png");
