@@ -24,15 +24,7 @@ export const midiController = {
             let note = data[1];
             console.log(`note ${note}, ${noteBase.noteToSymbol(note)}, data[0]=${data[0]}`);
             game.shoot(note);
-            let anchor = document.querySelector(`[data-midi="${note}"]`);
-            
-            if (anchor !== null){
-                anchor.classList.add('active');
-
-                window.setTimeout(() => {
-                    anchor.classList.remove('active');
-                }, 800);
-            }
+            hightlightKey(note, true);
         }
     },
 

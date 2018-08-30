@@ -2,6 +2,21 @@ import { noteBase } from './noteBase.js';
 
 const KEY_WIDTH = 44;
 
+const SIZE = {
+    keyNumber: 0,
+    octaveCount: 0,
+    startOctave: 0,
+    startNote: 0,
+    lastNote: 0
+}
+
+function calculateKeyboardSize(){
+    SIZE.keyNumber = parseInt(Math.min(window.innerWidth / KEY_WIDTH, 7 * 4));
+    SIZE.octaveCount = parseInt(SIZE.keyNumber / 7);
+    SIZE.startOctave = 5 - parseInt(SIZE.octaveCount / 2);
+    SIZE.startNote = SIZE.startOctave * 12;
+}
+
 function appendKeyFunction(elem, midiCode) {
 
     elem.addEventListener('click', (evt) => {
@@ -13,18 +28,14 @@ function appendKeyFunction(elem, midiCode) {
 }
 
 export function drawKeyboard() {
+    calculateKeyboardSize();
     const keyboardElem = document.getElementById('piano');
     keyboardElem.innerHTML = '';
+    keyboardElem.style.maxWidth = `${SIZE.keyNumber * KEY_WIDTH}px`;
 
-    const keyNumber = parseInt(Math.min(window.innerWidth / KEY_WIDTH, 7 * 4));
-    keyboardElem.style.maxWidth = `${keyNumber * KEY_WIDTH}px`;
+    let midiCode = SIZE.startNote;
 
-    const octaveCount = parseInt(keyNumber / 7);
-    const startOctave = 5 - parseInt(octaveCount / 2);
-    const startNote = startOctave * 12;
-    let midiCode = startNote;
-
-    for (let i = 0; i < keyNumber; i++ , midiCode++) {
+    for (let i = 0; i < SIZE.keyNumber; i++ , midiCode++) {
         let keyElem = document.createElement("li");
         let divElem = document.createElement("div");
         divElem.setAttribute('class', 'anchor');
@@ -40,9 +51,25 @@ export function drawKeyboard() {
         appendKeyFunction(divElem, midiCode);
         keyboardElem.appendChild(keyElem);
     }
+
+    SIZE.lastNote = midiCode;
 }
 
 export function hightlightKey(note, exact = false) {
+    if (!exact) {
+        if (note >= SIZE.lastNote){
+            do {
+                note -= 12;
+            } while (note >= SIZE.lastNote && note > 0);
+        }
+        
+        if (note < SIZE.startNote){
+            do {
+                note += 12;
+            } while (note < SIZE.startNote && note < SIZE.lastNote);
+        }
+    }
+
     let anchor = document.querySelector(`[data-midi="${note}"]`);
 
     if (anchor !== null) {
