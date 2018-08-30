@@ -1,10 +1,12 @@
+import style from "./../style/_common.scss";
+
 import {game} from './game.js';
 import {noteBase} from './noteBase.js';
 
-const DEFAULT_COLOR = '#566B73';
-const HINT_COLOR = '#566B73';
-const SHADOW_COLOR = '#566B73';
-const PAUSE_COLOR = '#E11347';
+const DEFAULT_COLOR = style.COLOR3;
+const HINT_COLOR = style.COLOR3;
+const SHADOW_COLOR = style.COLOR3;
+const PAUSE_COLOR = style.COLOR5;
 
 export const pentagram = {
     margin: 25,
