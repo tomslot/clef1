@@ -9,7 +9,7 @@ const SIZE = {
     lastNote: 0
 }
 
-function calculateKeyboardSize(){
+function calculateKeyboardSize() {
     SIZE.keyNumber = parseInt(Math.min(window.innerWidth / KEY_WIDTH, 7 * 4));
     SIZE.octaveCount = parseInt(SIZE.keyNumber / 7);
     SIZE.startOctave = 5 - parseInt(SIZE.octaveCount / 2);
@@ -54,19 +54,17 @@ export function drawKeyboard() {
     SIZE.lastNote = midiCode;
 }
 
-export function hightlightKey(note, exact = false) {
-    if (!exact) {
-        if (note >= SIZE.lastNote){
-            do {
-                note -= 12;
-            } while (note >= SIZE.lastNote && note > 0);
-        }
-        
-        if (note < SIZE.startNote){
-            do {
-                note += 12;
-            } while (note < SIZE.startNote && note < SIZE.lastNote);
-        }
+export function hightlightKey(note) {
+    if (note >= SIZE.lastNote) {
+        do {
+            note -= 12;
+        } while (note >= SIZE.lastNote && note > 0);
+    }
+
+    if (note < SIZE.startNote) {
+        do {
+            note += 12;
+        } while (note < SIZE.startNote && note < SIZE.lastNote);
     }
 
     let anchor = document.querySelector(`[data-midi="${note}"]`);

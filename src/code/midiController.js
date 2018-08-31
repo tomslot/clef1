@@ -24,7 +24,7 @@ export const midiController = {
             let note = data[1];
             console.log(`note ${note}, ${noteBase.noteToSymbol(note)}, data[0]=${data[0]}`);
             game.shoot(note);
-            hightlightKey(note, true);
+            hightlightKey(note);
         }
     },
 

@@ -41,7 +41,12 @@ div.dataBlock{
 }
 
 h1{
-  color: #a4afb6;
+  color: lighten($COLOR3, 15%);
+  padding: 5px;
+}
+
+h2{
+  color: $COLOR4;
   padding: 5px;
 }
 
@@ -98,4 +103,16 @@ footer {
   background-color: $COLOR3;
   color: $COLOR1;
   text-align: center;
+}
+
+div#comingSoon{
+  text-align: left;
+  margin: 20px;
+  padding: 20px;
+  background: #f7f7f7;
+  border-radius: 10px;
+}
+
+div#comingSoon ul{
+  padding: 10px 40px;
 }

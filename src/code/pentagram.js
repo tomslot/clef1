@@ -6,7 +6,7 @@ import {noteBase} from './noteBase.js';
 const DEFAULT_COLOR = style.COLOR3;
 const HINT_COLOR = style.COLOR3;
 const SHADOW_COLOR = style.COLOR3;
-const PAUSE_COLOR = style.COLOR5;
+const PAUSE_COLOR =  "#E11347"; //style.COLOR5;
 
 export const pentagram = {
     margin: 25,
