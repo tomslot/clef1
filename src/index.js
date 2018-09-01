@@ -7,6 +7,7 @@ import { game } from './code/game.js';
 import { midiController } from './code/midiController.js';
 import { pentagram } from './code/pentagram.js';
 import { drawKeyboard, hightlightKey } from './code/virtualKeyboard.js';
+import { drawCircle } from './code/circleOfFifths.js';
 
 let canvasElem = document.getElementById('score_canvas');
 
@@ -50,6 +51,7 @@ window.onload = () => {
     }
 
     drawKeyboard();
+    drawCircle();
     game.resetNote();
     window.requestAnimationFrame(animate);
 
