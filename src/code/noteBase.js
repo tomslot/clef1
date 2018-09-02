@@ -1,6 +1,6 @@
 export const noteBase = {
-    VISIBLE_MIDI_CODE_MIN: 46,
-    VISIBLE_MIDI_CODE_MAX: 73,
+    VISIBLE_MIDI_CODE_MIN: 48,
+    VISIBLE_MIDI_CODE_MAX: 70,
 
     solphageMap: {
         0: 'C',
@@ -19,6 +19,31 @@ export const noteBase = {
 
     accidentals: [1, 3, 6, 8, 10],
 
+    currentScale: {
+        name: 'C Major',
+        notes: [0, 2, 4, 5, 7, 9, 11]
+    },
+
+    currentNotePalette: [],
+
+    createNotePalette(){
+        this.currentNotePalette = [];
+
+        for (let i = this.VISIBLE_MIDI_CODE_MIN; i <= this.VISIBLE_MIDI_CODE_MAX; i ++){
+            if (this.currentScale.notes.includes(i % 12)){
+                this.currentNotePalette.push(i);
+            }
+        }
+
+        console.log(`createNotePalette() added ${this.currentNotePalette.length} notes`);
+    },
+
+    singleRandomNoteFromCurrentPalette(){
+        let numberOfNotesInPalette = this.currentNotePalette.length;
+        let randomNoteIndex = parseInt(Math.random() * numberOfNotesInPalette);
+        return this.currentNotePalette[randomNoteIndex];
+    },
+
     normalize(noteVal) {
         return noteVal % 12;
     },
@@ -33,13 +58,8 @@ export const noteBase = {
     },
 
     generateRandNote() {
-        let r = parseInt(this.VISIBLE_MIDI_CODE_MIN + 2 +  Math.random() * (this.VISIBLE_MIDI_CODE_MAX - this.VISIBLE_MIDI_CODE_MIN - 4));
-
-        if (this.isAccidental(r)) {
-            return this.generateRandNote();
-        }
-
-        return r;
+        //return parseInt(50);
+        return this.singleRandomNoteFromCurrentPalette();
     },
 
     calculateTonicDistanceFromMidG(noteValue) {
@@ -61,3 +81,5 @@ export const noteBase = {
         return distance;
     },
 };
+
+noteBase.createNotePalette();

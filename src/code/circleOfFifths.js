@@ -51,7 +51,7 @@ export function drawCircle() {
     ctx.strokeStyle = COLOR3;  
     ctx.textAlign = "center";
     ctx.textBaseline = "top"; 
-    ctx.font = `bold 22px Oswald`;
+    ctx.font = `18px Oswald`;
 
     let ringWidth = 50;
     let radius = canvasElem.width / 2;
