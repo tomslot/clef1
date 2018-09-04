@@ -1,35 +1,26 @@
 import { noteBase } from './noteBase.js';
 import { playNote } from './sound.js';
-import { throws } from 'assert';
 
 export const game = {
     noteProgress: 0,
-    noteValue: 60,
+    currentStaffItem: {},
     hitCount: 0,
     missCount: 0,
-    distanceFromMG: 0,
     points: 0,
     paused: true,
     proposedValue: 0,
     missFallout: 0,
     hitAnimation: 0,
 
-    resetNote() {
+    proceedToNextStaffItem() {
         this.noteProgress = 0;
 
-        let newNote = noteBase.generateRandNote();
-
-        while (newNote === this.noteValue) {
-            newNote = noteBase.generateRandNote();
-        }
-
-        this.noteValue = newNote;
-        this.distanceFromMG = noteBase.calculateTonicDistanceFromMidG(game.noteValue);
-        console.log(`noteValue: ${this.noteValue}, ${this.getNextNote()}, distance=${this.distanceFromMG}`);
+        this.currentStaffItem = noteBase.generateNextStaffItem();
+        console.log(`currentStaffItem: ${JSON.stringify(this.currentStaffItem)}`);
     },
 
     getNextNote() {
-        return noteBase.noteToSymbol(this.noteValue);
+        return this.currentStaffItem.label;
     },
 
     hit() {
@@ -65,7 +56,7 @@ export const game = {
             return;
         }
 
-        if (noteBase.normalize(note) === noteBase.normalize(this.noteValue)) {
+        if (noteBase.normalize(note) === this.currentStaffItem.notes[0].normalized) {
             this.hit();
         } else {
             this.miss();
@@ -94,7 +85,7 @@ export const game = {
     unpause() {
         document.getElementById('helpme').disabled = false;
         this.paused = false;
-        this.resetNote();
+        this.proceedToNextStaffItem();
     },
 
     updateProgress() {
@@ -106,7 +97,7 @@ export const game = {
             this.hitAnimation -= 0.018;
 
             if (this.hitAnimation <= 0) {
-                this.resetNote();
+                this.proceedToNextStaffItem();
             }
         } else {
             this.noteProgress += 0.002;
@@ -115,7 +106,7 @@ export const game = {
                 this.shootFallout = 1;
                 this.proposedValue = -1;
                 this.miss();
-                this.resetNote();
+                this.proceedToNextStaffItem();
             }
         }
 

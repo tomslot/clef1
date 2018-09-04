@@ -1,7 +1,7 @@
 import style from "./../style/_common.scss";
 
 import {game} from './game.js';
-import {noteBase} from './noteBase.js';
+import {Note, noteBase} from './noteBase.js';
 
 const DEFAULT_COLOR = style.COLOR3;
 const HINT_COLOR = style.COLOR3;
@@ -39,13 +39,12 @@ export const pentagram = {
 
     calcNoteY(note){
         const midGPos = this.topLineY + 3 * this.lineDistance;
-        const distanceFromMG = noteBase.calculateTonicDistanceFromMidG(note);
-        return midGPos - distanceFromMG * this.lineDistance / 2;
+        return midGPos - note.distanceFromMidG * this.lineDistance / 2;
     },
 
-    drawNote(ctx) {
+    drawNote(ctx, note) {
         let noteX = this.rightScoreEnd - game.noteProgress * (this.rightScoreEnd - this.leftScoreStart);
-        let noteY = this.calcNoteY(game.noteValue);
+        let noteY = this.calcNoteY(note);
 
         let redAmount = parseInt(Math.pow(game.noteProgress, 2) * 255);
         let noteColor = `rgb(${redAmount}, 0, 0)`;
@@ -79,14 +78,14 @@ export const pentagram = {
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(noteX + 8, noteY);
-        let dir = game.distanceFromMG > 4 ? -1 : 1;
+        let dir = note.distanceFromMidG > 4 ? -1 : 1;
         ctx.lineTo(noteX + 7, noteY - 55 * dir);
         ctx.closePath();
         ctx.stroke();
         ctx.restore();
         ctx.beginPath();
 
-        if (game.distanceFromMG === -4 || game.distanceFromMG === 8) {
+        if (note.distanceFromMidG === -4 || note.distanceFromMidG === 8) {
             ctx.moveTo(noteX - 20, noteY);
             ctx.lineTo(noteX + 20, noteY);
         }
@@ -134,16 +133,17 @@ export const pentagram = {
             ctx.lineWidth = 4;
             ctx.globalAlpha = game.shootFallout * 0.4;
 
-            let note = noteBase.normalize(game.proposedValue);
+            let noteValue = noteBase.normalize(game.proposedValue);
 
-            while (note <= noteBase.VISIBLE_MIDI_CODE_MAX){
-                if (note >= noteBase.VISIBLE_MIDI_CODE_MIN){
-                    ctx.strokeStyle = (note === game.proposedValue) ? "#E11347": "#E4847D";
+            while (noteValue <= noteBase.VISIBLE_MIDI_CODE_MAX){
+                if (noteValue >= noteBase.VISIBLE_MIDI_CODE_MIN){
+                    ctx.strokeStyle = (noteValue === game.proposedValue) ? "#E11347": "#E4847D";
+                    const note = new Note(noteValue);
                     const y = this.calcNoteY(note);
                     this.drawLine(ctx, y);
                 }
 
-                note += 12;
+                noteValue += 12;
             }
 
         ctx.restore();
@@ -165,7 +165,8 @@ export const pentagram = {
         if (game.paused) {
             this.drawPaused(ctx);
         } else {
-            this.drawNote(ctx);
+            this.drawNote(ctx, game.currentStaffItem.notes[0]);
+
             if (game.shootFallout > 0){
                 this.drawShootFallout(ctx);
             } else {

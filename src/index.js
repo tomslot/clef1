@@ -12,7 +12,9 @@ import { drawCircle } from './code/circleOfFifths.js';
 let canvasElem = document.getElementById('score_canvas');
 
 window.help = () => {
-    hightlightKey(game.noteValue);
+    for (const note of game.currentStaffItem.notes){
+        hightlightKey(note.midiValue);
+    }
 };
 
 window.onload = () => {
@@ -52,7 +54,7 @@ window.onload = () => {
 
     drawKeyboard();
     drawCircle();
-    game.resetNote();
+    game.proceedToNextStaffItem();
     window.requestAnimationFrame(animate);
 
     midiController.start();

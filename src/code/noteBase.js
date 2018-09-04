@@ -1,3 +1,11 @@
+export class Note{
+    constructor(midiValue){
+        this.midiValue = midiValue;
+        this.normalized = midiValue % 12;
+        this.distanceFromMidG = noteBase.calculateTonicDistanceFromMidG(midiValue);
+    }
+}
+
 export const noteBase = {
     VISIBLE_MIDI_CODE_MIN: 48,
     VISIBLE_MIDI_CODE_MAX: 70,
@@ -57,9 +65,14 @@ export const noteBase = {
         return this.solphageMap[this.normalize(noteVal)];
     },
 
-    generateRandNote() {
-        //return parseInt(50);
-        return this.singleRandomNoteFromCurrentPalette();
+    generateNextStaffItem() {
+        let note = new Note(this.singleRandomNoteFromCurrentPalette());
+        let label = this.noteToSymbol(note.midiValue);
+
+        return {
+            label: label,
+            notes: [note]
+        };
     },
 
     calculateTonicDistanceFromMidG(noteValue) {
