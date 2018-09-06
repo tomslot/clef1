@@ -1,6 +1,16 @@
 import { noteBase } from './noteBase.js';
 import { playNote } from './sound.js';
 
+function isStaffItemFullyResolved(staffItem){
+    for (const note of staffItem.notes){
+        if (!note.hit){
+            return false;
+        }
+    }
+
+    return true;
+}
+
 export const game = {
     noteProgress: 0,
     currentStaffItem: {},
@@ -26,7 +36,10 @@ export const game = {
     hit() {
         this.hitCount++;
         this.points += 1 + parseInt((1 - this.noteProgress) * 10);
-        this.hitAnimation = 1;
+
+        if (isStaffItemFullyResolved(this.currentStaffItem)){
+            this.hitAnimation = 1;
+        }
     },
 
     miss() {
@@ -38,15 +51,28 @@ export const game = {
         }
     },
 
-    shoot(note) {
+    matchAnyChordNote(staffItem, noteValue){
+        const normalizedNoteValue = noteBase.normalize(noteValue);
+
+        for (const note of staffItem.notes){
+            if (!note.hit && note.normalized === normalizedNoteValue){
+                note.hit = true;
+                return true;
+            }
+        }
+
+        return false;
+    },
+
+    shoot(noteValue) {
         if (this.paused) {
             game.unpause();
-            playNote(note);
+            playNote(noteValue);
             return;
         }
 
         try {
-            playNote(note);
+            playNote(noteValue);
         }
         catch (err) {
             alert(`Error playing sound ${err}`);
@@ -56,13 +82,13 @@ export const game = {
             return;
         }
 
-        if (noteBase.normalize(note) === this.currentStaffItem.notes[0].normalized) {
+        if (this.matchAnyChordNote(this.currentStaffItem, noteValue)) {
             this.hit();
         } else {
             this.miss();
         }
 
-        this.proposedValue = note;
+        this.proposedValue = noteValue;
         this.shootFallout = 1;
         let hitRate = parseInt(this.hitCount / (this.hitCount + this.missCount) * 100);
         let missesLabel = document.getElementById('hitRate');

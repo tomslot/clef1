@@ -3,6 +3,7 @@ export class Note{
         this.midiValue = midiValue;
         this.normalized = midiValue % 12;
         this.distanceFromMidG = noteBase.calculateTonicDistanceFromMidG(midiValue);
+        this.hit = false;
     }
 }
 
@@ -52,6 +53,26 @@ export const noteBase = {
         return this.currentNotePalette[randomNoteIndex];
     },
 
+    genRandomTriadChord(){
+        const numberOfNotesInPalette = this.currentNotePalette.length;
+        const randomRootNoteIndex = parseInt(Math.random() * (numberOfNotesInPalette - 5));
+    
+        const rootNote = new Note(this.currentNotePalette[randomRootNoteIndex]);
+        const thirdNote = new Note(this.currentNotePalette[randomRootNoteIndex + 2]);
+        const fifthNote = new Note(this.currentNotePalette[randomRootNoteIndex + 4]);
+    
+        const rootNoteLabel = this.noteToSymbol(rootNote.midiValue);
+        const thrirdDistance = thirdNote.midiValue - rootNote.midiValue;
+        const chordQuality = thrirdDistance == 4 ? 'Major' : 'Minor';
+        
+        let chordName = `${rootNoteLabel} ${chordQuality}`;
+    
+        return {
+            label: chordName,
+            notes: [rootNote, thirdNote, fifthNote]
+        };
+    },
+
     normalize(noteVal) {
         return noteVal % 12;
     },
@@ -66,13 +87,14 @@ export const noteBase = {
     },
 
     generateNextStaffItem() {
-        let note = new Note(this.singleRandomNoteFromCurrentPalette());
-        let label = this.noteToSymbol(note.midiValue);
+        return this.genRandomTriadChord();
+        // let note = new Note(this.singleRandomNoteFromCurrentPalette());
+        // let label = this.noteToSymbol(note.midiValue);
 
-        return {
-            label: label,
-            notes: [note]
-        };
+        // return {
+        //     label: label,
+        //     notes: [note]
+        // };
     },
 
     calculateTonicDistanceFromMidG(noteValue) {
@@ -96,3 +118,4 @@ export const noteBase = {
 };
 
 noteBase.createNotePalette();
+

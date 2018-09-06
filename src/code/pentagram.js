@@ -7,6 +7,7 @@ const DEFAULT_COLOR = style.COLOR3;
 const HINT_COLOR = style.COLOR3;
 const SHADOW_COLOR = style.COLOR3;
 const PAUSE_COLOR =  "#E11347"; //style.COLOR5;
+const HIT_CHORD_NOTE_COLOR = "#70A070";
 
 export const pentagram = {
     margin: 25,
@@ -42,12 +43,22 @@ export const pentagram = {
         return midGPos - note.distanceFromMidG * this.lineDistance / 2;
     },
 
-    drawNote(ctx, note) {
+    drawStaffItem(ctx, staffItem) {
+        for (const note of staffItem.notes){
+            this.drawNote(ctx, note);
+        }
+    },
+
+    drawNote(ctx, note){
         let noteX = this.rightScoreEnd - game.noteProgress * (this.rightScoreEnd - this.leftScoreStart);
         let noteY = this.calcNoteY(note);
 
-        let redAmount = parseInt(Math.pow(game.noteProgress, 2) * 255);
-        let noteColor = `rgb(${redAmount}, 0, 0)`;
+        let noteColor = HIT_CHORD_NOTE_COLOR;
+
+        if (!note.hit){
+            const redAmount = parseInt(Math.pow(game.noteProgress, 2) * 255);
+            noteColor = `rgb(${redAmount}, 0, 0)`;
+        }
 
         ctx.save();
 
@@ -165,7 +176,8 @@ export const pentagram = {
         if (game.paused) {
             this.drawPaused(ctx);
         } else {
-            this.drawNote(ctx, game.currentStaffItem.notes[0]);
+
+            this.drawStaffItem(ctx, game.currentStaffItem);
 
             if (game.shootFallout > 0){
                 this.drawShootFallout(ctx);
