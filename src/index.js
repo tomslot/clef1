@@ -4,7 +4,7 @@ import style1 from "./style/pianoKeyboard.scss";
 import style2 from "./style/style.scss";
 
 import { game } from './code/game.js';
-import { pentagram } from './code/draw/pentagram.js';
+import { staff } from './code/draw/staff.js';
 import { drawCircle } from './code/draw/circleOfFifths.js';
 import { midiController } from './code/io/midiController.js';
 import { drawKeyboard, hightlightKey } from './code/io/virtualKeyboard.js';
@@ -19,12 +19,12 @@ window.help = () => {
 
 window.onload = () => {
     window.game = game;
-    pentagram.gClefImage = new Image();
-    pentagram.gClefImage.src = require("./gfx/clefG_180.png");
+    staff.gClefImage = new Image();
+    staff.gClefImage.src = require("./gfx/clefG_180.png");
 
     function animate(timestamp) {
         let ctx = canvasElem.getContext("2d");
-        pentagram.draw(ctx);
+        staff.draw(ctx);
         game.updateProgress();
         window.requestAnimationFrame(animate);
     }

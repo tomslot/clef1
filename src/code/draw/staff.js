@@ -1,16 +1,16 @@
 import style from "./../../style/_common.scss";
 
-import {game} from './../game.js';
-import {Note, noteBase} from './../noteBase.js';
-import {staffMetrics} from './staffMetrics.js'
-import {staffItem} from './staffItem.js';
+import {game} from '../game';
+import {Note, noteBase} from '../noteBase';
+import {staffMetrics} from './staffMetrics'
+import {staffItem} from './staffItem';
 
 const DEFAULT_COLOR = style.COLOR3;
 const HINT_COLOR = style.COLOR3;
 const PAUSE_COLOR =  "#E11347";
 const MISS_LABEL_COLOR = "#E11347";
 
-export const pentagram = {
+export const staff = {
     gClefImage: null,
 
     drawLine(ctx, height) {
@@ -89,6 +89,7 @@ export const pentagram = {
             let y = staffMetrics.topLineY + i * staffMetrics.lineDistance;
             this.drawLine(ctx, y);
         }
+
         ctx.closePath();
 
         if (game.paused) {
