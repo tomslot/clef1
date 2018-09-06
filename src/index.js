@@ -4,10 +4,10 @@ import style1 from "./style/pianoKeyboard.scss";
 import style2 from "./style/style.scss";
 
 import { game } from './code/game.js';
-import { midiController } from './code/midiController.js';
 import { pentagram } from './code/draw/pentagram.js';
 import { drawCircle } from './code/draw/circleOfFifths.js';
-import { drawKeyboard, hightlightKey } from './code/virtualKeyboard.js';
+import { midiController } from './code/io/midiController.js';
+import { drawKeyboard, hightlightKey } from './code/io/virtualKeyboard.js';
 
 let canvasElem = document.getElementById('score_canvas');
 

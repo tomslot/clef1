@@ -1,5 +1,5 @@
 import { noteBase } from './noteBase.js';
-import { playNote } from './sound.js';
+import { playNote } from './io/sound.js';
 
 function isStaffItemFullyResolved(staffItem){
     for (const note of staffItem.notes){
