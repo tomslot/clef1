@@ -5,9 +5,9 @@ import style2 from "./style/style.scss";
 
 import { game } from './code/game.js';
 import { midiController } from './code/midiController.js';
-import { pentagram } from './code/pentagram.js';
+import { pentagram } from './code/draw/pentagram.js';
+import { drawCircle } from './code/draw/circleOfFifths.js';
 import { drawKeyboard, hightlightKey } from './code/virtualKeyboard.js';
-import { drawCircle } from './code/circleOfFifths.js';
 
 let canvasElem = document.getElementById('score_canvas');
 
