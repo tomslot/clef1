@@ -1,4 +1,4 @@
-import {noteBase} from './../noteBase.js';
+import {noteBase} from '../theory/noteBase.js';
 
 // const noteValues = {
 //     'C0': 16.35,

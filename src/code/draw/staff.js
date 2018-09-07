@@ -1,7 +1,7 @@
 import style from "./../../style/_common.scss";
 
 import {game} from '../game';
-import {Note, noteBase} from '../noteBase';
+import {Note, noteBase} from '../theory/noteBase';
 import {staffMetrics} from './staffMetrics'
 import {staffItem} from './staffItem';
 

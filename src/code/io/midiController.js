@@ -1,4 +1,4 @@
-import { noteBase } from './../noteBase.js';
+import { noteBase } from '../theory/noteBase.js';
 import { game } from './../game.js';
 import { hightlightKey } from './virtualKeyboard.js';
 

@@ -1,4 +1,4 @@
-import { noteBase } from './../noteBase.js';
+import { noteBase } from '../theory/noteBase.js';
 const KEY_WIDTH = 44;
 
 const SIZE = {

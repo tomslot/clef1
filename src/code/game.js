@@ -1,4 +1,5 @@
-import { noteBase } from './noteBase.js';
+import { noteBase } from './theory/noteBase.js';
+import { staffItemGenerator } from './theory/staffItemGenerators';
 import { playNote } from './io/sound.js';
 
 function isStaffItemFullyResolved(staffItem){
@@ -25,7 +26,7 @@ export const game = {
     proceedToNextStaffItem() {
         this.noteProgress = 0;
 
-        this.currentStaffItem = noteBase.generateNextStaffItem();
+        this.currentStaffItem = staffItemGenerator.current.generate();
         console.log(`currentStaffItem: ${JSON.stringify(this.currentStaffItem)}`);
     },
 

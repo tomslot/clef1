@@ -1,5 +1,5 @@
 import style from "./../../style/_common.scss";
-import {noteBase} from './../noteBase.js';
+import {noteBase} from '../theory/noteBase.js';
 
 const COLOR1 = "hsl(34, 41%, 98%)";
 const COLOR2 = "#ACB6BD";
