@@ -26,7 +26,7 @@ export const game = {
     proceedToNextStaffItem() {
         this.noteProgress = 0;
 
-        this.currentStaffItem = staffItemGenerator.current.generate();
+        this.currentStaffItem = staffItemGenerator.generate();
         console.log(`currentStaffItem: ${JSON.stringify(this.currentStaffItem)}`);
     },
 

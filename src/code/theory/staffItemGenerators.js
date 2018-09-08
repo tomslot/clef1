@@ -46,11 +46,24 @@ const randomTriadChordFromCurrentScale = {
 export const staffItemGenerator = {
     map: {0 : singleRandomNoteFromCurrentScale, 1 : randomTriadChordFromCurrentScale},
     current: singleRandomNoteFromCurrentScale,
+    previouslyGeneratedRoot: -1,
 
     selectByIndex(index){
         this.current = this.map[index];
         game.proceedToNextStaffItem();
         console.log(`selected: ${this.current.label}`);
+    },
+
+    generate(){
+        let staffItem;
+
+        do {
+            staffItem = this.current.generate();
+        } 
+        while (staffItem.notes[0].midiValue === this.previouslyGeneratedRoot);
+
+        this.previouslyGeneratedRoot = staffItem.notes[0].midiValue;
+        return staffItem;
     }
 };
 
