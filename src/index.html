@@ -25,18 +25,30 @@
 
       <div class="dataBlock">
         <label for="points">Points:</label>
-        <input type="text" readonly class="form-control-plaintext" id="points" value="0">
+        <input type="text" readonly  id="points" value="0">
       </div>
 
       <div class="dataBlock">
         <label for="hitRate">Hitrate:</label>
-        <input type="text" readonly class="form-control-plaintext" id="hitRate" value="0%">
+        <input type="text" readonly id="hitRate" value="0%">
       </div>
 
       <div class="dataBlock">
-        <label for="connectedDevice" class="col-sm-2 col-form-label">MIDI Device:</label>
+        <label for="scale">Scale:</label>
+        <select id="scale">
+          <option value="0">C Major</option>
+        </select>
+      </div>
 
-        <input type="text" readonly class="form-control-plaintext" id="connectedDevice" value="none">
+      <div class="dataBlock">
+        <label for="exercise">Exercise:</label>
+        <select id="exercise"></select>
+      </div>
+
+      <div class="dataBlock">
+        <label for="connectedDevice">MIDI Device:</label>
+
+        <input type="text" readonly id="connectedDevice" value="none">
       </div>
     </div>
   </div>

@@ -1,19 +1,25 @@
 import { scale } from './scale.js';
 import {Note, noteBase} from './noteBase.js';
+import {game} from '../game.js';
 
-export const singleRandomNoteFromCurrentScale = {
-    label: 'Single Random Note From Current Scale',
+const singleRandomNoteFromCurrentScale = {
+    label: 'Single Random Note',
 
     generate: () => {
         const currentNotePalette = scale.current.notePalette;
         const numberOfNotesInPalette = currentNotePalette.length;
         const randomNoteIndex = parseInt(Math.random() * numberOfNotesInPalette);
-        return currentNotePalette[randomNoteIndex];
+        const noteValue = currentNotePalette[randomNoteIndex];
+
+        return {
+            label: noteBase.noteToSymbol(noteValue),
+            notes: [new Note(noteValue)]
+        }
     }
 }
 
-export const randomTriadChordFromCurrentScale = {
-    label: 'Random Triad Chord From Current Scale',
+const randomTriadChordFromCurrentScale = {
+    label: 'Random Triad Chord',
 
     generate: () => {
         const currentNotePalette = scale.current.notePalette;
@@ -38,5 +44,35 @@ export const randomTriadChordFromCurrentScale = {
 }
 
 export const staffItemGenerator = {
-    current: randomTriadChordFromCurrentScale
+    map: {0 : singleRandomNoteFromCurrentScale, 1 : randomTriadChordFromCurrentScale},
+    current: singleRandomNoteFromCurrentScale,
+
+    selectByIndex(index){
+        this.current = this.map[index];
+        game.proceedToNextStaffItem();
+        console.log(`selected: ${this.current.label}`);
+    }
 };
+
+function createSelectOptions(){
+    const exerciseElem = document.getElementById('exercise');
+    const keys = Object.keys(staffItemGenerator.map).sort();
+
+    for (const key of keys){
+        const generator = staffItemGenerator.map[key];
+        const optionElem = document.createElement("option");
+        const txtNode = document.createTextNode(generator.label);
+        optionElem.appendChild(txtNode);
+        const attr = document.createAttribute("value");
+        attr.value = key;
+        optionElem.setAttributeNode(attr);
+        exerciseElem.appendChild(optionElem);
+    }
+
+    exerciseElem.onchange = () => {
+        const sel = exerciseElem.value;
+        staffItemGenerator.selectByIndex(sel);
+    }
+}
+
+createSelectOptions();
