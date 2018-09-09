@@ -7,6 +7,21 @@ const SHADOW_COLOR = style.COLOR3;
 const NOTE_TAIL_SIZE = 55;
 
 export const staffItem = {
+
+    calcCenterOfGravityY(item){
+        if (item.centreOfGravityY){
+            return item.centreOfGravityY;
+        }
+
+        const firstNote = item.notes[0];
+        const lastNote = item.notes[item.notes.length - 1];
+
+        const firstY = staffMetrics.calcNoteY(firstNote);
+        const lastY = staffMetrics.calcNoteY(lastNote);
+        item.centreOfGravityY = (firstY + lastY) / 2;
+        return item.centreOfGravityY;
+    },
+
     draw(ctx, item) {
         const staffWidth = staffMetrics.rightScoreEnd - staffMetrics.leftScoreStart;
         const noteX = staffMetrics.rightScoreEnd - game.noteProgress * staffWidth;
@@ -23,10 +38,11 @@ export const staffItem = {
 
             if (game.hitAnimation > 0){
                 const shift = (1 - game.hitAnimation) * 150;
+                const centerOfGravityY = this.calcCenterOfGravityY(item);
                 ctx.translate(shift, -1 * shift);
-                ctx.translate(noteX, staffMetrics.midGPos);
+                ctx.translate(noteX, centerOfGravityY);
                 ctx.rotate((1 - game.hitAnimation) * Math.PI);
-                ctx.translate(-1 * noteX, -1 * staffMetrics.midGPos);
+                ctx.translate(-1 * noteX, -1 * centerOfGravityY);
             }
 
             this.drawTail(ctx, item, noteX);
