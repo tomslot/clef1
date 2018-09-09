@@ -9,7 +9,10 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
+          loader: "babel-loader",
+          query: {
+            presets: ['env']
+          }
         }
       },
       {
@@ -53,8 +56,8 @@ module.exports = {
       filename: "./index.html"
     }),
     new CopyWebpackPlugin([
-      {from:'static',to:'./'} 
-  ]), 
+      { from: 'static', to: './' }
+    ]),
   ],
   optimization: {
     minimizer: [
