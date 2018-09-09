@@ -1,8 +1,12 @@
 import {noteBase} from './noteBase.js';
+import {createSelectOptions} from '../ui/selectGenerator.js'; 
 
 class MajorScale {
     constructor(rootNoteValue){
-        this.label = `${noteBase.noteToSymbol(rootNoteValue)} Major`;
+        const majorKey = noteBase.noteToSymbol(rootNoteValue);
+        const pararellMinorKey = noteBase.noteToSymbol(rootNoteValue + 3 * 7);
+
+        this.label = `${majorKey}/${pararellMinorKey}m`;
         this.notes = [rootNoteValue];
         this.addNote(2);
         this.addNote(2);
@@ -28,6 +32,15 @@ class MajorScale {
     }
 }
 
-export const scale = {
-    current: new MajorScale(0)
-}
+const cMajorScale = new MajorScale(0);
+
+export const scaleGenerator = {
+    map: {0 : cMajorScale},
+    current: cMajorScale,
+
+    selectByIndex(index){
+        this.current = this.map[index];
+    }
+};
+
+createSelectOptions('scale', scaleGenerator);

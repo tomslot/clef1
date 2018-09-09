@@ -1,12 +1,13 @@
-import { scale } from './scale.js';
+import { scaleGenerator } from './scale.js';
 import {Note, noteBase} from './noteBase.js';
 import {game} from '../game.js';
+import {createSelectOptions} from '../ui/selectGenerator.js'; 
 
 const singleRandomNoteFromCurrentScale = {
     label: 'Single Random Note',
 
     generate: () => {
-        const currentNotePalette = scale.current.notePalette;
+        const currentNotePalette = scaleGenerator.current.notePalette;
         const numberOfNotesInPalette = currentNotePalette.length;
         const randomNoteIndex = parseInt(Math.random() * numberOfNotesInPalette);
         const noteValue = currentNotePalette[randomNoteIndex];
@@ -22,7 +23,7 @@ const randomTriadChordFromCurrentScale = {
     label: 'Random Triad Chord',
 
     generate: () => {
-        const currentNotePalette = scale.current.notePalette;
+        const currentNotePalette = scaleGenerator.current.notePalette;
         const numberOfNotesInPalette = currentNotePalette.length;
         const rootNoteIndex = parseInt(Math.random() * (numberOfNotesInPalette - 5));
 
@@ -67,25 +68,4 @@ export const staffItemGenerator = {
     }
 };
 
-function createSelectOptions(){
-    const exerciseElem = document.getElementById('exercise');
-    const keys = Object.keys(staffItemGenerator.map).sort();
-
-    for (const key of keys){
-        const generator = staffItemGenerator.map[key];
-        const optionElem = document.createElement("option");
-        const txtNode = document.createTextNode(generator.label);
-        optionElem.appendChild(txtNode);
-        const attr = document.createAttribute("value");
-        attr.value = key;
-        optionElem.setAttributeNode(attr);
-        exerciseElem.appendChild(optionElem);
-    }
-
-    exerciseElem.onchange = () => {
-        const sel = exerciseElem.value;
-        staffItemGenerator.selectByIndex(sel);
-    }
-}
-
-createSelectOptions();
+createSelectOptions('exercise', staffItemGenerator);
