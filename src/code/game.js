@@ -25,7 +25,7 @@ export const game = {
 
     proceedToNextStaffItem() {
         this.noteProgress = 0;
-
+        this.helpAutoTriggered = false;
         this.currentStaffItem = staffItemGenerator.generate();
         console.log(`currentStaffItem: ${JSON.stringify(this.currentStaffItem)}`);
     },
@@ -128,6 +128,11 @@ export const game = {
             }
         } else {
             this.noteProgress += 0.002;
+
+            if (this.noteProgress >= 0.85) {
+                this.helpAutoTriggered = true;
+                window.help();
+            }
 
             if (this.noteProgress >= 1) {
                 this.shootFallout = 1;
