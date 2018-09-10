@@ -129,7 +129,7 @@ export const game = {
         } else {
             this.noteProgress += 0.002;
 
-            if (this.noteProgress >= 0.85) {
+            if (this.noteProgress >= 0.8) {
                 this.helpAutoTriggered = true;
                 window.help();
             }

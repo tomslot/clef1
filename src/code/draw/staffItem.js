@@ -31,8 +31,8 @@ export const staffItem = {
             ctx.shadowOffsetY = 3;
             ctx.shadowColor = SHADOW_COLOR;
 
-            const redAmount = parseInt(Math.pow(game.noteProgress, 2) * 255);
-            const noteColor = `rgb(${redAmount}, 0, 0)`;
+            const redAmount = 0;//parseInt(Math.pow(game.noteProgress, 2) * 255);
+            const noteColor = "#333";//`rgb(${redAmount}, 0, 0)`;
             ctx.fillStyle = noteColor;
             ctx.strokeStyle = noteColor;
 
@@ -72,6 +72,7 @@ export const staffItem = {
             ctx.save();
                 let yScale = 0.6;
                 ctx.scale(1, yScale);
+                // ctx.rotate(Math.PI / 8);
                 ctx.beginPath();
                 ctx.arc(noteX, noteY / yScale, 9, 0, Math.PI * 4, false);
                 ctx.fill();
@@ -106,11 +107,12 @@ export const staffItem = {
             topY = staffMetrics.calcNoteY(bottomNote) + NOTE_TAIL_SIZE;
         }
 
+        const tailX = noteX - -1 * dir * 8; 
         ctx.save();
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.moveTo(noteX + 8, bottomY);
-            ctx.lineTo(noteX + 7, topY);
+            ctx.moveTo(tailX, bottomY);
+            ctx.lineTo(tailX, topY);
             ctx.closePath();
             ctx.stroke();
         ctx.restore();
