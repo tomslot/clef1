@@ -1,8 +1,8 @@
-import {noteBase} from './noteBase.js';
-import {createSelectOptions} from '../ui/selectGenerator.js'; 
+import { noteBase } from './noteBase.js';
+import { createSelectOptions } from '../ui/selectGenerator.js';
 
 class MajorScale {
-    constructor(rootNoteValue){
+    constructor(rootNoteValue) {
         const majorKey = noteBase.noteToSymbol(rootNoteValue);
         const pararellMinorKey = noteBase.noteToSymbol(rootNoteValue + 3 * 7);
 
@@ -17,8 +17,8 @@ class MajorScale {
 
         this.notePalette = [];
 
-        for (let i = noteBase.VISIBLE_MIDI_CODE_MIN; i <= noteBase.VISIBLE_MIDI_CODE_MAX; i ++){
-            if (this.notes.includes(i % 12)){
+        for (let i = noteBase.VISIBLE_MIDI_CODE_MIN; i <= noteBase.VISIBLE_MIDI_CODE_MAX; i++) {
+            if (this.notes.includes(i % 12)) {
                 this.notePalette.push(i);
             }
         }
@@ -26,20 +26,25 @@ class MajorScale {
         console.log(`created ${this.label} scale, palette contains ${this.notePalette.length} notes`);
     }
 
-    addNote(interval){
+    addNote(interval) {
         const noteValue = noteBase.normalize(this.notes[this.notes.length - 1] + interval);
         this.notes.push(noteValue);
     }
 }
 
 const cMajorScale = new MajorScale(0);
+const exoticScale = new MajorScale(6);
 
 export const scaleGenerator = {
-    map: {0 : cMajorScale},
+    map: {
+        0: cMajorScale,
+        // 7: exoticScale
+    },
     current: cMajorScale,
 
-    selectByIndex(index){
+    selectByIndex(index) {
         this.current = this.map[index];
+
     }
 };
 
