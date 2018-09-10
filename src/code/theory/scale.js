@@ -1,4 +1,5 @@
 import { noteBase } from './noteBase.js';
+import { game } from '../game.js'
 import { createSelectOptions } from '../ui/selectGenerator.js';
 
 class MajorScale {
@@ -44,7 +45,7 @@ export const scaleGenerator = {
 
     selectByIndex(index) {
         this.current = this.map[index];
-
+        game.proceedToNextStaffItem();
     }
 };
 

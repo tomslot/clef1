@@ -33,7 +33,12 @@ const randomTriadChordFromCurrentScale = {
 
         const rootNoteLabel = noteBase.noteToSymbol(rootNote.midiValue);
         const thrirdDistance = thirdNote.midiValue - rootNote.midiValue;
-        const chordQuality = thrirdDistance == 4 ? 'Major' : 'Minor';
+        let chordQuality = 'Major';
+
+        if (thrirdDistance !== 4){
+            const thirdToFifthDistance = fifthNote.midiValue - thirdNote.midiValue;
+            chordQuality = thirdToFifthDistance === 4 ? 'Minor' : 'Diminished';
+        }
 
         let chordName = `${rootNoteLabel} ${chordQuality}`;
 

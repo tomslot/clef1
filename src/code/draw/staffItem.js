@@ -63,14 +63,14 @@ export const staffItem = {
 
             if (note.distanceFromMidG === -4 || note.distanceFromMidG === 8) {
                 ctx.beginPath();
-                ctx.moveTo(noteX - 20, noteY);
-                ctx.lineTo(noteX + 20, noteY);
+                ctx.moveTo(noteX - 16, noteY);
+                ctx.lineTo(noteX + 16, noteY);
                 ctx.stroke();
                 ctx.closePath();
             }
 
             ctx.save();
-                let yScale = 0.75;
+                let yScale = 0.6;
                 ctx.scale(1, yScale);
                 ctx.beginPath();
                 ctx.arc(noteX, noteY / yScale, 9, 0, Math.PI * 4, false);
@@ -85,7 +85,7 @@ export const staffItem = {
             ctx.font = `38px Oswald`;
             ctx.textAlign = "left";
             ctx.textBaseline = "middle";
-            ctx.fillText(note.accidental, noteX - 30, noteY - staffMetrics.lineDistance / 2);
+            ctx.fillText(note.accidental, noteX - 34, noteY - staffMetrics.lineDistance / 2);
             ctx.restore();
         }
     },

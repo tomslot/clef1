@@ -32,6 +32,8 @@ window.onload = () => {
     document.addEventListener('keypress', (event) => {
         if (event.key === ' ') {
             game.togglePaused();
+        } else if (event.key.toUpperCase() === 'H'){
+            window.help();
         }
     });
 
