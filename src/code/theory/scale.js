@@ -38,7 +38,7 @@ const exoticScale = new MajorScale(6);
 export const scaleGenerator = {
     map: {
         0: cMajorScale,
-        // 7: exoticScale
+        7: exoticScale
     },
     current: cMajorScale,
 

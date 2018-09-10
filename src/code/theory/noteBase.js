@@ -2,6 +2,7 @@ export class Note{
     constructor(midiValue){
         this.midiValue = midiValue;
         this.normalized = midiValue % 12;
+        this.accidental = noteBase.isAccidental(midiValue) ? '♭' : null;
         this.distanceFromMidG = noteBase.calculateTonicDistanceFromMidG(midiValue);
         this.hit = false;
     }
@@ -9,7 +10,7 @@ export class Note{
 
 export const noteBase = {
     VISIBLE_MIDI_CODE_MIN: 48,
-    VISIBLE_MIDI_CODE_MAX: 70,
+    VISIBLE_MIDI_CODE_MAX: 69,
 
     solphageMap: {
         0: 'C',

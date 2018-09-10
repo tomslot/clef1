@@ -79,6 +79,15 @@ export const staffItem = {
                 ctx.closePath();
             ctx.restore();
         ctx.restore();
+
+        if (note.accidental){
+            ctx.save();
+            ctx.font = `38px Oswald`;
+            ctx.textAlign = "left";
+            ctx.textBaseline = "middle";
+            ctx.fillText(note.accidental, noteX - 30, noteY - staffMetrics.lineDistance / 2);
+            ctx.restore();
+        }
     },
 
     drawTail(ctx, item, noteX){
