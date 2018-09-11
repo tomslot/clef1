@@ -31,8 +31,7 @@ export const staffItem = {
             ctx.shadowOffsetY = 3;
             ctx.shadowColor = SHADOW_COLOR;
 
-            const redAmount = 0;//parseInt(Math.pow(game.noteProgress, 2) * 255);
-            const noteColor = "#333";//`rgb(${redAmount}, 0, 0)`;
+            const noteColor = "#333";
             ctx.fillStyle = noteColor;
             ctx.strokeStyle = noteColor;
 
@@ -83,7 +82,7 @@ export const staffItem = {
 
         if (note.accidental){
             ctx.save();
-            ctx.font = `38px Oswald`;
+            ctx.font = `34px Oswald`;
             ctx.textAlign = "left";
             ctx.textBaseline = "middle";
             ctx.fillText(note.accidental, noteX - 34, noteY - staffMetrics.lineDistance / 2);
