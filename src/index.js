@@ -12,6 +12,7 @@ import { drawKeyboard, hightlightKey } from './code/io/virtualKeyboard.js';
 let canvasElem = document.getElementById('score_canvas');
 
 window.help = () => {
+    console.log('help()');
     for (const note of game.currentStaffItem.notes){
         hightlightKey(note.midiValue);
     }
