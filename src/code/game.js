@@ -1,6 +1,7 @@
 import { noteBase } from './theory/noteBase.js';
 import { staffItemGenerator } from './theory/staffItemGenerators';
 import { playNote } from './io/sound.js';
+import { staffItem} from './draw/staffItem.js';
 
 function isStaffItemFullyResolved(staffItem){
     for (const note of staffItem.notes){
@@ -22,12 +23,18 @@ export const game = {
     proposedValue: 0,
     missFallout: 0,
     hitAnimation: 0,
+    helpAutoTriggered: false,
 
     proceedToNextStaffItem() {
         this.noteProgress = 0;
         this.helpAutoTriggered = false;
         this.currentStaffItem = staffItemGenerator.generate();
+        this.renderStaffItem();
         console.log(`currentStaffItem: ${JSON.stringify(this.currentStaffItem)}`);
+    },
+
+    renderStaffItem(){
+        staffItem.render(this.currentStaffItem);
     },
 
     getNextNote() {
@@ -35,6 +42,7 @@ export const game = {
     },
 
     hit() {
+        this.renderStaffItem();
         this.hitCount++;
         this.points += 1 + parseInt((1 - this.noteProgress) * 10);
 

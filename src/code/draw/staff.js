@@ -96,7 +96,7 @@ export const staff = {
             this.drawPaused(ctx);
         } else {
             staffItem.draw(ctx, game.currentStaffItem);
-
+        
             if (game.shootFallout > 0){
                 this.drawShootFallout(ctx);
             } else {
