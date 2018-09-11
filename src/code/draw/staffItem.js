@@ -4,7 +4,6 @@ import {staffMetrics} from './staffMetrics.js';
 import {game} from "../game";
 
 const HIT_CHORD_NOTE_COLOR = "#70A070";
-const SHADOW_COLOR = style.COLOR3;
 const NOTE_TAIL_SIZE = 55;
 const OFFSCREEN_IMG_WIDTH = 80;
 const noteX = OFFSCREEN_IMG_WIDTH / 2;
@@ -26,8 +25,9 @@ export const staffItem = {
     },
 
     draw(ctx, item){
-        const staffWidth = staffMetrics.rightScoreEnd - staffMetrics.leftScoreStart;
+        const staffWidth = staffMetrics.rightScoreEnd;
         const x = staffMetrics.rightScoreEnd - game.noteProgress * staffWidth;
+        let y = 0;
 
         ctx.save();
             if (game.hitAnimation > 0){
@@ -39,7 +39,11 @@ export const staffItem = {
                 ctx.translate(-1 * x, -1 * centerOfGravityY);
             }
 
-            ctx.drawImage(item.image, x , 0);
+            if (game.noteProgress > 0.9){
+                y = (game.noteProgress - 0.9) * 10 * staffMetrics.height;
+            }
+
+            ctx.drawImage(item.image, x , y);
         ctx.restore();
     },
 
@@ -56,11 +60,6 @@ export const staffItem = {
 
     renderOfflineStaffItemImage(ctx, item) {
         ctx.save();
-            ctx.shadowBlur = 5;
-            ctx.shadowOffsetX = 3;
-            ctx.shadowOffsetY = 3;
-            ctx.shadowColor = SHADOW_COLOR;
-
             const noteColor = "#333";
             ctx.fillStyle = noteColor;
             ctx.strokeStyle = noteColor;
@@ -129,7 +128,7 @@ export const staffItem = {
 
         const tailX = noteX - dir *  -8;
         ctx.save();
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(tailX, bottomY);
             ctx.lineTo(tailX, topY);
