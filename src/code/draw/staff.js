@@ -5,8 +5,8 @@ import {Note, noteBase} from '../theory/noteBase';
 import {staffMetrics} from './staffMetrics'
 import {staffItem} from './staffItem';
 
-const DEFAULT_COLOR = style.COLOR3;
-const HINT_COLOR = style.COLOR3;
+const DEFAULT_COLOR = "#444";
+const HINT_COLOR = DEFAULT_COLOR;
 const PAUSE_COLOR =  "#E11347";
 const MISS_LABEL_COLOR = "#E11347";
 
@@ -27,7 +27,7 @@ export const staff = {
 
     drawHint(ctx, opacity, hint, color = HINT_COLOR){
         ctx.save();
-            ctx.font = `bold 32px Oswald`;
+            ctx.font = `32px Oswald`;
             ctx.fillStyle = color;
             ctx.globalAlpha = opacity;
             ctx.textAlign = "center";
@@ -39,11 +39,11 @@ export const staff = {
         ctx.restore();
     },
 
-    drawNextNoteHint(ctx) {
+    drawStaffItemHint(ctx) {
         let hint = game.getNextNote();
-        const SHOW_HINT_AT = 0.5;
+        const SHOW_HINT_AT = 0.20;
         let opacity = game.noteProgress > SHOW_HINT_AT ? Math.pow((game.noteProgress - SHOW_HINT_AT) / SHOW_HINT_AT, 2) : 0;
-        this.drawHint(ctx, opacity, hint);
+        this.drawHint(ctx, opacity, hint, '#566b73');
     },
 
     drawPaused(ctx) {
@@ -100,7 +100,7 @@ export const staff = {
             if (game.shootFallout > 0){
                 this.drawShootFallout(ctx);
             } else {
-               this.drawNextNoteHint(ctx);
+               this.drawStaffItemHint(ctx);
             }
         }
 

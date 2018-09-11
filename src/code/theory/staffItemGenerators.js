@@ -1,7 +1,17 @@
 import { scaleGenerator } from './scale.js';
 import {Note, noteBase} from './noteBase.js';
 import {game} from '../game.js';
-import {createSelectOptions} from '../ui/selectGenerator.js'; 
+import {createSelectOptions} from '../ui/selectGenerator.js';
+
+const romanNumerals = {
+    1: 'I',
+    2: 'II',
+    3: 'III',
+    4: 'IV',
+    5: 'V',
+    6: 'VI',
+    7: 'VII'
+}
 
 const singleRandomNoteFromCurrentScale = {
     label: 'Single Random Note',
@@ -32,15 +42,17 @@ const randomTriadChordFromCurrentScale = {
         const fifthNote = new Note(currentNotePalette[rootNoteIndex + 4]);
 
         const rootNoteLabel = noteBase.noteToSymbol(rootNote.midiValue);
-        const thrirdDistance = thirdNote.midiValue - rootNote.midiValue;
+        const thirdDistance = thirdNote.midiValue - rootNote.midiValue;
+        const chordNumber = romanNumerals[scaleGenerator.current.degree(rootNote.normalized) + 1];
+
         let chordQuality = 'Major';
 
-        if (thrirdDistance !== 4){
+        if (thirdDistance !== 4){
             const thirdToFifthDistance = fifthNote.midiValue - thirdNote.midiValue;
             chordQuality = thirdToFifthDistance === 4 ? 'Minor' : 'Diminished';
         }
 
-        let chordName = `${rootNoteLabel} ${chordQuality}`;
+        let chordName = `${rootNoteLabel} ${chordQuality} (${chordNumber})`;
 
         return {
             label: chordName,

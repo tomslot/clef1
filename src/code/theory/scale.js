@@ -31,6 +31,16 @@ class MajorScale {
         const noteValue = noteBase.normalize(this.notes[this.notes.length - 1] + interval);
         this.notes.push(noteValue);
     }
+
+    degree(noteValue){
+        for (let i = 0; i < this.notes.length; i ++){
+            if (this.notes[i] === noteValue){
+                return i;
+            }
+        }
+
+        return null;
+    }
 }
 
 const cMajorScale = new MajorScale(0);

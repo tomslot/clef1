@@ -135,7 +135,7 @@ export const game = {
                 this.proceedToNextStaffItem();
             }
         } else {
-            this.noteProgress += 0.002;
+            this.noteProgress += 0.0013;
 
             if (this.noteProgress >= 0.8) {
                 this.helpAutoTriggered = true;
