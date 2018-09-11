@@ -87,10 +87,6 @@ export const game = {
             alert(`Error playing sound ${err}`);
         }
 
-        if (this.shootFallout > 0) {
-            return;
-        }
-
         if (this.matchAnyChordNote(this.currentStaffItem, noteValue)) {
             this.hit();
         } else {
