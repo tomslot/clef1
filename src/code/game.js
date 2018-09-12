@@ -2,6 +2,7 @@ import { noteBase } from './theory/noteBase.js';
 import { staffItemGenerator } from './theory/staffItemGenerators';
 import { playNote } from './io/sound.js';
 import { staffItem} from './draw/staffItem.js';
+import { config } from './config.js';
 
 function isStaffItemFullyResolved(staffItem){
     for (const note of staffItem.notes){
@@ -133,7 +134,7 @@ export const game = {
         } else {
             this.noteProgress += 0.0013;
 
-            if (!this.helpAutoTriggered && this.noteProgress >= 0.8) {
+            if (!this.helpAutoTriggered && this.noteProgress >= config.autoTriggerHelpAt) {
                 this.helpAutoTriggered = true;
                 window.help();
             }

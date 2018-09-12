@@ -8,13 +8,14 @@ import { staff } from './code/draw/staff.js';
 import { drawCircle } from './code/draw/circleOfFifths.js';
 import { midiController } from './code/io/midiController.js';
 import { drawKeyboard, hightlightKey } from './code/io/virtualKeyboard.js';
+import {config} from "./code/config";
 
 let canvasElem = document.getElementById('score_canvas');
 
 window.help = () => {
     console.log('help()');
     for (const note of game.currentStaffItem.notes){
-        hightlightKey(note.midiValue);
+        hightlightKey(note.midiValue, config.hideHelpAfterMs);
     }
 };
 

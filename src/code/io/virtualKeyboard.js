@@ -1,4 +1,5 @@
 import { noteBase } from '../theory/noteBase.js';
+
 const KEY_WIDTH = 44;
 
 const SIZE = {
@@ -54,19 +55,17 @@ export function drawKeyboard() {
     SIZE.lastNote = midiCode;
 }
 
-export function hightlightKey(note, exact = false) {
-    if (!exact) {
-        if (note >= SIZE.lastNote){
-            do {
-                note -= 12;
-            } while (note >= SIZE.lastNote && note > 0);
-        }
-        
-        if (note < SIZE.startNote){
-            do {
-                note += 12;
-            } while (note < SIZE.startNote && note < SIZE.lastNote);
-        }
+export function hightlightKey(note, timeout = 500) {
+    if (note >= SIZE.lastNote) {
+        do {
+            note -= 12;
+        } while (note >= SIZE.lastNote && note > 0);
+    }
+
+    if (note < SIZE.startNote) {
+        do {
+            note += 12;
+        } while (note < SIZE.startNote && note < SIZE.lastNote);
     }
 
     let anchor = document.querySelector(`[data-midi="${note}"]`);
@@ -76,6 +75,6 @@ export function hightlightKey(note, exact = false) {
 
         window.setTimeout(() => {
             anchor.classList.remove('active');
-        }, 500);
+        }, timeout);
     }
 }

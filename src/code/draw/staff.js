@@ -4,6 +4,7 @@ import {game} from '../game';
 import {Note, noteBase} from '../theory/noteBase';
 import {staffMetrics} from './staffMetrics'
 import {staffItem} from './staffItem';
+import {config} from "../config.js";
 
 const DEFAULT_COLOR = "#444";
 const HINT_COLOR = DEFAULT_COLOR;
@@ -41,7 +42,7 @@ export const staff = {
 
     drawStaffItemHint(ctx) {
         let hint = game.getNextNote();
-        const SHOW_HINT_AT = 0.20;
+        const SHOW_HINT_AT = config.showStaffItemHintAt;
         let opacity = game.noteProgress > SHOW_HINT_AT ? Math.pow((game.noteProgress - SHOW_HINT_AT) / SHOW_HINT_AT, 2) : 0;
         this.drawHint(ctx, opacity, hint, '#566b73');
     },
