@@ -5,6 +5,7 @@ import { createSelectOptions } from '../ui/selectGenerator.js';
 class MajorScale {
     constructor(rootNoteValue) {
         const majorKey = noteBase.noteToSymbol(rootNoteValue);
+        this.sharpVsFlat = noteBase.defaultSharpVsFlatForNote(rootNoteValue);
         const pararellMinorKey = noteBase.noteToSymbol(rootNoteValue + 3 * 7);
 
         this.label = `${majorKey}/${pararellMinorKey}m`;
@@ -24,7 +25,7 @@ class MajorScale {
             }
         }
 
-        console.log(`created ${this.label} scale, palette contains ${this.notePalette.length} notes`);
+        console.log(`created ${this.label} scale, palette contains ${this.notePalette.length} notes, sharpVsFlat: ${this.sharpVsFlat}`);
     }
 
     addNote(interval) {
@@ -44,11 +45,13 @@ class MajorScale {
 }
 
 const cMajorScale = new MajorScale(0);
+const eMajorScale = new MajorScale(4);
 const exoticScale = new MajorScale(6);
 
 export const scaleGenerator = {
     map: {
         0: cMajorScale,
+        4: eMajorScale,
         7: exoticScale
     },
     current: cMajorScale,

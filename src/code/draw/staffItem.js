@@ -102,10 +102,10 @@ export const staffItem = {
 
         if (note.accidental){
             ctx.save();
-            ctx.font = `34px Oswald`;
+            ctx.font = `30px Oswald`;
             ctx.textAlign = "left";
             ctx.textBaseline = "middle";
-            ctx.fillText(note.accidental, noteX - 34, noteY - staffMetrics.lineDistance / 2);
+            ctx.fillText(note.accidental, noteX - 30, noteY - staffMetrics.lineDistance / 2 + 3);
             ctx.restore();
         }
     },

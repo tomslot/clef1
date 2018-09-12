@@ -3,7 +3,7 @@ import {Note, noteBase} from './noteBase.js';
 import {game} from '../game.js';
 import {createSelectOptions} from '../ui/selectGenerator.js';
 
-const romanNumerals = {
+const ROMAN_NUMERALS = {
     1: 'I',
     2: 'II',
     3: 'III',
@@ -21,10 +21,11 @@ const singleRandomNoteFromCurrentScale = {
         const numberOfNotesInPalette = currentNotePalette.length;
         const randomNoteIndex = parseInt(Math.random() * numberOfNotesInPalette);
         const noteValue = currentNotePalette[randomNoteIndex];
+        const sharpVsFlat = scaleGenerator.current.sharpVsFlat;
 
         return {
-            label: noteBase.noteToSymbol(noteValue),
-            notes: [new Note(noteValue)]
+            label: noteBase.noteToSymbol(noteValue, sharpVsFlat),
+            notes: [new Note(noteValue, sharpVsFlat)]
         }
     }
 }
@@ -37,13 +38,14 @@ const randomTriadChordFromCurrentScale = {
         const numberOfNotesInPalette = currentNotePalette.length;
         const rootNoteIndex = parseInt(Math.random() * (numberOfNotesInPalette - 5));
 
-        const rootNote = new Note(currentNotePalette[rootNoteIndex]);
-        const thirdNote = new Note(currentNotePalette[rootNoteIndex + 2]);
-        const fifthNote = new Note(currentNotePalette[rootNoteIndex + 4]);
+        const sharpVsFlat = scaleGenerator.current.sharpVsFlat;
 
-        const rootNoteLabel = noteBase.noteToSymbol(rootNote.midiValue);
+        const rootNote = new Note(currentNotePalette[rootNoteIndex], sharpVsFlat);
+        const thirdNote = new Note(currentNotePalette[rootNoteIndex + 2], sharpVsFlat);
+        const fifthNote = new Note(currentNotePalette[rootNoteIndex + 4], sharpVsFlat);
+
         const thirdDistance = thirdNote.midiValue - rootNote.midiValue;
-        const chordNumber = romanNumerals[scaleGenerator.current.degree(rootNote.normalized) + 1];
+        const chordNumber = ROMAN_NUMERALS[scaleGenerator.current.degree(rootNote.normalized) + 1];
 
         let chordQuality = 'Major';
 
@@ -52,7 +54,7 @@ const randomTriadChordFromCurrentScale = {
             chordQuality = thirdToFifthDistance === 4 ? 'Minor' : 'Diminished';
         }
 
-        let chordName = `${rootNoteLabel} ${chordQuality} (${chordNumber})`;
+        let chordName = `${rootNote.symbol} ${chordQuality} (${chordNumber})`;
 
         return {
             label: chordName,

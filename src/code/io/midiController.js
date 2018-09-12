@@ -22,7 +22,7 @@ export const midiController = {
 
         if ((data[0] & 0xF0) === 0x90) {
             let note = data[1];
-            console.log(`note ${note}, ${noteBase.noteToSymbol(note)}, data[0]=${data[0]}`);
+            console.log(`note ${note}}, data[0]=${data[0]}`);
             game.shoot(note);
             hightlightKey(note);
         }

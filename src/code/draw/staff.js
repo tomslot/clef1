@@ -5,6 +5,7 @@ import {Note, noteBase} from '../theory/noteBase';
 import {staffMetrics} from './staffMetrics'
 import {staffItem} from './staffItem';
 import {config} from "../config.js";
+import {scaleGenerator} from "../theory/scale";
 
 const DEFAULT_COLOR = "#444";
 const HINT_COLOR = DEFAULT_COLOR;
@@ -57,7 +58,9 @@ export const staff = {
             return;
         }
 
-        this.drawHint(ctx, game.shootFallout,  noteBase.noteToSymbol(game.proposedValue));
+        const sharpVsFlat = scaleGenerator.current.sharpVsFlat;
+
+        this.drawHint(ctx, game.shootFallout,  noteBase.noteToSymbol(game.proposedValue, sharpVsFlat));
 
         ctx.save();      
             ctx.lineWidth = 4;
@@ -68,7 +71,7 @@ export const staff = {
             while (noteValue <= noteBase.VISIBLE_MIDI_CODE_MAX){
                 if (noteValue >= noteBase.VISIBLE_MIDI_CODE_MIN){
                     ctx.strokeStyle = (noteValue === game.proposedValue) ? "#E11347": "#E4847D";
-                    const note = new Note(noteValue);
+                    const note = new Note(noteValue, sharpVsFlat);
                     const y = staffMetrics.calcNoteY(note);
                     this.drawLine(ctx, y);
                 }
