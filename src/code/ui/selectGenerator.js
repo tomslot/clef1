@@ -1,6 +1,6 @@
-export function createSelectOptions(elementId, generatorRepo){
+export function createSelectOptions(elementId, generatorRepo, sortedKeys){
     const exerciseElem = document.getElementById(elementId);
-    const keys = Object.keys(generatorRepo.map).sort();
+    const keys = sortedKeys || Object.keys(generatorRepo.map);
 
     for (const key of keys){
         const generator = generatorRepo.map[key];

@@ -44,17 +44,9 @@ class MajorScale {
     }
 }
 
-const cMajorScale = new MajorScale(0);
-const eMajorScale = new MajorScale(4);
-const exoticScale = new MajorScale(6);
-
 export const scaleGenerator = {
-    map: {
-        0: cMajorScale,
-        4: eMajorScale,
-        7: exoticScale
-    },
-    current: cMajorScale,
+    map: {},
+    current: null,
 
     selectByIndex(index) {
         this.current = this.map[index];
@@ -62,4 +54,10 @@ export const scaleGenerator = {
     }
 };
 
-createSelectOptions('scale', scaleGenerator);
+for (const n of noteBase.FIFTHS_ORDER){
+    scaleGenerator.map[n] = new MajorScale(n);
+}
+
+scaleGenerator.current = scaleGenerator.map[0]; // C Major
+
+createSelectOptions('scale', scaleGenerator, noteBase.FIFTHS_ORDER);
