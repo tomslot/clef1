@@ -64,6 +64,10 @@ export const noteBase = {
         return ACCIDENTALS.includes(normalized);
     },
 
+    perfectFifth(noteValue){
+        return (noteValue + 7) % 12;
+    },
+
     defaultSharpVsFlatForNote(noteValue){
         return SHARP_SCALES.includes(noteValue % 12);
     },

@@ -1,4 +1,5 @@
 import {noteBase} from '../theory/noteBase';
+import {scaleGenerator} from "../theory/scale";
 
 const COLOR1 = "hsl(34, 41%, 98%)";
 const COLOR2 = "#ACB6BD";
@@ -40,7 +41,7 @@ function drawStripedCircle(ctx, radius, margin, scale){
     let start = RADIAL_STEP / 2;
     let adjust = Math.PI / -2 - RADIAL_STEP;
 
-    for (let i = 0, noteValue = 0, r = 0; i < 12; i ++, start += RADIAL_STEP, noteValue = (noteValue + 7) % 12){
+    for (let i = 0, noteValue = 0, r = 0; i < 12; i ++, start += RADIAL_STEP, noteValue = noteBase.perfectFifth(noteValue)){
         let arcStartX = radius + (radius - margin) * Math.cos(start + adjust);
         let arcStartY = radius + (radius - margin) * Math.sin(start + adjust);
 
@@ -72,6 +73,15 @@ function drawStripedCircle(ctx, radius, margin, scale){
     }
 }
 
+function circleClick(event){
+    console.log('circle clicked');
+    const currentRoot = scaleGenerator.current.notes[0];
+    const newRoot = noteBase.perfectFifth(currentRoot);
+    const scaleSelector = document.getElementById('scale');
+    scaleSelector.value = newRoot;
+    scaleGenerator.selectByIndex(newRoot);
+}
+
 export function drawCircle(scale) {
     const canvasElem = document.createElement("canvas");
     canvasElem.setAttribute("width", "220px");
@@ -100,4 +110,5 @@ export function drawCircle(scale) {
     }
 
     circleElem.appendChild(canvasElem);
+    circleElem.addEventListener('click', circleClick);
 }

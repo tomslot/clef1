@@ -1,7 +1,6 @@
 import { noteBase } from './noteBase.js';
 import { game } from '../game.js'
 import { createSelectOptions } from '../ui/selectGenerator.js';
-import {drawCircle} from "../draw/circleOfFifths";
 
 const SCALE_ORDER_TO_HARMONIC_ORDER = {
     0: 1,
@@ -37,8 +36,6 @@ export class MajorScale {
                 this.notePalette.push(i);
             }
         }
-
-        console.log(`created ${this.label} scale, palette contains ${this.notePalette.length} notes, sharpVsFlat: ${this.sharpVsFlat}`);
     }
 
     addNote(interval) {
