@@ -7,18 +7,56 @@ const COLOR3 = "hsl(198, 15%, 30%)";
 const COLOR4 = "#E4847D";
 const COLOR5 = "#E11347";
 
-function drawStripedCircle(ctx, radius, margin, styles){
+const COLOR_MAJOR = COLOR5;
+const COLOR_MINOR = "#137ae1";
+const COLOR_DIMINISHED = "#7abee3";
+
+const RING_WIDTH = 50;
+
+function getFillIndex(scaleStart, noteValue){
+    let index = (scaleStart + noteValue - 1) % 12;
+
+    if (index < 0){
+        index += 12;
+    }
+
+    return index;
+}
+
+function drawStripedCircle(ctx, radius, margin){
+    const scaleStart = 2;
+
+    const FILL_MAJOR = ctx.createRadialGradient(radius, radius, RING_WIDTH, radius, radius, radius);
+    FILL_MAJOR.addColorStop(0, COLOR3);
+    FILL_MAJOR.addColorStop(1, COLOR_MAJOR);
+
+    const FILL_MAJOR_TONIC = COLOR_MAJOR;
+
+    const FILL_MINOR = ctx.createRadialGradient(radius, radius, RING_WIDTH, radius, radius, radius);
+    FILL_MINOR.addColorStop(0, COLOR3);
+    FILL_MINOR.addColorStop(1, COLOR_MINOR);
+
+    const FILL_MINOR_TONIC = COLOR_MINOR;
+
+    const FILL_INACTIVE = COLOR3;
+
+    const FILL_DIMINISHED =  ctx.createRadialGradient(radius, radius, RING_WIDTH, radius, radius, radius);
+    FILL_DIMINISHED.addColorStop(0, COLOR_DIMINISHED);
+    FILL_DIMINISHED.addColorStop(1, COLOR3);
+
+    const FILLS = [FILL_MAJOR, FILL_MAJOR_TONIC, FILL_MAJOR, FILL_MINOR, FILL_MINOR_TONIC, FILL_MINOR, FILL_DIMINISHED];
+
     const RADIAL_STEP = 2 * Math.PI / 12;
 
     let start = RADIAL_STEP / 2;
-    let odd = false;
     let adjust = Math.PI / -2 - RADIAL_STEP;
 
-    for (let i = 0, note = 0, r = 0; i < 12; i ++, start += RADIAL_STEP, note = (note + 5) % 12){
+    for (let i = 0, noteValue = 0, r = 0; i < 12; i ++, start += RADIAL_STEP, noteValue = (noteValue + 5) % 12){
         let arcStartX = radius + (radius - margin) * Math.cos(start + adjust);
         let arcStartY = radius + (radius - margin) * Math.sin(start + adjust);
 
-        ctx.fillStyle = styles[i % 2];
+        const fillIndex = getFillIndex(scaleStart, i);
+        ctx.fillStyle = FILLS[fillIndex] || FILL_INACTIVE;
         ctx.beginPath();
 
         ctx.moveTo(radius, radius);
@@ -38,7 +76,7 @@ function drawStripedCircle(ctx, radius, margin, styles){
         ctx.translate(radius, radius);
         ctx.rotate(start - RADIAL_STEP / 2);
         ctx.translate(-1 * radius, -1 * radius);
-        let noteSymbol = noteBase.noteToSymbol(12 - parseInt(note));
+        let noteSymbol = noteBase.noteToSymbol(12 - parseInt(noteValue));
         ctx.fillText(noteSymbol, radius, margin + 5);
         ctx.restore();
         ctx.closePath;
@@ -53,24 +91,13 @@ export function drawCircle() {
     ctx.textBaseline = "top"; 
     ctx.font = `18px Oswald`;
 
-    let ringWidth = 50;
     let radius = canvasElem.width / 2;
 
-    let radialFill1 = ctx.createRadialGradient(radius, radius, ringWidth, radius, radius, radius);
-    radialFill1.addColorStop(0, COLOR3);
-    radialFill1.addColorStop(1, COLOR2);
-
-    let radialFill2 = ctx.createRadialGradient(radius, radius, ringWidth, radius, radius, radius);
-    radialFill2.addColorStop(0, COLOR2);
-    radialFill2.addColorStop(1, COLOR3);
-
-    drawStripedCircle(ctx, radius, 1, [radialFill1, radialFill2]);
-    
-    // drawStripedCircle(ctx, radius, ringWidth, [COLOR2, COLOR1]);
+    drawStripedCircle(ctx, radius, 1);
 
     ctx.fillStyle = COLOR1;
     ctx.beginPath();
-    ctx.arc(radius, radius, radius - ringWidth, 0, 2 * Math.PI);
+    ctx.arc(radius, radius, radius - RING_WIDTH, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
 }
