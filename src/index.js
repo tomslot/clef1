@@ -41,7 +41,7 @@ window.onload = () => {
 
     window.addEventListener("resize", resizeThrottler, false);
 
-    var resizeTimeout;
+    let resizeTimeout;
     function resizeThrottler() {
         if (!resizeTimeout) {
             resizeTimeout = setTimeout(() => {
@@ -57,8 +57,7 @@ window.onload = () => {
     }
 
     drawKeyboard();
-    drawCircle();
-    game.proceedToNextStaffItem();
+    game.onScaleChanged();
     window.requestAnimationFrame(animate);
 
     midiController.start();

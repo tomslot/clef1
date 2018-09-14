@@ -1,8 +1,19 @@
 import { noteBase } from './noteBase.js';
 import { game } from '../game.js'
 import { createSelectOptions } from '../ui/selectGenerator.js';
+import {drawCircle} from "../draw/circleOfFifths";
 
-class MajorScale {
+const SCALE_ORDER_TO_HARMONIC_ORDER = {
+    0: 1,
+    1: 3,
+    2: 5,
+    3: 0,
+    4: 2,
+    5: 4,
+    6: 6
+}
+
+export class MajorScale {
     constructor(rootNoteValue) {
         const majorKey = noteBase.noteToSymbol(rootNoteValue);
         this.sharpVsFlat = noteBase.defaultSharpVsFlatForNote(rootNoteValue);
@@ -10,6 +21,8 @@ class MajorScale {
 
         this.label = `${majorKey}/${pararellMinorKey}m`;
         this.notes = [rootNoteValue];
+        this.position = [];
+        this.position[rootNoteValue] = 0;
         this.addNote(2);
         this.addNote(2);
         this.addNote(1);
@@ -30,17 +43,16 @@ class MajorScale {
 
     addNote(interval) {
         const noteValue = noteBase.normalize(this.notes[this.notes.length - 1] + interval);
+        this.position[noteValue] = this.notes.length;
         this.notes.push(noteValue);
     }
 
     degree(noteValue){
-        for (let i = 0; i < this.notes.length; i ++){
-            if (this.notes[i] === noteValue){
-                return i;
-            }
-        }
+        return this.position[noteValue];
+    }
 
-        return null;
+    harmonicPosition(noteValue){
+        return SCALE_ORDER_TO_HARMONIC_ORDER[this.position[noteValue]];
     }
 }
 
@@ -50,7 +62,7 @@ export const scaleGenerator = {
 
     selectByIndex(index) {
         this.current = this.map[index];
-        game.proceedToNextStaffItem();
+        game.onScaleChanged();
     }
 };
 

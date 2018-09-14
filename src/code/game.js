@@ -3,6 +3,8 @@ import { staffItemGenerator } from './theory/staffItemGenerators';
 import { playNote } from './io/sound.js';
 import { staffItem} from './draw/staffItem.js';
 import { config } from './config.js';
+import {drawCircle} from "./draw/circleOfFifths";
+import {scaleGenerator} from "./theory/scale";
 
 function isStaffItemFullyResolved(staffItem){
     for (const note of staffItem.notes){
@@ -32,6 +34,11 @@ export const game = {
         this.currentStaffItem = staffItemGenerator.generate();
         this.renderStaffItem();
         console.log(`currentStaffItem: ${JSON.stringify(this.currentStaffItem)}`);
+    },
+
+    onScaleChanged(){
+      this.proceedToNextStaffItem();
+      drawCircle(scaleGenerator.current);
     },
 
     renderStaffItem(){

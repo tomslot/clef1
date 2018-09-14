@@ -1,5 +1,4 @@
-import style from "./../../style/_common.scss";
-import {noteBase} from '../theory/noteBase.js';
+import {noteBase} from '../theory/noteBase';
 
 const COLOR1 = "hsl(34, 41%, 98%)";
 const COLOR2 = "#ACB6BD";
@@ -13,17 +12,7 @@ const COLOR_DIMINISHED = "#7abee3";
 
 const RING_WIDTH = 50;
 
-function getFillIndex(scaleStart, noteValue){
-    let index = (scaleStart + noteValue - 1) % 12;
-
-    if (index < 0){
-        index += 12;
-    }
-
-    return index;
-}
-
-function drawStripedCircle(ctx, radius, margin){
+function drawStripedCircle(ctx, radius, margin, scale){
     const scaleStart = 2;
 
     const FILL_MAJOR = ctx.createRadialGradient(radius, radius, RING_WIDTH, radius, radius, radius);
@@ -51,11 +40,11 @@ function drawStripedCircle(ctx, radius, margin){
     let start = RADIAL_STEP / 2;
     let adjust = Math.PI / -2 - RADIAL_STEP;
 
-    for (let i = 0, noteValue = 0, r = 0; i < 12; i ++, start += RADIAL_STEP, noteValue = (noteValue + 5) % 12){
+    for (let i = 0, noteValue = 0, r = 0; i < 12; i ++, start += RADIAL_STEP, noteValue = (noteValue + 7) % 12){
         let arcStartX = radius + (radius - margin) * Math.cos(start + adjust);
         let arcStartY = radius + (radius - margin) * Math.sin(start + adjust);
 
-        const fillIndex = getFillIndex(scaleStart, i);
+        const fillIndex = scale.harmonicPosition(noteValue);
         ctx.fillStyle = FILLS[fillIndex] || FILL_INACTIVE;
         ctx.beginPath();
 
@@ -76,28 +65,39 @@ function drawStripedCircle(ctx, radius, margin){
         ctx.translate(radius, radius);
         ctx.rotate(start - RADIAL_STEP / 2);
         ctx.translate(-1 * radius, -1 * radius);
-        let noteSymbol = noteBase.noteToSymbol(12 - parseInt(noteValue));
+        let noteSymbol = noteBase.noteToSymbol(noteValue);
         ctx.fillText(noteSymbol, radius, margin + 5);
         ctx.restore();
         ctx.closePath;
     }
 }
 
-export function drawCircle() {
-    let canvasElem = document.getElementById('circleOf5');
-    let ctx = canvasElem.getContext("2d");
+export function drawCircle(scale) {
+    const canvasElem = document.createElement("canvas");
+    canvasElem.setAttribute("width", "220px");
+    canvasElem.setAttribute("height", "220px");
+
+    const ctx = canvasElem.getContext("2d");
     ctx.strokeStyle = COLOR3;  
     ctx.textAlign = "center";
     ctx.textBaseline = "top"; 
     ctx.font = `18px Oswald`;
 
-    let radius = canvasElem.width / 2;
+    const radius = canvasElem.width / 2;
 
-    drawStripedCircle(ctx, radius, 1);
+    drawStripedCircle(ctx, radius, 1, scale);
 
     ctx.fillStyle = COLOR1;
     ctx.beginPath();
     ctx.arc(radius, radius, radius - RING_WIDTH, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
+
+    const circleElem = document.getElementById("circle");
+
+    while (circleElem.firstChild) {
+        circleElem.removeChild(circleElem.firstChild);
+    }
+
+    circleElem.appendChild(canvasElem);
 }
