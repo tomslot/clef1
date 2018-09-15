@@ -14,8 +14,6 @@ const COLOR_DIMINISHED = "#7abee3";
 const RING_WIDTH = 50;
 
 function drawStripedCircle(ctx, radius, margin, scale){
-    const scaleStart = 2;
-
     const FILL_MAJOR = ctx.createRadialGradient(radius, radius, RING_WIDTH, radius, radius, radius);
     FILL_MAJOR.addColorStop(0, COLOR3);
     FILL_MAJOR.addColorStop(1, COLOR_MAJOR);
@@ -74,7 +72,6 @@ function drawStripedCircle(ctx, radius, margin, scale){
 }
 
 function circleClick(event){
-    console.log('circle clicked');
     const currentRoot = scaleGenerator.current.notes[0];
     const newRoot = noteBase.perfectFifth(currentRoot);
     const scaleSelector = document.getElementById('scale');
@@ -83,25 +80,8 @@ function circleClick(event){
 }
 
 export function drawCircle(scale) {
-    const canvasElem = document.createElement("canvas");
-    canvasElem.setAttribute("width", "220px");
-    canvasElem.setAttribute("height", "220px");
-
-    const ctx = canvasElem.getContext("2d");
-    ctx.strokeStyle = COLOR3;  
-    ctx.textAlign = "center";
-    ctx.textBaseline = "top"; 
-    ctx.font = `18px Oswald`;
-
-    const radius = canvasElem.width / 2;
-
-    drawStripedCircle(ctx, radius, 1, scale);
-
-    ctx.fillStyle = COLOR1;
-    ctx.beginPath();
-    ctx.arc(radius, radius, radius - RING_WIDTH, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.stroke();
+    const circle = new CircleOfFifths(220);
+    circle.setScale(scale);
 
     const circleElem = document.getElementById("circle");
 
@@ -109,6 +89,36 @@ export function drawCircle(scale) {
         circleElem.removeChild(circleElem.firstChild);
     }
 
-    circleElem.appendChild(canvasElem);
+    circleElem.appendChild(circle.canvas);
     circleElem.addEventListener('click', circleClick);
+}
+
+export class CircleOfFifths{
+    constructor(diameter){
+        this.diameter = diameter;
+        this.canvas = document.createElement("canvas");
+        this.canvas.setAttribute("width", `${diameter}px`);
+        this.canvas.setAttribute("height", `${diameter}px`);
+    }
+
+    setScale(scale){
+        this.scale = scale;
+        this.draw();
+    }
+
+    draw(){
+        const ctx = this.canvas.getContext("2d");
+        ctx.strokeStyle = COLOR3;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        const radius = this.diameter / 2;
+        const fontSize = Math.ceil(0.16 * radius);
+        ctx.font = `${fontSize}px Oswald`;
+        drawStripedCircle(ctx, radius, 1, this.scale);
+        ctx.fillStyle = COLOR1;
+        ctx.beginPath();
+        ctx.arc(radius, radius, radius - RING_WIDTH, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.stroke();
+    }
 }
