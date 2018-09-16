@@ -1,6 +1,6 @@
 import { noteBase } from './noteBase.js';
-import { game } from '../game.js'
 import { createSelectOptions } from '../ui/selectGenerator.js';
+import {FIFTHS_ORDER, Note} from "./noteBase";
 
 const SCALE_ORDER_TO_HARMONIC_ORDER = {
     0: 1,
@@ -14,11 +14,11 @@ const SCALE_ORDER_TO_HARMONIC_ORDER = {
 
 export class MajorScale {
     constructor(rootNoteValue) {
-        const majorKey = noteBase.noteToSymbol(rootNoteValue);
-        this.sharpVsFlat = noteBase.defaultSharpVsFlatForNote(rootNoteValue);
-        const pararellMinorKey = noteBase.noteToSymbol(rootNoteValue + 3 * 7);
+        const majorKey = Note.noteToSymbol(rootNoteValue);
+        this.sharpVsFlat = Note.defaultSharpVsFlatForNote(rootNoteValue);
+        const parallelMinorKey = Note.noteToSymbol(rootNoteValue + 3 * 7);
 
-        this.label = `${majorKey}/${pararellMinorKey}m`;
+        this.label = `${majorKey}/${parallelMinorKey}m`;
         this.notes = [rootNoteValue];
         this.position = [];
         this.position[rootNoteValue] = 0;
@@ -39,7 +39,7 @@ export class MajorScale {
     }
 
     addNote(interval) {
-        const noteValue = noteBase.normalize(this.notes[this.notes.length - 1] + interval);
+        const noteValue = Note.normalize(this.notes[this.notes.length - 1] + interval);
         this.position[noteValue] = this.notes.length;
         this.notes.push(noteValue);
     }
@@ -53,20 +53,19 @@ export class MajorScale {
     }
 }
 
-export const scaleGenerator = {
-    map: {},
-    current: null,
+export class ScaleGenerator  {
+    constructor() {
+        this.map = {};
 
-    selectByIndex(index) {
-        this.current = this.map[index];
-        game.onScaleChanged();
+        for (const n of FIFTHS_ORDER){
+            this.map[n] = new MajorScale(n);
+        }
+
+        this.current = this.map[0];
     }
-};
 
-for (const n of noteBase.FIFTHS_ORDER){
-    scaleGenerator.map[n] = new MajorScale(n);
+    setScale(rootNote){
+        this.selectElement.value = rootNote;
+        this.selectElement.onchange();
+    }
 }
-
-scaleGenerator.current = scaleGenerator.map[0]; // C Major
-
-createSelectOptions('scale', scaleGenerator, noteBase.FIFTHS_ORDER);

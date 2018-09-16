@@ -1,5 +1,4 @@
-import {noteBase} from '../theory/noteBase';
-import {scaleGenerator} from "../theory/scale";
+import {Interval, Note} from '../theory/noteBase';
 
 const COLOR1 = "hsl(34, 41%, 98%)";
 const COLOR2 = "#ACB6BD";
@@ -39,7 +38,7 @@ function drawStripedCircle(ctx, radius, margin, scale){
     let start = RADIAL_STEP / 2;
     let adjust = Math.PI / -2 - RADIAL_STEP;
 
-    for (let i = 0, noteValue = 0, r = 0; i < 12; i ++, start += RADIAL_STEP, noteValue = noteBase.perfectFifth(noteValue)){
+    for (let i = 0, noteValue = 0, r = 0; i < 12; i ++, start += RADIAL_STEP, noteValue = Interval.perfectFifth(noteValue)){
         let arcStartX = radius + (radius - margin) * Math.cos(start + adjust);
         let arcStartY = radius + (radius - margin) * Math.sin(start + adjust);
 
@@ -64,41 +63,27 @@ function drawStripedCircle(ctx, radius, margin, scale){
         ctx.translate(radius, radius);
         ctx.rotate(start - RADIAL_STEP / 2);
         ctx.translate(-1 * radius, -1 * radius);
-        let noteSymbol = noteBase.noteToSymbol(noteValue);
+        let noteSymbol = Note.noteToSymbol(noteValue);
         ctx.fillText(noteSymbol, radius, margin + 5);
         ctx.restore();
         ctx.closePath;
     }
 }
 
-function circleClick(event){
-    const currentRoot = scaleGenerator.current.notes[0];
-    const newRoot = noteBase.perfectFifth(currentRoot);
-    const scaleSelector = document.getElementById('scale');
-    scaleSelector.value = newRoot;
-    scaleGenerator.selectByIndex(newRoot);
-}
-
-export function drawCircle(scale) {
-    const circle = new CircleOfFifths(220);
-    circle.setScale(scale);
-
-    const circleElem = document.getElementById("circle");
-
-    while (circleElem.firstChild) {
-        circleElem.removeChild(circleElem.firstChild);
-    }
-
-    circleElem.appendChild(circle.canvas);
-    circleElem.addEventListener('click', circleClick);
-}
-
 export class CircleOfFifths{
-    constructor(diameter){
-        this.diameter = diameter;
-        this.canvas = document.createElement("canvas");
-        this.canvas.setAttribute("width", `${diameter}px`);
-        this.canvas.setAttribute("height", `${diameter}px`);
+    constructor(canvas){
+        this.diameter = canvas.getBoundingClientRect().width;
+        this.canvas = canvas;
+
+        canvas.addEventListener('click', (clickEvt) => {
+            if (!this.scale || !this.onscalechange){
+                return;
+            }
+
+            const currentRoot = this.scale.notes[0];
+            const newRoot = Interval.perfectFifth(currentRoot);
+            this.onscalechange(newRoot);
+        })
     }
 
     setScale(scale){

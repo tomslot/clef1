@@ -1,8 +1,9 @@
 export function createSelectOptions(elementId, generatorRepo, sortedKeys){
-    const exerciseElem = document.getElementById(elementId);
+    const selectElement = document.getElementById(elementId);
     const keys = sortedKeys || Object.keys(generatorRepo.map);
 
     for (const key of keys){
+        generatorRepo.selectElement = selectElement;
         const generator = generatorRepo.map[key];
         const optionElem = document.createElement("option");
         const txtNode = document.createTextNode(generator.label);
@@ -10,11 +11,15 @@ export function createSelectOptions(elementId, generatorRepo, sortedKeys){
         const attr = document.createAttribute("value");
         attr.value = key;
         optionElem.setAttributeNode(attr);
-        exerciseElem.appendChild(optionElem);
+        selectElement.appendChild(optionElem);
     }
 
-    exerciseElem.onchange = () => {
-        const sel = exerciseElem.value;
-        generatorRepo.selectByIndex(sel);
+    selectElement.onchange = () => {
+        const selection = selectElement.value;
+        generatorRepo.current = generatorRepo.map[selection];
+
+        if (generatorRepo.onchange){
+            generatorRepo.onchange(generatorRepo.current);
+        }
     }
 }

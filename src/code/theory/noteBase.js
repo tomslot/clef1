@@ -29,18 +29,20 @@ const SOLPHAGE_MAP_SHARP = {
     11: 'B'
 };
 
+export const FIFTHS_ORDER = [0, 7, 2, 9, 4, 11, 6, 1, 8, 3, 10, 5];
+
 export class Note{
     constructor(midiValue, sharpVsFlat){
         this.sharpVsFlat = sharpVsFlat;
         this.midiValue = midiValue;
         this.normalized = midiValue % 12;
 
-        if (noteBase.isAccidental(midiValue)){
+        if (Note.isAccidental(midiValue)){
             this.accidental = sharpVsFlat? '♯' : '♭';
         }
 
-        this.distanceFromMidG = noteBase.calculateTonicDistanceFromMidG(midiValue);
-        this.symbol = noteBase.noteToSymbol(midiValue, sharpVsFlat);
+        this.distanceFromMidG = Interval.tonicDistanceFromMidG(midiValue);
+        this.symbol = Note.noteToSymbol(midiValue, sharpVsFlat);
 
         if (sharpVsFlat && this.accidental){
             this.distanceFromMidG --;
@@ -48,46 +50,42 @@ export class Note{
 
         this.hit = false;
     }
-}
 
-export const noteBase = {
-    FIFTHS_ORDER: [0, 7, 2, 9, 4, 11, 6, 1, 8, 3, 10, 5],
-    VISIBLE_MIDI_CODE_MIN: 48,
-    VISIBLE_MIDI_CODE_MAX: 69,
-
-    normalize(noteVal) {
+    static normalize(noteVal) {
         return noteVal % 12;
-    },
+    }
 
-    isAccidental(noteVal) {
-        let normalized = this.normalize(noteVal);
+    static isAccidental(noteVal) {
+        let normalized = Note.normalize(noteVal);
         return ACCIDENTALS.includes(normalized);
-    },
+    }
 
-    perfectFifth(noteValue){
-        return (noteValue + 7) % 12;
-    },
-
-    defaultSharpVsFlatForNote(noteValue){
-        return SHARP_SCALES.includes(noteValue % 12);
-    },
-
-    noteToSymbol(noteVal, sharpVsFlat = undefined) {
+    static noteToSymbol(noteVal, sharpVsFlat = undefined) {
         if (sharpVsFlat === undefined){
-            sharpVsFlat = this.defaultSharpVsFlatForNote(noteVal);
+            sharpVsFlat = Note.defaultSharpVsFlatForNote(noteVal);
         }
 
-        return sharpVsFlat ? SOLPHAGE_MAP_SHARP[this.normalize(noteVal)] : SOLPHAGE_MAP[this.normalize(noteVal)];
-    },
+        return sharpVsFlat ? SOLPHAGE_MAP_SHARP[Note.normalize(noteVal)] : SOLPHAGE_MAP[Note.normalize(noteVal)];
+    }
 
-    calculateTonicDistanceFromMidG(noteValue) {
+    static defaultSharpVsFlatForNote(noteValue){
+        return SHARP_SCALES.includes(noteValue % 12);
+    }
+}
+
+export class Interval{
+    static perfectFifth(noteValue){
+        return (noteValue + 7) % 12;
+    }
+
+    static tonicDistanceFromMidG(noteValue) {
         const midG = 67 - 12;
         let from = Math.min(midG, noteValue);
         let to = Math.max(midG, noteValue);
         let distance = 0;
 
         for (let i = from; i < to; i++) {
-            if (!this.isAccidental(i)) {
+            if (!Note.isAccidental(i)) {
                 distance++;
             }
         }
@@ -97,5 +95,18 @@ export const noteBase = {
         }
 
         return distance;
-    },
+    }
+
+    static octaveUp(noteValue){
+        return noteValue + 12;
+    }
+
+    static octaveDown(noteValue){
+        return noteValue - 12;
+    }
+}
+
+export const noteBase = {
+    VISIBLE_MIDI_CODE_MIN: 48,
+    VISIBLE_MIDI_CODE_MAX: 69,
 };

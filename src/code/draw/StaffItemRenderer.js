@@ -1,16 +1,13 @@
 import style from "./../../style/_common.scss";
-
-import {staffMetrics} from './staffMetrics.js';
-import {game} from "../game";
+import {Staff, STAFF_METRICS} from "./Staff";
 
 const HIT_CHORD_NOTE_COLOR = "#70A070";
 const NOTE_TAIL_SIZE = 55;
 const OFFSCREEN_IMG_WIDTH = 80;
 const noteX = OFFSCREEN_IMG_WIDTH / 2;
 
-export const staffItem = {
-
-    calcCenterOfGravityY(item){
+export class StaffItemRenderer {
+    static calcCenterOfGravityY(item){
         if (item.centreOfGravityY){
             return item.centreOfGravityY;
         }
@@ -18,15 +15,16 @@ export const staffItem = {
         const firstNote = item.notes[0];
         const lastNote = item.notes[item.notes.length - 1];
 
-        const firstY = staffMetrics.calcNoteY(firstNote);
-        const lastY = staffMetrics.calcNoteY(lastNote);
+        const firstY = Staff.calcNoteY(firstNote);
+        const lastY = Staff.calcNoteY(lastNote);
         item.centreOfGravityY = (firstY + lastY) / 2;
         return item.centreOfGravityY;
-    },
+    }
 
-    draw(ctx, item){
-        const staffWidth = staffMetrics.rightScoreEnd;
-        const x = staffMetrics.rightScoreEnd - game.noteProgress * staffWidth;
+    static draw(ctx, game){
+        const item = game.currentStaffItem;
+        const staffWidth = STAFF_METRICS.rightScoreEnd;
+        const x = STAFF_METRICS.rightScoreEnd - game.noteProgress * staffWidth;
         let y = 0;
 
         ctx.save();
@@ -40,25 +38,25 @@ export const staffItem = {
             }
 
             if (game.noteProgress > 0.9){
-                y = (game.noteProgress - 0.9) * 10 * staffMetrics.height;
+                y = (game.noteProgress - 0.9) * 10 * STAFF_METRICS.height;
             }
 
             ctx.drawImage(item.image, x , y);
         ctx.restore();
-    },
+    }
 
-    render(item){
+    static render(item){
         const offScreenCanvas = document.createElement('canvas');
-        offScreenCanvas.height = staffMetrics.height;
+        offScreenCanvas.height = STAFF_METRICS.height;
         offScreenCanvas.width = OFFSCREEN_IMG_WIDTH;
         const ctx = offScreenCanvas.getContext("2d");
         // ctx.fillStyle = 'orange'; //set fill color
         // ctx.fillRect(0, 0, 80, 180);
-        this.renderOfflineStaffItemImage(ctx, item);
+        StaffItemRenderer.renderOfflineStaffItemImage(ctx, item);
         item.image = offScreenCanvas;
-    },
+    }
 
-    renderOfflineStaffItemImage(ctx, item) {
+    static renderOfflineStaffItemImage(ctx, item) {
         ctx.save();
             const noteColor = "#333";
             ctx.fillStyle = noteColor;
@@ -67,13 +65,13 @@ export const staffItem = {
             this.drawTail(ctx, item, noteX);
 
             for (const note of item.notes){
-                this.drawNote(ctx, note, noteX);
+                StaffItemRenderer.drawNote(ctx, note, noteX);
             }
         ctx.restore();
-    },
+    }
 
-    drawNote(ctx, note){
-        const noteY = staffMetrics.calcNoteY(note);
+    static drawNote(ctx, note){
+        const noteY = Staff.calcNoteY(note);
 
         ctx.save();
             if (note.hit){
@@ -91,7 +89,6 @@ export const staffItem = {
             ctx.save();
                 let yScale = 0.6;
                 ctx.scale(1, yScale);
-                // ctx.rotate(Math.PI / 8);
                 ctx.beginPath();
                 ctx.arc(noteX, noteY / yScale, 9, 0, Math.PI * 4, false);
                 ctx.fill();
@@ -105,12 +102,12 @@ export const staffItem = {
             ctx.font = `30px Oswald`;
             ctx.textAlign = "left";
             ctx.textBaseline = "middle";
-            ctx.fillText(note.accidental, noteX - 30, noteY - staffMetrics.lineDistance / 2 + 3);
+            ctx.fillText(note.accidental, noteX - 30, noteY - STAFF_METRICS.lineDistance / 2 + 3);
             ctx.restore();
         }
-    },
+    }
 
-    drawTail(ctx, item){
+    static drawTail(ctx, item){
         const bottomNote = item.notes[0];
         const topNote = item.notes[item.notes.length - 1];
         const dir = topNote.distanceFromMidG > 4 ? -1 : 1;
@@ -119,11 +116,11 @@ export const staffItem = {
         let topY;
 
         if (dir > 0){
-            bottomY = staffMetrics.calcNoteY(bottomNote);
-            topY = staffMetrics.calcNoteY(topNote) - NOTE_TAIL_SIZE;
+            bottomY = Staff.calcNoteY(bottomNote);
+            topY = Staff.calcNoteY(topNote) - NOTE_TAIL_SIZE;
         } else {
-            bottomY = staffMetrics.calcNoteY(topNote);
-            topY = staffMetrics.calcNoteY(bottomNote) + NOTE_TAIL_SIZE;
+            bottomY = Staff.calcNoteY(topNote);
+            topY = Staff.calcNoteY(bottomNote) + NOTE_TAIL_SIZE;
         }
 
         const tailX = noteX - dir *  -8;

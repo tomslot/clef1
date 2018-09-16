@@ -12,7 +12,7 @@
 
 <body>
 
-  <canvas id="score_canvas" width="640" height="180" onclick="game.togglePaused()"></canvas>
+  <canvas id="score-canvas" width="640" height="180" onclick="game.togglePaused()"></canvas>
   <div id="board">
     <div id="p-wrapper">
       <ul id="piano"></ul>
@@ -20,7 +20,7 @@
 
     <div id="dashboard">
       <div class="dataBlock">
-        <button id="helpme" onclick="help()" disabled>Help me!</button>
+        <button id="helpme" disabled>Help me!</button>
       </div>
 
       <div class="dataBlock">
@@ -52,7 +52,7 @@
   </div>
 
   <h1 class="display-4">Score Reading Trainer</h1>
-  <div id="circle"><canvas width="220" height="220"></canvas></div>
+  <div id="circle"><canvas width="220" height="220" id="circle-of-fifths"></canvas></div>
   <div id="comingSoon">
       <h2>Coming soon:</h2>
       <ul>

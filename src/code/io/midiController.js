@@ -1,7 +1,3 @@
-import { noteBase } from '../theory/noteBase.js';
-import { game } from './../game.js';
-import { hightlightKey } from './virtualKeyboard.js';
-
 export const midiController = {
     start() {
         if (navigator.requestMIDIAccess) {
@@ -23,8 +19,7 @@ export const midiController = {
         if ((data[0] & 0xF0) === 0x90) {
             let note = data[1];
             console.log(`note ${note}}, data[0]=${data[0]}`);
-            game.shoot(note);
-            hightlightKey(note);
+            midiController.onNote(note);
         }
     },
 
