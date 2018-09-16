@@ -117,7 +117,13 @@ div#comingSoon ul{
   padding: 10px 40px;
 }
 
-#circle{
-  text-align: center;
+#scale-info{
   height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#scale-glymph{
+  padding: 10px;
 }

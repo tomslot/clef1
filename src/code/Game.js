@@ -8,6 +8,7 @@ import {VirtualKeyboard} from "./io/VirtualKeyboard";
 import {StaffItemRenderer} from "./draw/StaffItemRenderer";
 import {FIFTHS_ORDER, Note} from "./theory/noteBase";
 import {midiController} from "./io/midiController";
+import {KeyboardGlymph} from "./draw/KeyboardGlymph";
 
 export class Game {
     constructor() {
@@ -60,8 +61,13 @@ export class Game {
         this.scaleGenerator.onchange = (scale)=>{
             this.staffItemGenerator.setScale  (scale);
             this.circleOfFifths.setScale(scale);
+            this.keyboardGlymph.setActiveNotes(scale.notes)
             this.proceedToNextStaffItem();
         };
+
+        this.keyboardGlymph = new KeyboardGlymph(document.getElementById('scale-glymph'));
+        this.keyboardGlymph.setActiveNotes(this.scaleGenerator.current.notes);
+
 
         this.proceedToNextStaffItem();
     }
