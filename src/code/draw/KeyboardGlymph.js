@@ -40,9 +40,9 @@ export class KeyboardGlymph {
 
         const FILL_ACTIVE_WHITE = ctx.createLinearGradient(0, 0, keyWidth, height);
         FILL_ACTIVE_WHITE.addColorStop(0, 'white');
-        FILL_ACTIVE_WHITE.addColorStop(1, '#ddd');
+        FILL_ACTIVE_WHITE.addColorStop(1, '#dfd');
 
-        const FILL_INACTIVE = '#FBB';
+        const FILL_INACTIVE = '#BBB';
 
         ctx.strokeStyle = '#333';
         for (let i = 0; i < 7; i++) {
@@ -59,8 +59,8 @@ export class KeyboardGlymph {
         const blackKeyWidth = parseInt(0.65 * keyWidth);
 
         const FILL_ACTIVE_BLACK = ctx.createLinearGradient(0, 0, keyWidth, height);
-        FILL_ACTIVE_BLACK.addColorStop(0, 'black');
-        FILL_ACTIVE_BLACK.addColorStop(1, '#555');
+        FILL_ACTIVE_BLACK.addColorStop(0, '#575');
+        FILL_ACTIVE_BLACK.addColorStop(1, '#797');
 
         for (let i = 1; i < 7; i++) {
             if (i === 3) {
@@ -71,6 +71,7 @@ export class KeyboardGlymph {
 
             const x = i * keyWidth - blackKeyWidth / 2;
             ctx.fillRect(x, 0, blackKeyWidth, blackKeyHeight);
+            ctx.beginPath();
             ctx.rect(x, 0, blackKeyWidth, blackKeyHeight);
             ctx.stroke();
         }
