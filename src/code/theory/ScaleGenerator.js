@@ -1,5 +1,4 @@
 import { noteBase } from './noteBase.js';
-import { createSelectOptions } from '../ui/selectGenerator.js';
 import {FIFTHS_ORDER, Note} from "./noteBase";
 
 const SCALE_ORDER_TO_HARMONIC_ORDER = {
@@ -10,7 +9,7 @@ const SCALE_ORDER_TO_HARMONIC_ORDER = {
     4: 2,
     5: 4,
     6: 6
-}
+};
 
 export class MajorScale {
     constructor(rootNoteValue) {
@@ -19,6 +18,7 @@ export class MajorScale {
         const parallelMinorKey = Note.noteToSymbol(rootNoteValue + 3 * 7);
 
         this.label = `${majorKey}/${parallelMinorKey}m`;
+        this.rootNote = rootNoteValue;
         this.notes = [rootNoteValue];
         this.position = [];
         this.position[rootNoteValue] = 0;
@@ -65,7 +65,29 @@ export class ScaleGenerator  {
     }
 
     setScale(rootNote){
-        this.selectElement.value = rootNote;
-        this.selectElement.onchange();
+        if (this.current.rootNote === rootNote){
+            return;
+        }
+
+        this.current = this.map[rootNote];
+
+        if (this.onchange){
+            this.onchange(this.current);
+        }
+
+        if (this.selectElement) {
+            this.selectElement.value = rootNote;
+            // this.selectElement.onchange();
+        }
+    }
+
+    static parseRootValue(rootValue){
+        const noteValue = Note.normalize(Math.abs(parseInt(rootValue)));
+
+        if (isNaN(noteValue)){
+            return 0;
+        }
+
+        return noteValue;
     }
 }

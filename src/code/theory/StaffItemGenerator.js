@@ -9,11 +9,11 @@ const ROMAN_NUMERALS = {
     5: 'V',
     6: 'vi',
     7: 'vii'
-}
+};
 
 class SingleRandomNoteFromCurrentScale {
     constructor(staffItemGenerator){
-        this.label = 'Single Random Note';
+        this.label = 'Practice random single notes in the scale of ';
         this.staffItemGenerator = staffItemGenerator;
     }
 
@@ -31,7 +31,7 @@ class SingleRandomNoteFromCurrentScale {
 
 class RandomTriadChordFromCurrentScale {
     constructor(staffItemGenerator){
-        this.label = 'Random Triad Chord';
+        this.label = 'Practice random triad chords in the scale of ';
         this.staffItemGenerator = staffItemGenerator;
     }
 
@@ -64,13 +64,15 @@ class RandomTriadChordFromCurrentScale {
 }
 
 export class StaffItemGenerator {
-    constructor(scale){
+    constructor(scale, exerciseParam){
         this.setScale(scale);
-        const singleRandomNoteFromCurrentScale = new SingleRandomNoteFromCurrentScale(this);
-        const randomTriadChordFromCurrentScale = new RandomTriadChordFromCurrentScale(this);
 
-        this.map = {0 : singleRandomNoteFromCurrentScale, 1 : randomTriadChordFromCurrentScale};
-        this.current = this.map[0];
+        if (exerciseParam === 'Random_Chords'){
+            this.current = new RandomTriadChordFromCurrentScale(this);
+        } else {
+            this.current = new SingleRandomNoteFromCurrentScale(this);
+        }
+
         this.previouslyGeneratedRoot = -1;
     }
 
@@ -89,4 +91,4 @@ export class StaffItemGenerator {
     setScale(scale){
         this.scale = scale;
     }
-};
+}

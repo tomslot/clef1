@@ -5,16 +5,19 @@ import style2 from "./style/style.scss";
 
 import {Game} from "./code/Game";
 import {Staff} from "./code/draw/Staff";
-
-let canvasElem = document.getElementById('score_canvas');
+import {ScaleGenerator} from "./code/theory/ScaleGenerator";
 
 window.onload = () => {
-    window.game = new Game();
+    const url = new URL(window.location.href);
+    const exerciseParam = url.searchParams.get("exercise");
+    const rootNote = ScaleGenerator.parseRootValue(url.searchParams.get("scale"));
+
+    window.game = new Game(exerciseParam, rootNote);
 
     const staffCanvas = document.getElementById('score-canvas');
     const staff = new Staff(staffCanvas, game);
 
-    function animate(timestamp) {
+    function animate() {
         staff.draw();
         game.updateProgress();
         window.requestAnimationFrame(animate);

@@ -58,7 +58,7 @@ h2{
   
   // float: left;
   border-radius: 5px;
-  box-shadow:inset 0 1px 0px $COLOR1,inset 0 -1px 0px $COLOR1,inset 1px 0px 0px $COLOR1,inset -1px 0px 0px $COLOR1,0 2px 3px $COLOR3; 
+  box-shadow:inset 0 1px 0px $COLOR1,inset 0 -1px 0px $COLOR1,inset 1px 0px 0px $COLOR1,inset -1px 0px 0px $COLOR1,0 2px 3px $COLOR3;
 }
 
 .topic{
@@ -126,4 +126,25 @@ div#comingSoon ul{
 
 #scale-glymph{
   padding: 10px;
+}
+
+button.buttonLink{
+  background: $COLOR1;// linear-gradient(-30deg, $COLOR2, $COLOR1);
+  color: $COLOR3;
+  padding: 8px;
+  margin: 15px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 5px;
+  border: solid $COLOR3;
+}
+
+button.buttonLink:hover, a.buttonLink:active{
+  color: $COLOR5;
+}
+
+nav{
+  text-align: left;
+  margin: 0 30px;
 }

@@ -16,10 +16,8 @@ export function createSelectOptions(elementId, generatorRepo, sortedKeys){
 
     selectElement.onchange = () => {
         const selection = selectElement.value;
-        generatorRepo.current = generatorRepo.map[selection];
+        generatorRepo.setScale(selection);
+    };
 
-        if (generatorRepo.onchange){
-            generatorRepo.onchange(generatorRepo.current);
-        }
-    }
+    return selectElement;
 }

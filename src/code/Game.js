@@ -1,17 +1,14 @@
 import {StaffItemGenerator} from './theory/StaffItemGenerator';
 import { playNote } from './io/sound.js';
 import { config } from './config.js';
-import {CircleOfFifths} from "./draw/CircleOfFifths";
 import {ScaleGenerator} from "./theory/ScaleGenerator";
-import {createSelectOptions} from "./ui/selectGenerator";
 import {VirtualKeyboard} from "./io/VirtualKeyboard";
 import {StaffItemRenderer} from "./draw/StaffItemRenderer";
-import {FIFTHS_ORDER, Note} from "./theory/noteBase";
+import {Note} from "./theory/noteBase";
 import {midiController} from "./io/midiController";
-import {KeyboardGlymph} from "./draw/KeyboardGlymph";
 
 export class Game {
-    constructor() {
+    constructor(exerciseParam, scaleParam) {
         this.noteProgress = 0;
         this.currentStaffItem = {};
         this.hitCount = 0;
@@ -22,16 +19,15 @@ export class Game {
         this.hitAnimation = 0;
         this.helpAutoTriggered = false;
         this.scaleGenerator = new ScaleGenerator();
-        this.staffItemGenerator =  new StaffItemGenerator(this.scaleGenerator.current)
-
-        const circleOfFifthsCanvas = document.getElementById('circle-of-fifths');
+        this.scaleGenerator.setScale(scaleParam);
+        this.staffItemGenerator =  new StaffItemGenerator(this.scaleGenerator.current, exerciseParam);
         const keyboardContainer = document.getElementById('piano');
-        this.circleOfFifths = new CircleOfFifths(circleOfFifthsCanvas);
-        this.circleOfFifths.setScale(this.scaleGenerator.current);
 
-        this.circleOfFifths.onscalechange = (newRoot) => {
-            this.scaleGenerator.setScale(newRoot);
-        };
+        const pageTitle = this.staffItemGenerator.current.label + this.scaleGenerator.current.label;
+        document.getElementById('main-title').innerText =  pageTitle;
+        document.title = pageTitle;
+
+        document.querySelector('[name=scale]').value = this.scaleGenerator.current.rootNote;
 
         this.virtualKeyboard = new VirtualKeyboard(keyboardContainer, (noteValue) =>{
             this.shoot(noteValue);
@@ -50,24 +46,10 @@ export class Game {
             this.help();
         });
 
-        createSelectOptions('exercise', this.staffItemGenerator);
-
-        this.staffItemGenerator.onchange = ()=>{
-            this.proceedToNextStaffItem();
-        };
-
-        createSelectOptions('scale', this.scaleGenerator, FIFTHS_ORDER);
-
         this.scaleGenerator.onchange = (scale)=>{
             this.staffItemGenerator.setScale  (scale);
-            this.circleOfFifths.setScale(scale);
-            this.keyboardGlymph.setActiveNotes(scale.notes)
             this.proceedToNextStaffItem();
         };
-
-        this.keyboardGlymph = new KeyboardGlymph(document.getElementById('scale-glymph'));
-        this.keyboardGlymph.setActiveNotes(this.scaleGenerator.current.notes);
-
 
         this.proceedToNextStaffItem();
     }

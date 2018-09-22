@@ -1,0 +1,67 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Clef1: Music Theory made fun!</title>
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+</head>
+
+<body>
+<nav>
+    <form action="index.html" method="get">
+        <input type="hidden" name="scale" value="0">
+        <button class="buttonLink">◀ Back to Scale/Exercise Selection</button>
+    </form>
+</nav>
+<header>
+    <h1 id="main-title">Practice random triad chords in the scale of C/Am</h1>
+</header>
+
+<canvas id="score-canvas" width="640" height="180" onclick="game.togglePaused()"></canvas>
+<div id="board">
+    <div id="p-wrapper">
+        <ul id="piano"></ul>
+    </div>
+
+    <div id="dashboard">
+        <div class="dataBlock">
+            <button id="helpme" disabled>Help me!</button>
+        </div>
+
+        <div class="dataBlock">
+            <label for="points">Points:</label>
+            <input type="text" readonly id="points" value="0">
+        </div>
+
+        <div class="dataBlock">
+            <label for="hitRate">Hitrate:</label>
+            <input type="text" readonly id="hitRate" value="0%">
+        </div>
+
+        <div class="dataBlock">
+            <label for="connectedDevice">MIDI Device:</label>
+
+            <input type="text" readonly id="connectedDevice" value="none">
+        </div>
+    </div>
+</div>
+
+<div id="comingSoon">
+    <h2>Coming soon:</h2>
+    <ul>
+        <li>Practice with Bass, Tremble or Both Clefs</li>
+        <li>Learn Melodies</li>
+        <li>High Fidelity Sound Engine</li>
+        <li>Track Your Progress</li>
+    </ul>
+</div>
+
+<footer>Clef1.COM - Tomasz Slota&copy; 2018</footer>
+<script src="practice.js"></script>
+</body>
+
+</html>
