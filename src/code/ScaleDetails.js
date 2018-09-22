@@ -17,14 +17,53 @@ export class ScaleDetails {
         createSelectOptions('scale-selection', this.scaleGenerator, FIFTHS_ORDER);
 
         this.scaleGenerator.onchange = (scale)=>{
-
             this.circleOfFifths.setScale(scale);
             this.keyboardGlymph.setActiveNotes(scale.notes);
             document.querySelector('[name=scale]').value = scale.rootNote;
+            this.showTriadChords();
         };
         this.keyboardGlymph = new KeyboardGlymph(document.getElementById('scale-glymph'));
 
         this.keyboardGlymph.setActiveNotes(this.scaleGenerator.current.notes);
         this.scaleGenerator.setScale(rootNote);
+        this.showTriadChords();
+    }
+
+    showTriadChords(){
+        const chordsByQuality = this.scaleGenerator.current.chordsByQuality;
+        const majorChordsContainer = document.getElementById('major-chords');
+        this.fillContainerWithChords(majorChordsContainer, chordsByQuality['Major']);
+        const minorChordsContainer = document.getElementById('minor-chords');
+        this.fillContainerWithChords(minorChordsContainer, chordsByQuality['Minor']);
+        const diminishedChordsContainer = document.getElementById('diminished-chords');
+        this.fillContainerWithChords(diminishedChordsContainer, chordsByQuality['Diminished']);
+    }
+
+    fillContainerWithChords(container, chords){
+        while (container.firstChild) {
+            container.removeChild(container.firstChild);
+        }
+
+        for (let chord of chords){
+            const canvas = document.createElement('canvas');
+            canvas.setAttribute('width', '140');
+            canvas.setAttribute('height', '80');
+
+            const keyboardGlymph = new KeyboardGlymph(canvas);
+
+            const chordNotes = [];
+
+            for (let note of chord.notes){
+                chordNotes.push(note.midiValue);
+            }
+
+            keyboardGlymph.setActiveNotes(chordNotes);
+
+            const div = document.createElement('div');
+            div.setAttribute('class', 'chordBox')
+            div.innerText = chord.label;
+            div.appendChild(canvas);
+            container.appendChild(div);
+        }
     }
 }

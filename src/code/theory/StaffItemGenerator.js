@@ -1,16 +1,6 @@
 import {Note} from './noteBase';
 import {Chord} from "./Chord";
 
-const ROMAN_NUMERALS = {
-    1: 'I',
-    2: 'ii',
-    3: 'iii',
-    4: 'IV',
-    5: 'V',
-    6: 'vi',
-    7: 'vii'
-};
-
 class SingleRandomNoteFromCurrentScale {
     constructor(staffItemGenerator){
         this.label = 'Practice random single notes in the scale of ';

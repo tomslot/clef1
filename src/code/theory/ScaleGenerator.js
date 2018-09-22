@@ -1,5 +1,10 @@
 import { noteBase } from './noteBase.js';
 import {FIFTHS_ORDER, Note} from "./noteBase";
+import {Chord, ROMAN_NUMERALS} from "./Chord";
+
+const MAJOR_CHORD_QUALITY = 'Major';
+const MINOR_CHORD_QUALITY = 'Minor';
+const DIMINISHED_CHORD_QUALITY = 'Diminished';
 
 const SCALE_ORDER_TO_HARMONIC_ORDER = {
     0: 1,
@@ -35,6 +40,39 @@ export class MajorScale {
             if (this.notes.includes(i % 12)) {
                 this.notePalette.push(i);
             }
+        }
+
+        this.chordsByRootNote = {};
+
+        this.chordsByQuality = {};
+        this.chordsByQuality[MAJOR_CHORD_QUALITY] = [];
+        this.chordsByQuality[MINOR_CHORD_QUALITY] = [];
+        this.chordsByQuality[DIMINISHED_CHORD_QUALITY] = [];
+
+        this.generateTriadChords();
+    }
+
+    generateTriadChords(){
+        for (let rootNoteIndex = 0; rootNoteIndex < this.notes.length; rootNoteIndex ++){
+            const rootNote = new Note(this.notes[rootNoteIndex], this.sharpVsFlat);
+            const thirdNote = new Note(this.notes[(rootNoteIndex + 2) % this.notes.length], this.sharpVsFlat);
+            const fifthNote = new Note(this.notes[(rootNoteIndex + 4) % this.notes.length], this.sharpVsFlat);
+
+            const thirdDistance = thirdNote.midiValue - rootNote.midiValue;
+            const chordNumber = ROMAN_NUMERALS[this.degree(rootNote.normalized) + 1];
+
+            let chordQuality = MAJOR_CHORD_QUALITY;
+
+            if (thirdDistance !== 4){
+                const thirdToFifthDistance = fifthNote.midiValue - thirdNote.midiValue;
+                chordQuality = thirdToFifthDistance === 4 ? MINOR_CHORD_QUALITY : DIMINISHED_CHORD_QUALITY;
+            }
+
+            let chordName = `${rootNote.symbol} ${chordQuality} (${chordNumber})`;
+
+            const chord = new Chord(chordName, [rootNote, thirdNote, fifthNote]);
+            this.chordsByRootNote[rootNoteIndex] = chord;
+            this.chordsByQuality[chordQuality].push(chord);
         }
     }
 
