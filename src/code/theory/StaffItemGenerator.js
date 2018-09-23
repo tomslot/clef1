@@ -1,5 +1,5 @@
 import {Note} from './noteBase';
-import {Chord} from "./Chord";
+import {Chord, ROMAN_NUMERALS} from "./Chord";
 
 class SingleRandomNoteFromCurrentScale {
     constructor(staffItemGenerator){

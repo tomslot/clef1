@@ -1,6 +1,6 @@
 import {Note} from "../theory/noteBase";
 
-const ACTIVE_BLACK_KEY_DARK = '#575';
+const ACTIVE_BLACK_KEY_DARK = '#555';
 const ACTIVE_WHITE_KEY_LIGHT = '#fff';
 
 const WHITE_TO_MIDI = {
@@ -22,10 +22,21 @@ const BLACK_TO_MIDI = {
 };
 
 export class KeyboardGlymph {
-    constructor(canvas) {
+    constructor(canvas, scale) {
         this.canvas = canvas;
         this.activeNotes = new Set();
+        this.sharpVsFlat = true;
+
+        if (scale){
+            this.setScale(scale);
+        }
+
         this.redraw();
+    }
+
+    setScale(scale){
+        this.scale = scale;
+        this.sharpVsFlat = scale.sharpVsFlat;
     }
 
     setActiveNotes(activeNotes) {
@@ -45,7 +56,7 @@ export class KeyboardGlymph {
 
         const FILL_ACTIVE_WHITE = ctx.createLinearGradient(0, 0, keyWidth, height);
         FILL_ACTIVE_WHITE.addColorStop(0, ACTIVE_WHITE_KEY_LIGHT);
-        FILL_ACTIVE_WHITE.addColorStop(1, '#dfd');
+        FILL_ACTIVE_WHITE.addColorStop(1, '#eee');
 
         const FILL_INACTIVE = '#BBB';
 
@@ -61,7 +72,7 @@ export class KeyboardGlymph {
             ctx.stroke();
 
             if (active){
-                KeyboardGlymph.drawKeyLabel(ctx, noteValue, keyWidth, height, x, ACTIVE_BLACK_KEY_DARK);
+                this.drawKeyLabel(ctx, noteValue, keyWidth, height, x, ACTIVE_BLACK_KEY_DARK);
             }
         }
 
@@ -70,7 +81,7 @@ export class KeyboardGlymph {
 
         const FILL_ACTIVE_BLACK = ctx.createLinearGradient(0, 0, keyWidth, height);
         FILL_ACTIVE_BLACK.addColorStop(0, ACTIVE_BLACK_KEY_DARK);
-        FILL_ACTIVE_BLACK.addColorStop(1, '#797');
+        FILL_ACTIVE_BLACK.addColorStop(1, '#222');
 
         for (let i = 1; i < 7; i++) {
             if (i === 3) {
@@ -87,17 +98,17 @@ export class KeyboardGlymph {
             ctx.stroke();
 
             if (active){
-                KeyboardGlymph.drawKeyLabel(ctx, noteValue, blackKeyWidth, blackKeyHeight, x, ACTIVE_WHITE_KEY_LIGHT);
+                this.drawKeyLabel(ctx, noteValue, blackKeyWidth, blackKeyHeight, x, ACTIVE_WHITE_KEY_LIGHT);
             }
         }
     }
 
-    static drawKeyLabel(ctx, noteValue, keyWidth, keyHeight, x, fillStyle){
+    drawKeyLabel(ctx, noteValue, keyWidth, keyHeight, x, fillStyle){
         ctx.fillStyle = fillStyle;
         ctx.textAlign = "center";
         ctx.font = `14px Oswald`;
         ctx.textBaseline = "middle";
-        const noteName = Note.noteToSymbol(noteValue, false);
+        const noteName = Note.noteToSymbol(noteValue, this.sharpVsFlat);
         const labelY = keyHeight * 0.75;
         ctx.fillText(noteName, x + keyWidth / 2, labelY);
     }

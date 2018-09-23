@@ -7,25 +7,27 @@ import {KeyboardGlymph} from "./draw/KeyboardGlymph";
 export class ScaleDetails {
     constructor(rootNote){
         this.scaleGenerator = new ScaleGenerator();
+        this.scaleGenerator.setScale(rootNote);
         const circleOfFifthsCanvas = document.getElementById('circle-of-fifths');
         this.circleOfFifths = new CircleOfFifths(circleOfFifthsCanvas);
-        this.circleOfFifths.setScale(this.scaleGenerator.current);
-        this.circleOfFifths.onscalechange = (newRoot) => {
+        const scale = this.scaleGenerator.current;
+        this.circleOfFifths.setScale(scale);
 
+        this.circleOfFifths.onscalechange = (newRoot) => {
             this.scaleGenerator.setScale(newRoot);
         };
-        createSelectOptions('scale-selection', this.scaleGenerator, FIFTHS_ORDER);
 
+        createSelectOptions('scale-selection', this.scaleGenerator, FIFTHS_ORDER);
         this.scaleGenerator.onchange = (scale)=>{
             this.circleOfFifths.setScale(scale);
+            this.keyboardGlymph.setScale(scale);
             this.keyboardGlymph.setActiveNotes(scale.notes);
             document.querySelector('[name=scale]').value = scale.rootNote;
             this.showTriadChords();
         };
-        this.keyboardGlymph = new KeyboardGlymph(document.getElementById('scale-glymph'));
 
-        this.keyboardGlymph.setActiveNotes(this.scaleGenerator.current.notes);
-        this.scaleGenerator.setScale(rootNote);
+        this.keyboardGlymph = new KeyboardGlymph(document.getElementById('scale-glymph'), scale);
+        this.keyboardGlymph.setActiveNotes(scale.notes);
         this.showTriadChords();
     }
 
@@ -49,7 +51,7 @@ export class ScaleDetails {
             canvas.setAttribute('width', '140');
             canvas.setAttribute('height', '80');
 
-            const keyboardGlymph = new KeyboardGlymph(canvas);
+            const keyboardGlymph = new KeyboardGlymph(canvas, this.scaleGenerator.current);
 
             const chordNotes = [];
 

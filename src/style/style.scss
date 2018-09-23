@@ -46,6 +46,7 @@ h1{
 }
 
 h2{
+  clear: both;
   color: $COLOR4;
   padding: 5px;
 }
@@ -122,6 +123,7 @@ div#comingSoon ul{
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 #scale-glymph{
@@ -149,6 +151,20 @@ nav{
   margin: 0 30px;
 }
 
+div.chordBoxContainer{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 div.chordBox{
   margin: 15px;
+  //display: inline-block;
+  display: flex;
+  flex-direction: column;
+}
+
+div.chordBox *{
+  padding: 5px;
 }
