@@ -23,6 +23,9 @@ const BLACK_TO_MIDI = {
 
 export class KeyboardGlymph {
     constructor(canvas, scale) {
+        this.inactiveBgImage = new Image();
+        this.inactiveBgImage.src = require("../../gfx/inactive_key_bg.png");
+
         this.canvas = canvas;
         this.activeNotes = new Set();
         this.sharpVsFlat = true;
@@ -74,24 +77,27 @@ export class KeyboardGlymph {
 
         ctx.clearRect(0, 0, width, height);
 
-        const FILL_ACTIVE_WHITE = ctx.createLinearGradient(0, 0, keyWidth, height);
-        FILL_ACTIVE_WHITE.addColorStop(0, ACTIVE_WHITE_KEY_LIGHT);
-        FILL_ACTIVE_WHITE.addColorStop(1, '#eee');
+        const FILL_WHITE_DIRECT_MATCH = ctx.createLinearGradient(0, 0, keyWidth, height);
+        FILL_WHITE_DIRECT_MATCH.addColorStop(0, ACTIVE_WHITE_KEY_LIGHT);
+        FILL_WHITE_DIRECT_MATCH.addColorStop(1, '#eee');
 
-        const FILL_INACTIVE = '#BBB';
+        const FILL_WHITE_WEAK_MATCH = '#ddd';
+        const FILL_BLACK_WEAK_MATCH = '#999';
+        const FILL_INACTIVE = ctx.createPattern(this.inactiveBgImage, "repeat");
 
         ctx.strokeStyle = '#333';
         for (let i = 0; i < totalWhiteKeysCount; i++) {
             const x = i * keyWidth;
             const noteValue =  WHITE_TO_MIDI[i % whiteKeysInOctaveCount] + Math.floor(i / whiteKeysInOctaveCount) * 12;
-            const active = this.activeNotes.has(noteValue % 12);
-            ctx.fillStyle = active ? FILL_ACTIVE_WHITE : FILL_INACTIVE;
+            const weakMatch = this.activeNotes.has(noteValue % 12);
+            const directMatch = weakMatch && this.exactActiveNotes.has(noteValue);
+            ctx.fillStyle = directMatch ? FILL_WHITE_DIRECT_MATCH : weakMatch ? FILL_WHITE_WEAK_MATCH : FILL_INACTIVE;
             ctx.fillRect(x, 0, keyWidth, height);
             ctx.beginPath();
             ctx.rect(x, 1, keyWidth, height - 2);
             ctx.stroke();
 
-            if (active && this.exactActiveNotes.has(noteValue)){
+            if (directMatch){
                 this.drawKeyLabel(ctx, noteValue, keyWidth, height, x, ACTIVE_BLACK_KEY_DARK);
             }
         }
@@ -99,14 +105,15 @@ export class KeyboardGlymph {
         const blackKeyHeight = 0.6 * height;
         const blackKeyWidth = parseInt(0.65 * keyWidth);
 
-        const FILL_ACTIVE_BLACK = ctx.createLinearGradient(0, 0, keyWidth, height);
-        FILL_ACTIVE_BLACK.addColorStop(0, ACTIVE_BLACK_KEY_DARK);
-        FILL_ACTIVE_BLACK.addColorStop(1, '#222');
+        const FILL_BLACK_DIRECT_MATCH = ctx.createLinearGradient(0, 0, keyWidth, height);
+        FILL_BLACK_DIRECT_MATCH.addColorStop(0, ACTIVE_BLACK_KEY_DARK);
+        FILL_BLACK_DIRECT_MATCH.addColorStop(1, '#222');
 
         for (let i = 0; i < totalBlackKeysCount; i++) {
             const noteValue =  BLACK_TO_MIDI[i % blackKeysInOctaveCount] + + Math.floor(i / blackKeysInOctaveCount) * 12;;
-            const active = this.activeNotes.has(noteValue % 12);
-            ctx.fillStyle = active ? FILL_ACTIVE_BLACK : FILL_INACTIVE;
+            const weakMatch = this.activeNotes.has(noteValue % 12);
+            const directMatch = weakMatch && this.exactActiveNotes.has(noteValue);
+            ctx.fillStyle = directMatch ? FILL_BLACK_DIRECT_MATCH : weakMatch ? FILL_BLACK_WEAK_MATCH : FILL_INACTIVE;
 
             let s = i + 1;
 
@@ -126,7 +133,7 @@ export class KeyboardGlymph {
             ctx.rect(x, 0, blackKeyWidth, blackKeyHeight);
             ctx.stroke();
 
-            if (active && this.exactActiveNotes.has(noteValue)){
+            if (directMatch){
                 this.drawKeyLabel(ctx, noteValue, blackKeyWidth, blackKeyHeight, x, ACTIVE_WHITE_KEY_LIGHT);
             }
         }
