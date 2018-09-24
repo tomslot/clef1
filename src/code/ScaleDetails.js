@@ -48,8 +48,8 @@ export class ScaleDetails {
 
         for (let chord of chords){
             const canvas = document.createElement('canvas');
-            canvas.setAttribute('width', '140');
-            canvas.setAttribute('height', '80');
+            canvas.setAttribute('width', '420');
+            canvas.setAttribute('height', '120');
 
             const keyboardGlymph = new KeyboardGlymph(canvas, this.scaleGenerator.current);
 
