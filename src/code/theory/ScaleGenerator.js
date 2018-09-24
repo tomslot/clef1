@@ -1,5 +1,5 @@
 import { noteBase } from './noteBase.js';
-import {FIFTHS_ORDER, Note} from "./noteBase";
+import {FIFTHS_ORDER, Interval, Note} from "./noteBase";
 import {Chord, ROMAN_NUMERALS} from "./Chord";
 
 const MAJOR_CHORD_QUALITY = 'Major';
@@ -58,13 +58,13 @@ export class MajorScale {
             const thirdNote = new Note(this.notes[(rootNoteIndex + 2) % this.notes.length], this.sharpVsFlat);
             const fifthNote = new Note(this.notes[(rootNoteIndex + 4) % this.notes.length], this.sharpVsFlat);
 
-            const thirdDistance = thirdNote.midiValue - rootNote.midiValue;
+            const thirdDistance = Interval.calculateDistanceAssumingAscendingOrder(rootNote.midiValue, thirdNote.midiValue);
             const chordNumber = ROMAN_NUMERALS[this.degree(rootNote.normalized) + 1];
 
             let chordQuality = MAJOR_CHORD_QUALITY;
 
             if (thirdDistance !== 4){
-                const thirdToFifthDistance = fifthNote.midiValue - thirdNote.midiValue;
+                const thirdToFifthDistance = Interval.calculateDistanceAssumingAscendingOrder(thirdNote.midiValue, fifthNote.midiValue);
                 chordQuality = thirdToFifthDistance === 4 ? MINOR_CHORD_QUALITY : DIMINISHED_CHORD_QUALITY;
             }
 

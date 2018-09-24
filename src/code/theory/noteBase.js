@@ -97,6 +97,11 @@ export class Interval{
         return distance;
     }
 
+    static calculateDistanceAssumingAscendingOrder(lowerNoteValue, higherNoteValue){
+        const r = higherNoteValue - lowerNoteValue;
+        return lowerNoteValue <= higherNoteValue ? r :  r + 12;
+    }
+
     static octaveUp(noteValue){
         return noteValue + 12;
     }

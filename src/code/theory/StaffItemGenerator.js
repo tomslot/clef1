@@ -1,4 +1,4 @@
-import {Note} from './noteBase';
+import {Interval, Note} from './noteBase';
 import {Chord, ROMAN_NUMERALS} from "./Chord";
 
 class SingleRandomNoteFromCurrentScale {
@@ -37,13 +37,13 @@ class RandomTriadChordFromCurrentScale {
         const thirdNote = new Note(currentNotePalette[rootNoteIndex + 2], sharpVsFlat);
         const fifthNote = new Note(currentNotePalette[rootNoteIndex + 4], sharpVsFlat);
 
-        const thirdDistance = thirdNote.midiValue - rootNote.midiValue;
+        const thirdDistance = Interval.calculateDistanceAssumingAscendingOrder(rootNote.midiValue, thirdNote.midiValue);
         const chordNumber = ROMAN_NUMERALS[scale.degree(rootNote.normalized) + 1];
 
         let chordQuality = 'Major';
 
         if (thirdDistance !== 4){
-            const thirdToFifthDistance = fifthNote.midiValue - thirdNote.midiValue;
+            const thirdToFifthDistance = Interval.calculateDistanceAssumingAscendingOrder(thirdNote.midiValue, fifthNote.midiValue);
             chordQuality = thirdToFifthDistance === 4 ? 'Minor' : 'Diminished';
         }
 

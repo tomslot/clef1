@@ -60,10 +60,15 @@ export class KeyboardGlymph {
     }
 
     redraw() {
+        const octaveCount = 2;
+        const whiteKeysInOctaveCount = 7;
+        const totalWhiteKeysCount = octaveCount * whiteKeysInOctaveCount;
+        const blackKeysInOctaveCount = 5;
+        const totalBlackKeysCount = octaveCount * blackKeysInOctaveCount;
         const width = this.canvas.width;
         const height = this.canvas.height;
 
-        const keyWidth = parseInt(width / 14);
+        const keyWidth = parseInt(width / totalWhiteKeysCount);
 
         const ctx = this.canvas.getContext("2d");
 
@@ -76,9 +81,9 @@ export class KeyboardGlymph {
         const FILL_INACTIVE = '#BBB';
 
         ctx.strokeStyle = '#333';
-        for (let i = 0; i < 14; i++) {
+        for (let i = 0; i < totalWhiteKeysCount; i++) {
             const x = i * keyWidth;
-            const noteValue =  WHITE_TO_MIDI[i % 7] + Math.floor(i / 7) * 12;
+            const noteValue =  WHITE_TO_MIDI[i % whiteKeysInOctaveCount] + Math.floor(i / whiteKeysInOctaveCount) * 12;
             const active = this.activeNotes.has(noteValue % 12);
             ctx.fillStyle = active ? FILL_ACTIVE_WHITE : FILL_INACTIVE;
             ctx.fillRect(x, 0, keyWidth, height);
@@ -98,15 +103,24 @@ export class KeyboardGlymph {
         FILL_ACTIVE_BLACK.addColorStop(0, ACTIVE_BLACK_KEY_DARK);
         FILL_ACTIVE_BLACK.addColorStop(1, '#222');
 
-        for (let i = 0; i < 10; i++) {
-            if ((i % 7) === 3 || (i % 7) === 0) {
-                continue;
-            }
-            const noteValue =  BLACK_TO_MIDI[i % 5] + + Math.floor(i / 5) * 12;;
+        for (let i = 0; i < totalBlackKeysCount; i++) {
+            const noteValue =  BLACK_TO_MIDI[i % blackKeysInOctaveCount] + + Math.floor(i / blackKeysInOctaveCount) * 12;;
             const active = this.activeNotes.has(noteValue % 12);
             ctx.fillStyle = active ? FILL_ACTIVE_BLACK : FILL_INACTIVE;
 
-            const x = i * keyWidth - blackKeyWidth / 2;
+            let s = i + 1;
+
+            if (i > 1){
+                s ++;
+            }
+            if (i > 4){
+                s ++;
+            }
+            if (i > 6){
+                s ++;
+            }
+
+            const x = s * keyWidth - blackKeyWidth / 2;
             ctx.fillRect(x, 0, blackKeyWidth, blackKeyHeight);
             ctx.beginPath();
             ctx.rect(x, 0, blackKeyWidth, blackKeyHeight);

@@ -6,8 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="4156a3f1-4333-4321-a9ba-3d9db9515290" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/code/ScaleDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/code/ScaleDetails.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/code/draw/KeyboardGlymph.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/code/draw/KeyboardGlymph.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/code/theory/ScaleGenerator.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/code/theory/ScaleGenerator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/code/theory/StaffItemGenerator.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/code/theory/StaffItemGenerator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/code/theory/noteBase.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/code/theory/noteBase.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/dist/" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -39,14 +41,14 @@
           <entry key="config,js" value="1" />
           <entry key="gitignore" value="1" />
           <entry key="html" value="10" />
-          <entry key="js" value="50" />
+          <entry key="js" value="53" />
           <entry key="scss" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="HTML" value="10" />
-          <entry key="JavaScript" value="50" />
+          <entry key="JavaScript" value="53" />
           <entry key="PLAIN_TEXT" value="2" />
           <entry key="SCSS" value="4" />
         </counts>
@@ -56,16 +58,16 @@
           <entry key="config,js" value="17" />
           <entry key="gitignore" value="6" />
           <entry key="html" value="838" />
-          <entry key="js" value="12136" />
+          <entry key="js" value="12523" />
           <entry key="scss" value="323" />
-          <entry key="txt" value="191" />
+          <entry key="txt" value="205" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="838" />
-          <entry key="JavaScript" value="12136" />
-          <entry key="PLAIN_TEXT" value="214" />
+          <entry key="JavaScript" value="12523" />
+          <entry key="PLAIN_TEXT" value="228" />
           <entry key="SCSS" value="323" />
         </counts>
       </usages-collector>
@@ -85,8 +87,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/code/theory/ScaleGenerator.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="833">
-              <caret line="51" column="35" selection-start-line="51" selection-start-column="35" selection-end-line="51" selection-end-column="35" />
+            <state relative-caret-position="324">
+              <caret line="66" column="136" lean-forward="true" selection-start-line="66" selection-start-column="16" selection-end-line="66" selection-end-column="136" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -95,10 +97,28 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/code/theory/noteBase.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="276">
+              <caret line="99" column="24" selection-start-line="99" selection-start-column="24" selection-end-line="99" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/code/theory/Chord.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+            <state relative-caret-position="327">
+              <caret line="26" column="9" lean-forward="true" selection-start-line="26" selection-start-column="9" selection-end-line="26" selection-end-column="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/code/draw/StaffItemRenderer.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="442">
+              <caret line="27" column="18" lean-forward="true" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -115,29 +135,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/code/theory/StaffItemGenerator.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="51" column="70" lean-forward="true" selection-start-line="51" selection-start-column="70" selection-end-line="51" selection-end-column="70" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/code/draw/KeyboardGlymph.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="61" column="14" lean-forward="true" selection-start-line="61" selection-start-column="14" selection-end-line="61" selection-end-column="14" />
+            <state relative-caret-position="442">
+              <caret line="45" column="132" selection-start-line="45" selection-start-column="132" selection-end-line="45" selection-end-column="132" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/code/draw/CircleOfFifths.js">
+        <entry file="file://$PROJECT_DIR$/src/code/draw/KeyboardGlymph.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1173">
-              <caret line="69" column="5" lean-forward="true" selection-start-line="69" selection-start-column="5" selection-end-line="69" selection-end-column="5" />
+            <state relative-caret-position="500">
+              <caret line="118" column="12" selection-start-line="118" selection-start-column="12" selection-end-line="120" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -159,15 +170,6 @@
               <folding>
                 <element signature="e#0#55#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/code/ui/selectGenerator.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="6" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -231,7 +233,6 @@
         <option value="$PROJECT_DIR$/src/code/draw/circleOfFifths.js" />
         <option value="$PROJECT_DIR$/src/code/draw/staffMetrics.js" />
         <option value="$PROJECT_DIR$/src/code/draw/staffItem.js" />
-        <option value="$PROJECT_DIR$/src/code/theory/noteBase.js" />
         <option value="$PROJECT_DIR$/src/code/draw/staff.js" />
         <option value="$PROJECT_DIR$/src/code/io/virtualKeyboard.js" />
         <option value="$PROJECT_DIR$/src/code/draw/StaffItemRenderer.js" />
@@ -250,12 +251,13 @@
         <option value="$PROJECT_DIR$/src/code/ui/selectGenerator.js" />
         <option value="$PROJECT_DIR$/src/code/draw/CircleOfFifths.js" />
         <option value="$PROJECT_DIR$/src/code/theory/Chord.js" />
-        <option value="$PROJECT_DIR$/src/code/theory/ScaleGenerator.js" />
-        <option value="$PROJECT_DIR$/src/code/theory/StaffItemGenerator.js" />
         <option value="$PROJECT_DIR$/src/style/style.scss" />
         <option value="$PROJECT_DIR$/src/code/ScaleDetails.js" />
         <option value="$PROJECT_DIR$/static/index.html" />
         <option value="$PROJECT_DIR$/src/code/draw/KeyboardGlymph.js" />
+        <option value="$PROJECT_DIR$/src/code/theory/noteBase.js" />
+        <option value="$PROJECT_DIR$/src/code/theory/ScaleGenerator.js" />
+        <option value="$PROJECT_DIR$/src/code/theory/StaffItemGenerator.js" />
       </list>
     </option>
   </component>
@@ -386,7 +388,7 @@
       <workItem from="1537386068581" duration="4789000" />
       <workItem from="1537426687226" duration="1527000" />
       <workItem from="1537602254282" duration="16698000" />
-      <workItem from="1537694391107" duration="10671000" />
+      <workItem from="1537694391107" duration="15061000" />
     </task>
     <task id="LOCAL-00001" summary="offscreen rendering of staff item">
       <created>1536662973411</created>
@@ -451,11 +453,18 @@
       <option name="project" value="LOCAL" />
       <updated>1537716068536</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="stable version">
+      <created>1537780725870</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1537780725870</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="135147000" />
+    <option name="totallyTimeSpent" value="139537000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="-6" width="1549" height="846" extended-state="6" />
@@ -497,7 +506,8 @@
     <MESSAGE value="minor style adjustments" />
     <MESSAGE value="Scale Explorer" />
     <MESSAGE value="Displaying Scale Chords" />
-    <option name="LAST_COMMIT_MESSAGE" value="Displaying Scale Chords" />
+    <MESSAGE value="stable version" />
+    <option name="LAST_COMMIT_MESSAGE" value="stable version" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/config,js" />
@@ -520,20 +530,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="20" column="45" selection-start-line="20" selection-start-column="45" selection-end-line="20" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/code/draw/StaffItemRenderer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
-          <caret line="56" column="5" lean-forward="true" selection-start-line="56" selection-start-column="5" selection-end-line="56" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/code/theory/noteBase.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="19" selection-start-line="31" selection-start-column="19" selection-end-line="31" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -571,6 +567,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
           <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
+          <folding>
+            <element signature="e#15#63#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -581,23 +580,6 @@
           <folding>
             <element signature="e#15#54#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/code/theory/ScaleGenerator.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="833">
-          <caret line="51" column="35" selection-start-line="51" selection-start-column="35" selection-end-line="51" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/code/theory/Chord.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -612,13 +594,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
           <caret line="19" column="6" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/code/theory/StaffItemGenerator.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="51" column="70" lean-forward="true" selection-start-line="51" selection-start-column="70" selection-end-line="51" selection-end-column="70" />
         </state>
       </provider>
     </entry>
@@ -656,10 +631,48 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/code/theory/Chord.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="327">
+          <caret line="26" column="9" lean-forward="true" selection-start-line="26" selection-start-column="9" selection-end-line="26" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/code/draw/StaffItemRenderer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="27" column="18" lean-forward="true" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/code/draw/KeyboardGlymph.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="61" column="14" lean-forward="true" selection-start-line="61" selection-start-column="14" selection-end-line="61" selection-end-column="14" />
+        <state relative-caret-position="500">
+          <caret line="118" column="12" selection-start-line="118" selection-start-column="12" selection-end-line="120" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/code/theory/noteBase.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="99" column="24" selection-start-line="99" selection-start-column="24" selection-end-line="99" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/code/theory/ScaleGenerator.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="66" column="136" lean-forward="true" selection-start-line="66" selection-start-column="16" selection-end-line="66" selection-end-column="136" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/code/theory/StaffItemGenerator.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="45" column="132" selection-start-line="45" selection-start-column="132" selection-end-line="45" selection-end-column="132" />
         </state>
       </provider>
     </entry>
