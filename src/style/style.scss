@@ -20,9 +20,9 @@
 body{
   text-align: center;
   font-family: 'Oswald', sans-serif;
-  background-color: $COLOR1;
+  //background-color: $COLOR1;
   color: $COLOR3;
-  background: linear-gradient(60deg, #e4e7e8, #fcfaf8);
+  background: linear-gradient(60deg, #c5e3ec, #fff);
 }
 
 div.dataBlock{
@@ -131,8 +131,8 @@ div#comingSoon ul{
 }
 
 button.buttonLink{
-  background: $COLOR1;// linear-gradient(-30deg, $COLOR2, $COLOR1);
-  color: $COLOR3;
+  background: #627a84;// linear-gradient(-30deg, $COLOR2, $COLOR1);
+  color: $COLOR1;
   padding: 8px;
   margin: 15px 5px;
   text-align: center;
@@ -158,13 +158,13 @@ div.chordBoxContainer{
   justify-content: center;
 }
 
-div.chordBox{
+figure.chordBox{
   margin: 15px;
   //display: inline-block;
   display: flex;
   flex-direction: column;
 }
 
-div.chordBox *{
+figure.chordBox *{
   padding: 5px;
 }

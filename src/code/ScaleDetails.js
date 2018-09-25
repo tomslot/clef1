@@ -48,24 +48,25 @@ export class ScaleDetails {
 
         for (let chord of chords){
             const canvas = document.createElement('canvas');
-            canvas.setAttribute('width', '420');
-            canvas.setAttribute('height', '120');
-
+            canvas.setAttribute('width', '280');
+            canvas.setAttribute('height', '90');
             const keyboardGlymph = new KeyboardGlymph(canvas, this.scaleGenerator.current);
 
             const chordNotes = [];
 
             for (let note of chord.notes){
+
                 chordNotes.push(note.midiValue);
             }
-
             keyboardGlymph.setActiveNotes(chordNotes);
 
-            const div = document.createElement('div');
-            div.setAttribute('class', 'chordBox')
-            div.innerText = chord.label;
-            div.appendChild(canvas);
-            container.appendChild(div);
+            const figure = document.createElement('figure');
+
+            figure.setAttribute('class', 'chordBox')
+            figure.setAttribute('draggable', 'true');
+            figure.innerText = chord.label;
+            figure.appendChild(canvas);
+            container.appendChild(figure);
         }
     }
 }

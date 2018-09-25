@@ -3,6 +3,9 @@ import {Note} from "../theory/noteBase";
 const ACTIVE_BLACK_KEY_DARK = '#555';
 const ACTIVE_WHITE_KEY_LIGHT = '#fff';
 
+const inactiveBgImage = new Image();
+// inactiveBgImage.src = require("../../gfx/inactive_key_bg.png");
+
 const WHITE_TO_MIDI = {
     0: 0,
     1: 2,
@@ -23,9 +26,6 @@ const BLACK_TO_MIDI = {
 
 export class KeyboardGlymph {
     constructor(canvas, scale) {
-        this.inactiveBgImage = new Image();
-        this.inactiveBgImage.src = require("../../gfx/inactive_key_bg.png");
-
         this.canvas = canvas;
         this.activeNotes = new Set();
         this.sharpVsFlat = true;
@@ -81,9 +81,9 @@ export class KeyboardGlymph {
         FILL_WHITE_DIRECT_MATCH.addColorStop(0, ACTIVE_WHITE_KEY_LIGHT);
         FILL_WHITE_DIRECT_MATCH.addColorStop(1, '#eee');
 
-        const FILL_WHITE_WEAK_MATCH = '#ddd';
-        const FILL_BLACK_WEAK_MATCH = '#999';
-        const FILL_INACTIVE = ctx.createPattern(this.inactiveBgImage, "repeat");
+        const FILL_WHITE_WEAK_MATCH = '#eee';
+        const FILL_BLACK_WEAK_MATCH = '#777';
+        const FILL_INACTIVE = ctx.createPattern(inactiveBgImage, "repeat") || '#e8f4f7';
 
         ctx.strokeStyle = '#333';
         for (let i = 0; i < totalWhiteKeysCount; i++) {
